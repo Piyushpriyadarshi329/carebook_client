@@ -10,8 +10,8 @@ export interface CounterState {
 }
 
 const initialState: CounterState = {
-  islogin: true,
-  isclinic: true,
+  islogin: false,
+  isclinic: false,
   isdoctor: false,
   username:null,
   userid:null

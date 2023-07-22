@@ -45,7 +45,7 @@ export default function Doctorlist() {
           <TouchableOpacity
           onPress={()=>{
 
-
+navigation.navigate('Adddoctor')
 
           }}
           >

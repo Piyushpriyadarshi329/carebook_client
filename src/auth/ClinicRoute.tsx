@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import Color from '../asset/Color';
 import Clinicprofile from '../screen/Clinicprofile';
 import Doctorlist from '../screen/Doctorlist';
+import Clinicdoctorliststack from './stack/Clinicdoctorliststack';
 
 
 const Tab = createBottomTabNavigator();
@@ -61,7 +62,7 @@ export default function DocterRoute() {
             }}
 
       />
-      <Tab.Screen name="Appointments" component={Doctorlist}
+      <Tab.Screen name="Appointments" component={Clinicdoctorliststack}
             options={{headerShown:false}}
 
       />

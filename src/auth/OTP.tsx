@@ -24,7 +24,9 @@ export default function OTP() {
         dispatch(
           updateappstate({
             islogin: true,
-            isdoctor:true
+            isdoctor:true,
+            isclinic: false,
+
           }),
         );
       }else{
