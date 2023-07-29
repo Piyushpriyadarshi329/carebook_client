@@ -1,11 +1,32 @@
 import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Color from '../asset/Color';
 
 export default function Appointments() {
   const [selected, setselected] = useState('current');
 
+  useEffect(() => {
+    getappointlist();
+  }, []);
+
+  async function getappointlist() {
+    try {
+      let payload = {
+        customerId: Appstate.userid,
+        doctorId: '',
+        status: '',
+      };
+
+      let getAppointmentsres: any = await usegetAppointments(payload);
+
+      console.log('getAppointmentsres', getAppointmentsres);
+      setscheduled(getAppointmentsres.data.filter(i => i.status == 'BOOKED'));
+      sethistory(getAppointmentsres.data.filter(i => i.status == 'COMPLETED'));
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <View
@@ -134,32 +155,15 @@ export default function Appointments() {
       </View>
       <View style={{flex: 9, marginHorizontal: 20}}>
         <ScrollView>
-
-
-{[0,1,2,3,4,5,6,7,8,9].map((i)=>{
-
-return(
-
-
-<View>
-
-
-  <View>
-    <View>
-
-      
-    </View>
-
-
-  </View>
-</View>
-
-
-)
-
-})}
-
-
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => {
+            return (
+              <View>
+                <View>
+                  <View></View>
+                </View>
+              </View>
+            );
+          })}
         </ScrollView>
       </View>
     </View>

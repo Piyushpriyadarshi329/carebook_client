@@ -11,10 +11,14 @@ import {
 import Color from '../asset/Color';
 import Appointmentcard from '../components/Appointmentcard';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import type {RootState} from '../redux/Store';
+import {useSelector, useDispatch} from 'react-redux';
 
 const screenWidth = Dimensions.get('window').width;
 
 export default function Home() {
+  const Appdata = useSelector((state: RootState) => state);
+
   const chartConfig = {
     backgroundGradientFrom: '#Ffffff',
     backgroundGradientTo: '#ffffff',
@@ -65,11 +69,17 @@ export default function Home() {
           <Text style={{color: 'black', fontSize: 14}}> Welcome back!</Text>
           <Text style={{color: 'black', fontSize: 16}}>
             {' '}
-            Dr. Nirmala Azelea
+            Dr. {Appdata.Appdata.username}
           </Text>
         </View>
 
-        <View style={{alignItems:"flex-end",flex:1,marginTop:20,marginLeft:10}}>
+        <View
+          style={{
+            alignItems: 'flex-end',
+            flex: 1,
+            marginTop: 20,
+            marginLeft: 10,
+          }}>
           <Icon name="bell" size={30} color={Color.primary} />
         </View>
       </View>

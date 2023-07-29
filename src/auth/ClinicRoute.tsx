@@ -2,7 +2,7 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screen/Home';
-import Profile from '../screen/Profile';
+import Profile from '../screen/Doctorprofile';
 import Appointments from '../screen/Appointments';
 import {NavigationContainer} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Entypo';

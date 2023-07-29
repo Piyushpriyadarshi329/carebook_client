@@ -9,45 +9,65 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {useRegister} from '../customhook/useRegister';
+import {useAddDoctor} from '../customhook/useadddoctor';
+import {AddDoctorRequest} from '../types';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function Adddoctor() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const Appdata = useSelector((state: RootState) => state);
+  const {mutate: addDoctor} = useAddDoctor({
+    onSuccess: () => {
+      console.log('sus=ccess');
+      navigation.goBack();
+    },
+  });
 
   const [name, setname] = useState('');
   const [mobile, setmobile] = useState('');
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
+  const [speciality, setspeciality] = useState('');
+  const [open1, setOpen1] = useState(false);
+
+  const specialitylist = [
+    {
+      value: 'Neurology',
+      label: 'Neurology',
+    },
+    {
+      value: 'Radiology',
+      label: 'Radiology',
+    },
+    {
+      value: 'Cardiology',
+      label: 'Cardiology',
+    },
+    {
+      value: 'Otorhinolaryngology',
+      label: 'Otorhinolaryngology',
+    },
+  ];
 
   async function submithandler() {
     try {
-      let payload: {
-        mobile: number;
-        email: string;
-        name: string;
-        password: string;
-        usertype: number;
-      } = {
-        mobile: Number(mobile),
+      let payload: AddDoctorRequest = {
+        mobile: mobile,
         email: email,
         name: name,
         password: password,
+        clinic_id: Appdata.Appdata.userid ?? '',
+        degree: '',
+        active: true,
+        profile_image_key: '',
+        speciality: speciality,
         usertype: 2,
       };
 
-      let {data}:any = await useRegister(payload);
+      console.log('payload', payload);
 
-      console.log("res",data)
-
-      if(data.Success){
-
-        navigation.navigate('Doctorlist');
-
-      }else{
-
-        alert("error")
-      }
-
+      addDoctor(payload);
     } catch (error) {
       console.log(error);
     }
@@ -90,6 +110,22 @@ export default function Adddoctor() {
             }}
           />
         </View>
+
+        <View style={{flex: 2, marginHorizontal: 70}}>
+          <View style={{marginTop: 10}}>
+            <DropDownPicker
+              style={{borderBottomWidth: 1}}
+              open={open1}
+              value={speciality}
+              items={specialitylist}
+              setOpen={setOpen1}
+              setValue={setspeciality}
+              // setItems={setItems}
+              placeholder="Select speciality"
+            />
+          </View>
+        </View>
+
         <View
           style={{
             marginHorizontal: 70,
@@ -135,7 +171,6 @@ export default function Adddoctor() {
               flex: 1,
             }}
             placeholder="Please enter Email"
-            keyboardType="numeric"
             onChangeText={text => {
               setemail(text);
             }}
