@@ -14,3 +14,4 @@ export const GETAPPOINTMENTS_URL = BASE_URL + '/getAppointments';
 export const ADDADDRESS_URL = BASE_URL + '/addaddress';
 export const GETADDRESS_URL = BASE_URL + '/getaddress';
 export const ADDLEAVE_URL = BASE_URL + '/addLeave';
+export const GETLEAVE_URL = BASE_URL + '/getLeaves';
