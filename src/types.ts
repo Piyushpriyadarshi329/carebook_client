@@ -14,11 +14,14 @@ export interface DoctorDto {
   profile_image_key: string;
   speciality: string;
   degree: string;
+  appointment_time: number;
+  fees: number;
+  about: string;
 }
 
 export interface GetDotcorsListRequest {
-  clinic_id: string;
-  doctor_id: string;
+  clinic_id?: string;
+  doctor_id?: string;
 }
 
 export type GetDoctorsListResponse = DataResponse<DoctorDto[]>;
@@ -29,6 +32,24 @@ export type AddDoctorRequest = Omit<DoctorDto, 'id'> & {
 };
 
 export type AddDoctorResponse = DataResponse<any>;
+export type UpdateDoctorReqParams = {id: string};
+export type UpdateDoctorRequest = Omit<DoctorDto, 'id' | 'mobile' | 'email'>;
+
+export interface LeaveDto {
+  id: string;
+  doctor_id: string;
+  fromdate: number;
+  todate: number;
+  worktime_id: string;
+  created_datetime: string;
+  active: boolean;
+  fullday: boolean;
+  reason?: string;
+}
+export type AddLeaveRequest = Omit<
+  LeaveDto,
+  'id' | 'created_datetime' | 'active'
+>;
 
 /** CusotmerController */
 export interface CustomerDto {
@@ -52,6 +73,7 @@ export interface ClinicDto {
   active: boolean;
   address_id: string;
 }
+export type GetClinicsResponse = DataResponse<ClinicDto[]>;
 
 /** UserController */
 export interface LoginRequest {
@@ -96,6 +118,7 @@ export interface BookingDto {
   modified_datetime: number;
   payment_order_id: string;
   agent_id?: string;
+  appointment_date: number;
 }
 export type BookSlotRequest = Omit<
   BookingDto,
@@ -128,7 +151,7 @@ export interface GetOccupiedSlotsRequest {
 }
 
 export interface OccupiedSlots {
-  dateString: string;
+  dateString: number;
   work_time_id: string;
   from_time: string;
   to_time: string;
@@ -140,7 +163,8 @@ export type GetOccupiedSlotsResponse = DataResponse<OccupiedSlots[]>;
 
 export interface WorkingTimeDto {
   id: string;
-  doctor_clinic_id: string;
+  doctor_id: string;
+  clinic_id: string;
   entry_id: string;
   week_day: number;
   from_time: string;
@@ -170,6 +194,7 @@ export interface GetAppointmentsRequest {
   customerId?: string;
   doctorId?: string;
   status?: BookingStatus;
+  appointment_date?: number;
 }
 export interface Appointmentdto extends BookingDto {
   customerName?: string;
@@ -202,3 +227,34 @@ export interface GetAdresstdto extends GetAdressRequest {}
 export type AddAdressResponse = DataResponse<AddAdresstdto[]>;
 export type GetAdressResponse = DataResponse<AddAdresstdto[]>;
 export type GetAppointmentResponse = DataResponse<Appointmentdto[]>;
+
+export type GetAvailabilityRequest = {
+  doctor_id?: string;
+  clinic_id?: string;
+};
+export type GetAvailabilityResponse = DataResponse<WorkingTimeDto[]>;
+
+export type GetBookingAvailabilityRequest = {
+  doctor_id: string;
+  clinic_id: string;
+  date: number;
+};
+
+export interface BookingAvailability {
+  workingtime_id: string;
+  fromtime: string;
+  totime: string;
+  slots: Slot[];
+}
+export type GetBookingvavilabilityResponse = BookingAvailability[];
+
+export enum SlotStatus {
+  AVAILABLE = 'AVAILABLE',
+  BOOKED = 'BOOKED',
+  NA = 'NA',
+}
+
+export interface Slot {
+  index: number;
+  status: SlotStatus;
+}

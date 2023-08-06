@@ -1,6 +1,6 @@
 import {View, Text, StatusBar} from 'react-native';
 import React, {Fragment} from 'react';
-import Auth from './src/auth/Auth';
+import Auth from './src/Auth';
 
 import {store} from './src/redux/Store';
 import {Provider} from 'react-redux';

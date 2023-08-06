@@ -10,6 +10,7 @@ import Color from '../asset/Color';
 import DoctorProfilestack from './stack/Doctorprofilestack';
 
 import type {RootState} from './../redux/Store';
+import Appointmentsstack from './stack/Appointmentsstack';
 
 const Tab = createBottomTabNavigator();
 
@@ -60,7 +61,7 @@ export default function DocterRoute() {
         />
         <Tab.Screen
           name="Appointments"
-          component={Appointments}
+          component={Appointmentsstack}
           options={{headerShown: false}}
         />
       </Tab.Navigator>

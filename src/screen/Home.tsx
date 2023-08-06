@@ -1,5 +1,5 @@
 import {View, Text, Dimensions, ScrollView} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   LineChart,
   BarChart,
@@ -8,16 +8,43 @@ import {
   ContributionGraph,
   StackedBarChart,
 } from 'react-native-chart-kit';
+
 import Color from '../asset/Color';
 import Appointmentcard from '../components/Appointmentcard';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import type {RootState} from '../redux/Store';
 import {useSelector, useDispatch} from 'react-redux';
+import {usegetAppointments} from '../customhook/usegetAppointments';
+
+import {monthlist, daylist} from './../Appconstant';
 
 const screenWidth = Dimensions.get('window').width;
 
 export default function Home() {
   const Appdata = useSelector((state: RootState) => state);
+
+  const [datelabel, setdatelabel] = useState<string[]>([]);
+
+  const [Appointmentdata, setAppointmentdata] = useState([]);
+
+  useEffect(() => {
+    getAppointments();
+    let localdate = [];
+
+    for (let i = 1; i < 7; i++) {
+      let date = new Date();
+
+      date.setDate(date.getDate() - i);
+
+      let month = date.getMonth();
+
+      let d1 = date.getDate();
+
+      let s1 = d1 + ' ' + monthlist[month];
+      localdate.push(s1);
+    }
+    setdatelabel(localdate);
+  }, []);
 
   const chartConfig = {
     backgroundGradientFrom: '#Ffffff',
@@ -46,7 +73,7 @@ export default function Home() {
   };
 
   const data = {
-    labels: ['1st JUN', '2nd JUN', '3rd JUN', '4th JUN', '5th JUN', '6th JUN'],
+    labels: datelabel,
     datasets: [
       {
         data: [20, 45, 28, 80, 30, 43],
@@ -54,7 +81,20 @@ export default function Home() {
     ],
   };
 
-  const Appointmentdata = [0, 1, 2, 3, 4, 5, 6];
+  async function getAppointments() {
+    try {
+      let payload = {
+        doctorId: Appdata.Appdata.userid,
+      };
+
+      let getAppointmentsres: any = await usegetAppointments(payload);
+
+      console.log('getAppointmentsres', getAppointmentsres);
+      setAppointmentdata(getAppointmentsres.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <View style={{flex: 1, flexDirection: 'column', backgroundColor: 'white'}}>
@@ -68,7 +108,6 @@ export default function Home() {
         <View>
           <Text style={{color: 'black', fontSize: 14}}> Welcome back!</Text>
           <Text style={{color: 'black', fontSize: 16}}>
-            {' '}
             Dr. {Appdata.Appdata.username}
           </Text>
         </View>
@@ -91,7 +130,7 @@ export default function Home() {
             {Appointmentdata.map(i => {
               return (
                 <View style={{marginHorizontal: 10}}>
-                  <Appointmentcard />
+                  <Appointmentcard data={i} />
                 </View>
               );
             })}

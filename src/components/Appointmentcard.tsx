@@ -1,13 +1,19 @@
 import {View, Text, Image} from 'react-native';
 import React from 'react';
 import Color from '../asset/Color';
+import {useSelector, useDispatch} from 'react-redux';
+import {RootState} from '../redux/Store';
 
-export default function Appointmentcard() {
+export default function Appointmentcard({data}: {data: any}) {
+  console.log('data', data);
+
+  const Appdata = useSelector((state: RootState) => state);
+
   return (
     <View
       style={{
         backgroundColor: Color.primary,
-        height: 150,
+        height: 170,
         width: 120,
         marginTop: 10,
         borderRadius: 5,
@@ -26,11 +32,14 @@ export default function Appointmentcard() {
       </View>
 
       <Text style={{color: 'black', marginLeft: 10, marginTop: 10}}>
-        Jessica Smith
+        {data.customerName}
+      </Text>
+      <Text style={{color: 'black', marginLeft: 10, marginTop: 10}}>
+        {new Date(data.appointment_date).toISOString().substring(0, 10)}
       </Text>
       <Text
         style={{color: 'black', marginLeft: 10, marginTop: 3, fontSize: 12}}>
-        7:00 am - 7:15 am
+        slot-{data.slot_index + 1}
       </Text>
     </View>
   );

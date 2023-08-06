@@ -47,7 +47,7 @@ export default function Login() {
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
-      <View style={{flex: 2}}></View>
+      <View style={{flex: 1}}></View>
       <View style={{flex: 3, justifyContent: 'center'}}>
         <Text
           style={{
@@ -146,23 +146,7 @@ export default function Login() {
         </View>
       </View>
 
-      <View
-        style={{
-          flex: 6,
-          justifyContent: 'flex-end',
-          marginBottom: 30,
-          alignItems: 'center',
-        }}>
-        <View style={{flexDirection: 'row'}}>
-          <Text style={{color: Color.black}}>Don't have an account?</Text>
-          <Pressable
-            onPress={() => {
-              navigation.navigate('Register');
-            }}>
-            <Text style={{color: Color.primary, marginLeft: 5}}>Sign up</Text>
-          </Pressable>
-        </View>
-      </View>
+      <View style={{flex: 2}}></View>
     </View>
   );
 }
