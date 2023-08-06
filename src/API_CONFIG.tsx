@@ -16,3 +16,4 @@ export const ADDADDRESS_URL = BASE_URL + '/addaddress';
 export const GETADDRESS_URL = BASE_URL + '/getaddress';
 export const ADDLEAVE_URL = BASE_URL + '/addLeave';
 export const UPDATE_DOCTOR = BASE_URL + '/updateDoctor';
+export const GETLEAVE_URL = BASE_URL + '/getLeaves';

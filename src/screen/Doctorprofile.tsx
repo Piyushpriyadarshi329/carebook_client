@@ -10,6 +10,7 @@ import {useGetavailability} from '../customhook/useGetavailability';
 import {useForm, FormProvider} from 'react-hook-form';
 import {RHFTextInput} from '../components/RHFTextInput';
 import {useGetDoctor, useMutateDoctorProfile} from './useDoctorQuery';
+import {useGetLeaves} from '../customhook/useGetLeaves';
 
 interface ProfileForm {
   username: string;
@@ -45,6 +46,8 @@ export default function Doctorprofile() {
       setEditMode(false);
     },
   );
+
+  const [leaves, setleaves] = useState([]);
   const days = [
     {
       value: 0,
@@ -81,6 +84,7 @@ export default function Doctorprofile() {
 
   useEffect(() => {
     getdoctoravailability();
+    getleaves();
   }, []);
 
   async function getdoctoravailability() {
@@ -92,8 +96,6 @@ export default function Doctorprofile() {
       console.log('payload', payload);
 
       let res: any = await useGetavailability(payload);
-
-      console.log('res', res.data.data);
 
       let newdata: any = [];
 
@@ -120,6 +122,25 @@ export default function Doctorprofile() {
       });
 
       setAvailability(newdata);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getleaves() {
+    try {
+      let payload: {
+        doctor_id: string;
+      } = {
+        doctor_id: Appdata.Appdata.userid,
+      };
+
+      console.log('payload getleaves', payload);
+
+      let getleaveres: any = await useGetLeaves(payload);
+
+      console.log('getleaveres', getleaveres.data);
+      setleaves(getleaveres.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -293,6 +314,7 @@ export default function Doctorprofile() {
 
       <View style={{flexDirection: 'column', flex: 8}}>
         <View style={{flex: textShown ? 5 : 6, marginHorizontal: 20}}>
+          {/* <View style={{flex: 3, marginHorizontal: 20}}> */}
           <View style={{flexDirection: 'row', flex: 1}}>
             <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
               Availablity
@@ -307,7 +329,7 @@ export default function Doctorprofile() {
           </View>
 
           <View style={{flex: 10}}>
-            {Availability.map(i => {
+            {Availability.map((i: any) => {
               return (
                 <View
                   style={{
@@ -319,7 +341,7 @@ export default function Doctorprofile() {
                   <View style={{flex: 1, alignItems: 'flex-start'}}>
                     <Text
                       style={{textAlign: 'left', padding: 5, color: 'black'}}>
-                      Clinic 1
+                      {i.clinic_name}
                     </Text>
                     <Text style={{padding: 5, color: 'black'}}>
                       Slots: {i.no_of_slot}
@@ -342,23 +364,70 @@ export default function Doctorprofile() {
               );
             })}
           </View>
+        </View>
 
-          <View style={{flex: 1, alignItems: 'center'}}>
-            <TouchableOpacity
-              style={{backgroundColor: Color.primary, borderRadius: 5}}
-              onPress={() => {
-                dispatch(
-                  updateappstate({
-                    islogin: false,
-                    isdoctor: false,
-                  }),
-                );
-              }}>
-              <Text style={{color: 'black', fontSize: 20, padding: 5}}>
-                Logout
-              </Text>
-            </TouchableOpacity>
+        <View style={{flex: 3, marginHorizontal: 20}}>
+          <View style={{flexDirection: 'row', flex: 1}}>
+            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+              Leaves
+            </Text>
           </View>
+
+          {/* [{"active": 1, "created_datetime": "1691349426749", "doctor_id": "437f34af-723a-41e8-aee1-014ce2d97f0a", "fromdate": "1692835200000", "fullday": 0, "id": "0dc9aba9-260f-42b3-a6c5-ce2a7e1f4f7e", "reason": "Test", "todate": "1692662400000", "worktime_id": "5d7ec9cd-fb88-4570-865f-62c6d557446d"}, {"active": 1, "created_datetime": "1691347933499", "doctor_id": "437f34af-723a-41e8-aee1-014ce2d97f0a", "fromdate": "1693440000000", "fullday": 1, "id": "331f0cf8-ea3a-4fbf-8a42-cf6a645b4df6", "reason": "Test ", "todate": "1692748800000", "worktime_id": ""}] */}
+
+          <View style={{flex: 10}}>
+            {leaves.map((i: any) => {
+              return (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginTop: 10,
+                    backgroundColor: Color.primary,
+                    borderRadius: 5,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={{padding: 5, color: 'black'}}>
+                      To date:{' '}
+                      {new Date(Number(i.todate))
+                        .toISOString()
+                        .substring(0, 10)}
+                    </Text>
+                    <Text style={{padding: 5, color: 'black'}}>
+                      From date:{' '}
+                      {new Date(Number(i.fromdate))
+                        .toISOString()
+                        .substring(0, 10)}
+                    </Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'center'}}>
+                    <Text style={{padding: 5, color: 'black'}}>
+                      Reason: {i.reason}
+                    </Text>
+                    <Text style={{padding: 5, color: 'black'}}>
+                      {i.fullday ? 'fullday' : null}
+                    </Text>
+                  </View>
+                </View>
+              );
+            })}
+          </View>
+        </View>
+
+        <View style={{flex: 1, alignItems: 'center'}}>
+          <TouchableOpacity
+            style={{backgroundColor: Color.primary, borderRadius: 5}}
+            onPress={() => {
+              dispatch(
+                updateappstate({
+                  islogin: false,
+                  isdoctor: false,
+                }),
+              );
+            }}>
+            <Text style={{color: 'black', fontSize: 20, padding: 5}}>
+              Logout
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>

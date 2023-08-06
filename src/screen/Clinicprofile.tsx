@@ -1,4 +1,12 @@
-import {View, Text, Image, Pressable, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  Pressable,
+  TouchableOpacity,
+  Modal,
+  TextInput,
+} from 'react-native';
 import React, {useState, useCallback, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/Entypo';
 import Color from '../asset/Color';
@@ -8,6 +16,7 @@ import {useGetaddress} from '../customhook/useGetaddress';
 import {RootState} from '../redux/Store';
 import {useGetcliniclist} from '../customhook/useGetcliniclist';
 import {useNavigation} from '@react-navigation/native';
+import {useAddaddress} from '../customhook/useAddaddress';
 
 export default function Clinicprofile() {
   const dispatch = useDispatch();
@@ -18,6 +27,12 @@ export default function Clinicprofile() {
   const [lengthMore, setLengthMore] = useState(false); //to show the "Read more & Less Line"
   const [addressdetails, setaddressdetails] = useState<any>({});
   const [profile, setprofile] = useState<any>({});
+  const [modalVisible, setModalVisible] = useState(false);
+  const [addressline1, setaddressline1] = useState('');
+  const [addressline2, setaddressline2] = useState('');
+  const [city, setcity] = useState('');
+  const [state, setstate] = useState('');
+  const [pincode, setpincode] = useState('');
 
   useEffect(() => {
     getaddressfun();
@@ -34,6 +49,11 @@ export default function Clinicprofile() {
       console.log('addressres', addressres.data);
 
       setaddressdetails(addressres.data.data[0]);
+      setaddressline1(addressres.data.data[0].address_line1);
+      setaddressline2(addressres.data.data[0].address_line2);
+      setstate(addressres.data.data[0].state);
+      setcity(addressres.data.data[0].city);
+      setpincode(addressres.data.data[0].pincode);
     } catch (error) {
       console.log(error);
     }
@@ -56,6 +76,28 @@ export default function Clinicprofile() {
     }
   }
 
+  async function submithandler() {
+    try {
+      let payload = {
+        user_id: Appdata.Appdata.userid,
+        address_line1: addressline1,
+        address_line2: addressline2,
+        city: city,
+        state: state,
+        pincode: pincode,
+        lat: '0',
+        lan: '0',
+      };
+
+      let res: any = await useAddaddress(payload);
+
+      console.log('res', res.data);
+      setModalVisible(false);
+    } catch (error) {
+      console.log('error', error);
+    }
+  }
+
   const toggleNumberOfLines = () => {
     setTextShown(!textShown);
   };
@@ -66,25 +108,122 @@ export default function Clinicprofile() {
   }, []);
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: 'lightgray',
+            marginTop: 200,
+            borderTopEndRadius: 50,
+            borderTopStartRadius: 50,
+          }}>
+          <View
+            style={{
+              flex: 1,
+              marginTop: 10,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text style={{color: 'black'}}>Fill address details</Text>
+          </View>
+          <View style={{flex: 3, marginHorizontal: 30}}>
+            <View style={{flex: 1}}>
+              <TextInput
+                value={addressline1}
+                style={{borderBottomWidth: 1}}
+                placeholder={'Please enter address line1'}
+                onChangeText={e => {
+                  setaddressline1(e);
+                }}></TextInput>
+            </View>
+            <View style={{flex: 1}}>
+              <TextInput
+                value={addressline2}
+                style={{borderBottomWidth: 1}}
+                placeholder={'Please enter address line2'}
+                onChangeText={e => {
+                  setaddressline2(e);
+                }}></TextInput>
+            </View>
+            <View style={{flex: 1}}>
+              <TextInput
+                value={city}
+                style={{borderBottomWidth: 1}}
+                placeholder={'Please enter city'}
+                onChangeText={e => {
+                  setcity(e);
+                }}></TextInput>
+            </View>
+            <View style={{flex: 1}}>
+              <TextInput
+                value={state}
+                style={{borderBottomWidth: 1}}
+                placeholder={'Please enter state'}
+                onChangeText={e => {
+                  setstate(e);
+                }}></TextInput>
+            </View>
+            <View style={{flex: 1}}>
+              <TextInput
+                value={pincode}
+                maxLength={6}
+                keyboardType="numeric"
+                style={{borderBottomWidth: 1}}
+                placeholder={'Please enter pincode'}
+                onChangeText={e => {
+                  setpincode(e);
+                }}></TextInput>
+            </View>
+          </View>
+
+          <View
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <TouchableOpacity
+              style={{backgroundColor: Color.primary}}
+              onPress={submithandler}>
+              <Text style={{fontSize: 16, color: 'black', padding: 5}}>
+                Submit
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       <View style={{flex: 2, flexDirection: 'row', marginHorizontal: 20}}>
         <View style={{flex: 2, marginTop: 30}}>
-          <View>
-            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
-              {profile?.name}
-            </Text>
+          <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'column'}}>
+              <View>
+                <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+                  {profile?.name}
+                </Text>
+              </View>
+              <View>
+                <Text style={{color: 'black', marginTop: 5}}>
+                  {addressdetails?.address_line1}{' '}
+                  {addressdetails?.address_line1}
+                </Text>
+              </View>
+              <View style={{flexDirection: 'row', marginTop: 5}}>
+                <Text style={{color: 'black'}}>
+                  {' '}
+                  {addressdetails?.city} {addressdetails?.state}{' '}
+                  {addressdetails?.pincode}
+                </Text>
+              </View>
+            </View>
+
+            <View>
+              <View style={{marginLeft: 20, marginTop: 10}}>
+                <TouchableOpacity
+                  onPress={() => {
+                    setModalVisible(true);
+                  }}>
+                  <Icon name="edit" size={20} color={Color.primary} />
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
-          <View>
-            <Text style={{color: 'black', marginTop: 5}}>
-              {addressdetails.address_line1} {addressdetails.address_line1}
-            </Text>
-          </View>
-          <View style={{flexDirection: 'row', marginTop: 5}}>
-            <Text style={{color: 'black'}}>
-              {' '}
-              {addressdetails.city} {addressdetails.state}{' '}
-              {addressdetails.pincode}
-            </Text>
-          </View>
+
           <View style={{flexDirection: 'row', marginTop: 5}}>
             <Text style={{color: 'black'}}>consultation Fees:</Text>
 
@@ -155,19 +294,6 @@ export default function Clinicprofile() {
             }}>
             <Text style={{color: 'black', fontSize: 20, padding: 5}}>
               Logout
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              backgroundColor: Color.primary,
-              borderRadius: 5,
-              marginLeft: 10,
-            }}
-            onPress={() => {
-              navigation.navigate('Editprofile');
-            }}>
-            <Text style={{color: 'black', fontSize: 20, padding: 5}}>
-              Edit Profile
             </Text>
           </TouchableOpacity>
         </View>

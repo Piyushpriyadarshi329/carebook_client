@@ -1,5 +1,12 @@
-import {View, Text, Modal, TouchableOpacity, TextInput} from 'react-native';
-import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  Modal,
+  TouchableOpacity,
+  TextInput,
+  ScrollView,
+} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import Navbar from '../components/Navbar';
 import CheckBox from 'react-native-check-box';
 import Color from '../asset/Color';
@@ -10,10 +17,12 @@ import {AddLeaveRequest} from '../types';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux/Store';
 import {useAddleave} from '../customhook/useAddleave';
+import {useGetavailability} from '../customhook/useGetavailability';
+import {showtime} from '../AppFunction';
 
 export default function Leave() {
   const Appdata = useSelector((state: RootState) => state);
-
+  const [Availability, setAvailability] = useState([]);
   const [multipledate, setmultipledate] = useState(false);
   const [fullday, setfullday] = useState(false);
   const [reason, setreason] = useState('');
@@ -22,9 +31,86 @@ export default function Leave() {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisiblework_time, setModalVisiblework_time] = useState(false);
   const [modalVisibleto, setModalVisibleto] = useState(false);
-  const [open, setOpen] = useState(false);
 
-  const [worktime_id, setworktime_id] = useState('');
+  const [worktime_id, setworktime_id] = useState<any>(null);
+
+  useEffect(() => {
+    getdoctoravailability();
+  }, []);
+  const days = [
+    {
+      value: 0,
+      label: 'SUN',
+    },
+    {
+      value: 1,
+      label: 'MON',
+    },
+    {
+      value: 2,
+      label: 'TUE',
+    },
+    {
+      value: 3,
+      label: 'WED',
+    },
+    {
+      value: 4,
+      label: 'THU',
+    },
+    {
+      value: 5,
+      label: 'FRI',
+    },
+    {
+      value: 6,
+      label: 'SAT',
+    },
+  ];
+
+  async function getdoctoravailability() {
+    try {
+      let payload: any = {
+        doctor_id: Appdata.Appdata.userid,
+      };
+
+      console.log('payload', payload);
+
+      let res: any = await useGetavailability(payload);
+
+      console.log('res', res.data.data);
+
+      let newdata: any = [];
+
+      res.data.data.map((i: any) => {
+        let local = newdata.filter((j: any) => j.entry_id == i.entry_id);
+
+        if (local.length > 0) {
+          // console.log("local.length",local.length)
+
+          // console.log("index",newdata.indexOf(i))
+          newdata = newdata.map((k: any) => {
+            if (k.entry_id == i.entry_id) {
+              return {
+                ...k,
+                week_day: k.week_day + ',' + days[i.week_day].label,
+              };
+            } else {
+              return k;
+            }
+          });
+        } else {
+          newdata.push({...i, week_day: days[i.week_day].label});
+        }
+      });
+
+      console.log('newdata', newdata);
+
+      setAvailability(newdata);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async function markunavailablefun() {
     try {
@@ -34,7 +120,7 @@ export default function Leave() {
         todate: multipledate
           ? new Date(fromdate + 'T00:00:00Z').getTime()
           : new Date(todate + 'T00:00:00Z').getTime(),
-        worktime_id: '',
+        worktime_id: fullday ? '' : worktime_id.id,
         fullday: fullday,
         reason: reason,
       };
@@ -137,7 +223,57 @@ export default function Leave() {
         transparent={true}
         visible={modalVisiblework_time}>
         <View style={{flex: 1, backgroundColor: 'white'}}>
-          <View></View>
+          <ScrollView>
+            <View style={{flex: 7, marginTop: 50, marginHorizontal: 20}}>
+              {Availability.map((i: any) => {
+                console.log('i', i);
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setworktime_id(i);
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        marginTop: 10,
+                        backgroundColor:
+                          worktime_id?.id == i.id
+                            ? Color.secondary
+                            : Color.primary,
+                        borderRadius: 5,
+                      }}>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <Text
+                          style={{
+                            textAlign: 'left',
+                            padding: 5,
+                            color: 'black',
+                          }}>
+                          {i.clinic_name}
+                        </Text>
+                        <Text style={{padding: 5, color: 'black'}}>
+                          Slots: {i.no_of_slot}
+                        </Text>
+                      </View>
+                      <View style={{flex: 2, alignItems: 'center'}}>
+                        <Text style={{padding: 5, color: 'black'}}>
+                          {i.week_day}
+                        </Text>
+                      </View>
+                      <View style={{flex: 1, alignItems: 'center'}}>
+                        <Text style={{padding: 5, color: 'black'}}>
+                          {showtime(i.from_time)}
+                        </Text>
+                        <Text style={{padding: 5, color: 'black'}}>
+                          {showtime(i.to_time)}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </ScrollView>
 
           <View style={{flex: 1, alignItems: 'center', marginTop: 20}}>
             <TouchableOpacity
@@ -235,22 +371,60 @@ export default function Leave() {
         </View>
       </View>
 
-      <View style={{flex: 1.5, marginHorizontal: 20}}>
-        <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
-          Select Clinic
-        </Text>
-        <View style={{marginTop: 10}}>
-          {/* <DropDownPicker
-            open={open}
-            value={selectedclinic}
-            items={cliniclist}
-            setOpen={setOpen}
-            setValue={setselectedclinic}
-            // setItems={setItems}
-            placeholder="Select Clinic"
-          /> */}
+      {!fullday ? (
+        <View style={{flex: 1.5, marginHorizontal: 20}}>
+          <TouchableOpacity
+            style={{flex: 1}}
+            onPress={() => {
+              setModalVisiblework_time(!modalVisiblework_time);
+            }}>
+            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+              click to Select Slot :
+            </Text>
+          </TouchableOpacity>
+
+          <View style={{marginTop: 1}}>
+            {worktime_id ? (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: 10,
+                  backgroundColor: Color.primary,
+                  borderRadius: 5,
+                }}>
+                <View style={{flex: 1, alignItems: 'flex-start'}}>
+                  <Text
+                    style={{
+                      textAlign: 'left',
+                      padding: 5,
+                      color: 'black',
+                    }}>
+                    Clinic 1
+                  </Text>
+                  <Text style={{padding: 5, color: 'black'}}>
+                    Slots: {worktime_id.no_of_slot}
+                  </Text>
+                </View>
+                <View style={{flex: 2, alignItems: 'center'}}>
+                  <Text style={{padding: 5, color: 'black'}}>
+                    {worktime_id.week_day}
+                  </Text>
+                </View>
+                <View style={{flex: 1, alignItems: 'center'}}>
+                  <Text style={{padding: 5, color: 'black'}}>
+                    {showtime(worktime_id.from_time)}
+                  </Text>
+                  <Text style={{padding: 5, color: 'black'}}>
+                    {showtime(worktime_id.to_time)}
+                  </Text>
+                </View>
+              </View>
+            ) : null}
+          </View>
         </View>
-      </View>
+      ) : (
+        <View style={{flex: 1.5, marginHorizontal: 20}}></View>
+      )}
 
       <View style={{flex: 2.5, marginHorizontal: 20}}>
         <Text style={{color: 'black'}}>Reason</Text>
@@ -285,7 +459,7 @@ export default function Leave() {
         </TouchableOpacity>
       </View>
 
-      <View style={{flex: 4}}></View>
+      <View style={{flex: 2}}></View>
     </View>
   );
 }
