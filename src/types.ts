@@ -18,6 +18,7 @@ export interface DoctorDto {
 
 export interface GetDotcorsListRequest {
   clinic_id: string;
+  doctor_id: string;
 }
 
 export type GetDoctorsListResponse = DataResponse<DoctorDto[]>;
@@ -61,12 +62,17 @@ export interface LoginRequest {
 
 export type LoginResponse = DataResponse<any>;
 
+export enum UserType {
+  CUSTOMER = 'CUSTOMER',
+  DOCTOR = 'DOCTOR',
+  CLINIC = 'CLINIC',
+}
 export interface SignupRequest {
   name: string;
   email: string;
   mobile: string;
   password: string;
-  usertype: number;
+  usertype: UserType;
 }
 
 export type SignupResponse = DataResponse<any>;
@@ -173,4 +179,26 @@ export interface Appointmentdto extends BookingDto {
   clinic_name?: string;
   clinic_address?: string;
 }
+
+export interface AddAdressRequest {
+  user_id?: string;
+  address_line1?: string;
+  address_line2?: string;
+  city?: string;
+  state?: string;
+  pincode?: number;
+  lat?: number;
+  lan?: number;
+}
+export interface GetAdressRequest {
+  user_id?: string;
+}
+
+export interface AddAdresstdto extends AddAdressRequest {
+  id?: string;
+}
+export interface GetAdresstdto extends GetAdressRequest {}
+
+export type AddAdressResponse = DataResponse<AddAdresstdto[]>;
+export type GetAdressResponse = DataResponse<AddAdresstdto[]>;
 export type GetAppointmentResponse = DataResponse<Appointmentdto[]>;

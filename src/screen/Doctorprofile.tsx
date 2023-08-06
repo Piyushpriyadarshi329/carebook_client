@@ -115,16 +115,16 @@ export default function Doctorprofile() {
             </Text>
           </View>
           <View>
-            <Text style={{color: 'black', marginTop: 5}}>Heart Specialist</Text>
+            <Text style={{color: 'black', marginTop: 5}}>_____________</Text>
           </View>
           <View style={{flexDirection: 'row', marginTop: 5}}>
             <Text style={{color: 'black'}}>consultation Time:</Text>
-            <Text style={{color: 'black', marginLeft: 10}}> 15 Min</Text>
+            <Text style={{color: 'black', marginLeft: 10}}> ___________</Text>
           </View>
           <View style={{flexDirection: 'row', marginTop: 5}}>
             <Text style={{color: 'black'}}>consultation Fees:</Text>
 
-            <Text style={{color: 'black', marginLeft: 10}}> 500 Rs.</Text>
+            <Text style={{color: 'black', marginLeft: 10}}>___________.</Text>
           </View>
         </View>
         <View style={{flex: 1}}>
@@ -154,7 +154,7 @@ export default function Doctorprofile() {
               onTextLayout={onTextLayout}
               numberOfLines={textShown ? undefined : 2}
               style={{lineHeight: 21, color: 'black'}}>
-              {`Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.`}
+              {`..........................................`}
             </Text>
 
             {lengthMore ? (

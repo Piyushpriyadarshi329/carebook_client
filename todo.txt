@@ -1,0 +1,36 @@
+
+
+clinic profile==>
+
+address
+About
+
+
+
+
+
+
+
+
+hardcoded data
+
+
+A)Doctor
+1)graph (booking count date wise)
+2)About (Doctor)
+3)consultation time
+4)consultation Fees
+5)Profile PIC
+
+
+B) Clinic
+1)consultation Fees
+2)profile picker
+3)About
+4)Doctor speciality list for Doctor add
+
+
+address_details ka table create kar diya hai.
+also Api build and integrate for (doctor and clinic)
+
+

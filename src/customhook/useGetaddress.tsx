@@ -1,9 +1,7 @@
-// GETDOCTORLIST_URL
-
 import axios from 'axios';
-import {GETCLINICLIST_URL} from '../API_CONFIG';
+import {GETADDRESS_URL} from '../API_CONFIG';
 
-export async function useGetcliniclist(payload: any) {
+export async function useGetaddress(payload: any) {
   // const config: any =  {
   //     headers: {
   //       Authorization: `Bearer ${rentalbikedetails.accessToken}`,
@@ -12,7 +10,7 @@ export async function useGetcliniclist(payload: any) {
 
   let myPromise = new Promise(async function (myResolve, myReject) {
     try {
-      var res = await axios.post(GETCLINICLIST_URL, payload);
+      var res = await axios.post(GETADDRESS_URL, payload);
 
       // console.log('res', res.data);
 
