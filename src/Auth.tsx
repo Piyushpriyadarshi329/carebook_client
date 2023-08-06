@@ -1,12 +1,11 @@
-import {View, Text} from 'react-native';
 import React, {useEffect} from 'react';
 
-import type {RootState} from './redux/Store';
-import {useSelector, useDispatch} from 'react-redux';
-import Beforelogin from './auth/Beforelogin';
-import DocterRoute from './auth/DocterRoute';
-import ClinicRoute from './auth/ClinicRoute';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDispatch, useSelector} from 'react-redux';
+import Beforelogin from './auth/Beforelogin';
+import ClinicRoute from './auth/ClinicRoute';
+import DocterRoute from './auth/DocterRoute';
+import type {RootState} from './redux/Store';
 import {updateappstate} from './redux/reducer/Authreducer';
 
 //GIT   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

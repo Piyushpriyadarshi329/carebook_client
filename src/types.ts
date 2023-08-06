@@ -33,7 +33,16 @@ export type AddDoctorRequest = Omit<DoctorDto, 'id'> & {
 
 export type AddDoctorResponse = DataResponse<any>;
 export type UpdateDoctorReqParams = {id: string};
-export type UpdateDoctorRequest = Omit<DoctorDto, 'id' | 'mobile' | 'email'>;
+export type UpdateDoctorRequest = {
+  name?: string;
+  active?: boolean;
+  profile_image_key?: string;
+  speciality?: string;
+  degree?: string;
+  appointment_time?: number;
+  fees?: number;
+  about?: string;
+};
 
 export interface LeaveDto {
   id: string;
@@ -50,6 +59,7 @@ export type AddLeaveRequest = Omit<
   LeaveDto,
   'id' | 'created_datetime' | 'active'
 >;
+export type GetLeaveRequest = {doctor_id: string};
 
 /** CusotmerController */
 export interface CustomerDto {
@@ -232,7 +242,8 @@ export type GetAvailabilityRequest = {
   doctor_id?: string;
   clinic_id?: string;
 };
-export type GetAvailabilityResponse = DataResponse<WorkingTimeDto[]>;
+export type AvailabilityRes = WorkingTimeDto & {clinic_name: string};
+export type GetAvailabilityResponse = DataResponse<AvailabilityRes[]>;
 
 export type GetBookingAvailabilityRequest = {
   doctor_id: string;

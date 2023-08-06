@@ -7,12 +7,44 @@ import {updateappstate} from '../redux/reducer/Authreducer';
 import type {RootState} from '../redux/Store';
 import {useNavigation} from '@react-navigation/native';
 import {useGetavailability} from '../customhook/useGetavailability';
+import {useForm, FormProvider} from 'react-hook-form';
+import {RHFTextInput} from '../components/RHFTextInput';
+import {useGetDoctor, useMutateDoctorProfile} from './useDoctorQuery';
 
+interface ProfileForm {
+  username: string;
+  about: string;
+  consultationTime: string;
+  fees: string;
+}
 export default function Doctorprofile() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const Appdata = useSelector((state: RootState) => state);
   const [Availability, setAvailability] = useState([]);
+  const [editMode, setEditMode] = useState(false);
+  const {data: doctorDetails} = useGetDoctor(Appdata.Appdata.userid, data => {
+    formMethods.setValue('about', data?.[0]?.about ?? '');
+    formMethods.setValue(
+      'consultationTime',
+      data?.[0]?.appointment_time?.toString() ?? '',
+    );
+    formMethods.setValue('fees', data?.[0]?.fees?.toString() ?? '');
+  });
+  const formMethods = useForm<ProfileForm>({
+    defaultValues: {
+      about: doctorDetails?.[0]?.about,
+      consultationTime: doctorDetails?.[0]?.appointment_time?.toString(),
+      fees: doctorDetails?.[0]?.fees?.toString(),
+      username: Appdata.Appdata.username ?? '',
+    },
+  });
+  const {mutate: updateDoctor} = useMutateDoctorProfile(
+    Appdata.Appdata.userid,
+    () => {
+      setEditMode(false);
+    },
+  );
   const days = [
     {
       value: 0,
@@ -87,8 +119,6 @@ export default function Doctorprofile() {
         }
       });
 
-      console.log('newdata', newdata);
-
       setAvailability(newdata);
     } catch (error) {
       console.log(error);
@@ -105,72 +135,163 @@ export default function Doctorprofile() {
     // console.log(e.nativeEvent);
   }, []);
 
+  const updateProfileHandler = (formValues: ProfileForm) => {
+    console.log(formValues);
+    updateDoctor({
+      name: formValues.username,
+      // speciality: '',
+      // degree: '',
+      appointment_time: Number(formValues.consultationTime),
+      fees: Number(formValues.fees),
+      about: formValues.about,
+    });
+  };
+  console.log('doctorDetails: ', doctorDetails);
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
-      <View style={{flex: 2, flexDirection: 'row', marginHorizontal: 20}}>
-        <View style={{flex: 2, marginTop: 30}}>
-          <View>
-            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
-              Dr. {Appdata.Appdata.username}
-            </Text>
-          </View>
-          <View>
-            <Text style={{color: 'black', marginTop: 5}}>_____________</Text>
-          </View>
-          <View style={{flexDirection: 'row', marginTop: 5}}>
-            <Text style={{color: 'black'}}>consultation Time:</Text>
-            <Text style={{color: 'black', marginLeft: 10}}> ___________</Text>
-          </View>
-          <View style={{flexDirection: 'row', marginTop: 5}}>
-            <Text style={{color: 'black'}}>consultation Fees:</Text>
-
-            <Text style={{color: 'black', marginLeft: 10}}>___________.</Text>
-          </View>
-        </View>
-        <View style={{flex: 1}}>
-          <View style={{justifyContent: 'center', flex: 1}}>
-            <Image
+      <FormProvider {...formMethods}>
+        <View style={{flex: 2, flexDirection: 'row', marginHorizontal: 20}}>
+          <View style={{flex: 2, marginTop: 30}}>
+            <View>
+              {editMode ? (
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text style={{color: 'black'}}>Name: </Text>
+                  <RHFTextInput
+                    name="username"
+                    placeHolder="Name"
+                    styles={{width: '60%'}}
+                  />
+                </View>
+              ) : (
+                <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+                  Dr. {Appdata.Appdata.username}
+                </Text>
+              )}
+            </View>
+            <View
               style={{
-                width: 100,
-                height: 100,
-                borderRadius: 50,
-                marginTop: 10,
-              }}
-              source={require('./../asset/image/profile.png')}
-            />
+                flexDirection: 'row',
+                marginTop: 5,
+                alignItems: 'center',
+              }}>
+              <Text style={{color: 'black'}}>consultation Time:</Text>
+              {editMode ? (
+                <RHFTextInput
+                  name="consultationTime"
+                  styles={{width: '50%', marginLeft: 10}}
+                />
+              ) : (
+                <Text style={{color: 'black', marginLeft: 10}}>
+                  {doctorDetails?.[0]?.appointment_time?.toString()}
+                </Text>
+              )}
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                marginTop: 5,
+                alignItems: 'center',
+              }}>
+              <Text style={{color: 'black'}}>consultation Fees:</Text>
+              {editMode ? (
+                <RHFTextInput
+                  name="fees"
+                  styles={{width: '50%', marginLeft: 10}}
+                />
+              ) : (
+                <Text style={{color: 'black', marginLeft: 10}}>
+                  {doctorDetails?.[0]?.fees?.toString()}
+                </Text>
+              )}
+            </View>
+          </View>
+          <View style={{flex: 1, marginTop: 10}}>
+            <View
+              style={{
+                flex: 0.2,
+                justifyContent: 'flex-end',
+                alignItems: 'flex-end',
+              }}>
+              {editMode ? (
+                <View style={{flex: 1, flexDirection: 'row', gap: 10}}>
+                  <Icon
+                    name={'cross'}
+                    style={{color: Color.primary, fontSize: 20}}
+                    onPress={() => {
+                      setEditMode(false);
+                    }}
+                  />
+                  <Icon
+                    name={'check'}
+                    style={{color: Color.primary, fontSize: 20}}
+                    onPress={() => {
+                      formMethods.handleSubmit(updateProfileHandler)();
+                    }}
+                  />
+                </View>
+              ) : (
+                <Icon
+                  name="edit"
+                  style={{color: Color.primary, fontSize: 20}}
+                  onPress={() => {
+                    setEditMode(true);
+                  }}
+                />
+              )}
+            </View>
+            <View style={{justifyContent: 'center', flex: 1}}>
+              <Image
+                style={{
+                  width: 100,
+                  height: 100,
+                  borderRadius: 50,
+                  marginTop: 10,
+                }}
+                source={require('./../asset/image/profile.png')}
+              />
+            </View>
           </View>
         </View>
-      </View>
-
-      <View style={{flexDirection: 'column', flex: 8}}>
-        <View style={{flex: textShown ? 2.5 : 1.5, marginHorizontal: 20}}>
+        <View
+          style={{
+            flex: textShown ? 2.5 : 1.5,
+            marginHorizontal: 20,
+            marginTop: 20,
+          }}>
           <View>
             <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
               About
             </Text>
           </View>
-          <View>
-            <Text
-              onTextLayout={onTextLayout}
-              numberOfLines={textShown ? undefined : 2}
-              style={{lineHeight: 21, color: 'black'}}>
-              {`..........................................`}
-            </Text>
-
-            {lengthMore ? (
+          {editMode ? (
+            <RHFTextInput name="about" />
+          ) : (
+            <View>
               <Text
-                onPress={toggleNumberOfLines}
-                style={{
-                  lineHeight: 21,
-                  marginTop: 4,
-                  color: 'black',
-                  fontWeight: '700',
-                }}>
-                {textShown ? 'Read less...' : 'Read more...'}
+                onTextLayout={onTextLayout}
+                numberOfLines={textShown ? undefined : 2}
+                style={{lineHeight: 21, color: 'black'}}>
+                {doctorDetails?.[0]?.about}
               </Text>
-            ) : null}
-          </View>
+
+              {lengthMore ? (
+                <Text
+                  onPress={toggleNumberOfLines}
+                  style={{
+                    lineHeight: 21,
+                    marginTop: 4,
+                    color: 'black',
+                    fontWeight: '700',
+                  }}>
+                  {textShown ? 'Read less...' : 'Read more...'}
+                </Text>
+              ) : null}
+            </View>
+          )}
         </View>
+      </FormProvider>
+
+      <View style={{flexDirection: 'column', flex: 8}}>
         <View style={{flex: textShown ? 5 : 6, marginHorizontal: 20}}>
           <View style={{flexDirection: 'row', flex: 1}}>
             <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>

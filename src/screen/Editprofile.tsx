@@ -1,18 +1,15 @@
-import {View, Text, TextInput, TouchableOpacity, Pressable} from 'react-native';
-import React, {useState} from 'react';
-import Color from '../asset/Color';
 import {useNavigation} from '@react-navigation/native';
-import type {RootState} from '../redux/Store';
-import {useSelector, useDispatch} from 'react-redux';
-import {updateappstate} from './../redux/reducer/Authreducer';
+import React, {useState} from 'react';
+import {Text, TextInput, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {useRegister} from '../customhook/useRegister';
-import {useAddDoctor} from '../customhook/useadddoctor';
-import {AddAdressRequest, AddDoctorRequest} from '../types';
-import DropDownPicker from 'react-native-dropdown-picker';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useDispatch, useSelector} from 'react-redux';
+import Color from '../asset/Color';
 import {useAddaddress} from '../customhook/useAddaddress';
+import {useAddDoctor} from '../customhook/useadddoctor';
+import type {RootState} from '../redux/Store';
+import {AddAdressRequest} from '../types';
 
 export default function Editprofile() {
   const dispatch = useDispatch();
