@@ -5,6 +5,7 @@ import {
   Pressable,
   TouchableOpacity,
   Button,
+  ScrollView,
 } from 'react-native';
 import React, {useState, useCallback, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -32,7 +33,7 @@ export default function LoggedInDoctorProfile() {
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>
       <DoctorProfileWithId id={Appdata.Appdata.userid} />
-      <View style={{flex: 0.1, alignItems: 'center'}}>
+      <View style={{flex: 0.1, alignItems: 'center', marginTop: 10}}>
         <Button
           title="Log out"
           color={Color.primary}
@@ -382,44 +383,44 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
             </Text>
           </View>
 
-          {/* [{"active": 1, "created_datetime": "1691349426749", "doctor_id": "437f34af-723a-41e8-aee1-014ce2d97f0a", "fromdate": "1692835200000", "fullday": 0, "id": "0dc9aba9-260f-42b3-a6c5-ce2a7e1f4f7e", "reason": "Test", "todate": "1692662400000", "worktime_id": "5d7ec9cd-fb88-4570-865f-62c6d557446d"}, {"active": 1, "created_datetime": "1691347933499", "doctor_id": "437f34af-723a-41e8-aee1-014ce2d97f0a", "fromdate": "1693440000000", "fullday": 1, "id": "331f0cf8-ea3a-4fbf-8a42-cf6a645b4df6", "reason": "Test ", "todate": "1692748800000", "worktime_id": ""}] */}
-
-          <View style={{flex: 10}}>
-            {leaves?.map((i: any) => {
-              return (
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    marginTop: 10,
-                    backgroundColor: Color.primary,
-                    borderRadius: 5,
-                  }}>
-                  <View style={{flex: 1, alignItems: 'flex-start'}}>
-                    <Text style={{padding: 5, color: 'black'}}>
-                      To date:{' '}
-                      {new Date(Number(i.todate))
-                        .toISOString()
-                        .substring(0, 10)}
-                    </Text>
-                    <Text style={{padding: 5, color: 'black'}}>
-                      From date:{' '}
-                      {new Date(Number(i.fromdate))
-                        .toISOString()
-                        .substring(0, 10)}
-                    </Text>
+          <ScrollView>
+            <View style={{flex: 10}}>
+              {leaves?.map((i: any) => {
+                return (
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      marginTop: 10,
+                      backgroundColor: Color.primary,
+                      borderRadius: 5,
+                    }}>
+                    <View style={{flex: 1, alignItems: 'flex-start'}}>
+                      <Text style={{padding: 5, color: 'black'}}>
+                        To date:{' '}
+                        {new Date(Number(i.todate))
+                          .toISOString()
+                          .substring(0, 10)}
+                      </Text>
+                      <Text style={{padding: 5, color: 'black'}}>
+                        From date:{' '}
+                        {new Date(Number(i.fromdate))
+                          .toISOString()
+                          .substring(0, 10)}
+                      </Text>
+                    </View>
+                    <View style={{flex: 1, alignItems: 'center'}}>
+                      <Text style={{padding: 5, color: 'black'}}>
+                        Reason: {i.reason}
+                      </Text>
+                      <Text style={{padding: 5, color: 'black'}}>
+                        {i.fullday ? 'fullday' : null}
+                      </Text>
+                    </View>
                   </View>
-                  <View style={{flex: 1, alignItems: 'center'}}>
-                    <Text style={{padding: 5, color: 'black'}}>
-                      Reason: {i.reason}
-                    </Text>
-                    <Text style={{padding: 5, color: 'black'}}>
-                      {i.fullday ? 'fullday' : null}
-                    </Text>
-                  </View>
-                </View>
-              );
-            })}
-          </View>
+                );
+              })}
+            </View>
+          </ScrollView>
         </View>
       </View>
     </View>

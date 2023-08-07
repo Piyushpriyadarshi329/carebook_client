@@ -19,6 +19,7 @@ import {RootState} from '../redux/Store';
 import {useAddleave} from '../customhook/useAddleave';
 import {useGetavailability} from '../customhook/useGetavailability';
 import {showtime} from '../AppFunction';
+import {useNavigation} from '@react-navigation/native';
 
 export default function LoggedInUserLeave() {
   const Appdata = useSelector((state: RootState) => state);
@@ -30,6 +31,8 @@ export const Leave = (props: any) => {
 
 export function LeaveById(props: {id: string}) {
   const Appdata = useSelector((state: RootState) => state);
+  const navigation = useNavigation();
+
   const [Availability, setAvailability] = useState([]);
   const [multipledate, setmultipledate] = useState(false);
   const [fullday, setfullday] = useState(false);
@@ -138,6 +141,11 @@ export function LeaveById(props: {id: string}) {
       let addleaveres: any = await useAddleave(payload);
 
       console.log('addleaveres', addleaveres.data);
+
+      if (addleaveres.data.Success) {
+        alert('Mark Unavailable add Successfully');
+        navigation.goBack();
+      }
     } catch (error) {
       console.log(error);
     }
