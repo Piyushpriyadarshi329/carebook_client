@@ -1,15 +1,11 @@
-import {View, Text} from 'react-native';
-import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Home from '../screen/Home';
-import Profile from '../screen/Doctorprofile';
-import Appointments from '../screen/Appointments';
 import {NavigationContainer} from '@react-navigation/native';
+import React from 'react';
 import Icon from 'react-native-vector-icons/Entypo';
 import Color from '../asset/Color';
+import Home from '../screen/Home';
 import DoctorProfilestack from './stack/Doctorprofilestack';
 
-import type {RootState} from './../redux/Store';
 import Appointmentsstack from './stack/Appointmentsstack';
 
 const Tab = createBottomTabNavigator();
@@ -21,13 +17,8 @@ export default function DocterRoute() {
         screenOptions={({route}) => ({
           tabBarShowLabel: false,
           tabBarHideOnKeyboard: true,
-          //   style: {
-          //     borderRadius: 15,
-          //     height: 90,
-          // },
           tabBarIcon: ({focused, color, size}) => {
             let iconName;
-
             switch (route.name) {
               case 'Home':
                 iconName = 'home';
@@ -41,8 +32,6 @@ export default function DocterRoute() {
               default:
                 break;
             }
-            // return <Ionicons name={iconName} size={size} color={color} />;
-            // return <LottieView source={filePath} loop={false} autoPlay={focused} />;
             return <Icon name={iconName} color={Color.primary} size={24} />;
           },
         })}>
@@ -56,7 +45,6 @@ export default function DocterRoute() {
           component={DoctorProfilestack}
           options={{
             headerShown: false,
-            // tabBarIcon:        return  (  <Icon name="plus" size={30} color="red" />)
           }}
         />
         <Tab.Screen

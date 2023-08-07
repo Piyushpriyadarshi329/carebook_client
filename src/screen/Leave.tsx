@@ -20,7 +20,15 @@ import {useAddleave} from '../customhook/useAddleave';
 import {useGetavailability} from '../customhook/useGetavailability';
 import {showtime} from '../AppFunction';
 
-export default function Leave() {
+export default function LoggedInUserLeave() {
+  const Appdata = useSelector((state: RootState) => state);
+  return <LeaveById id={Appdata.Appdata.userid} />;
+}
+export const Leave = (props: any) => {
+  return <LeaveById id={props.route.params.id} />;
+};
+
+export function LeaveById(props: {id: string}) {
   const Appdata = useSelector((state: RootState) => state);
   const [Availability, setAvailability] = useState([]);
   const [multipledate, setmultipledate] = useState(false);
@@ -290,7 +298,7 @@ export default function Leave() {
       </Modal>
 
       <View style={{flex: 1}}>
-        <Navbar title="Unavailable" />
+        <Navbar title="Leave" />
       </View>
 
       <View style={{flex: 1, flexDirection: 'row', marginHorizontal: 20}}>

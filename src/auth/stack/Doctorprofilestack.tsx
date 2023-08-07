@@ -1,23 +1,23 @@
-import { View, Text } from 'react-native'
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Doctorlist from '../../screen/Doctorlist';
-import Adddoctor from '../../screen/Adddoctor';
-import Profile from '../../screen/Doctorprofile';
-import Addavailability from '../../screen/Addavailability';
-
+import DoctorAvailabilityWithId from '../../screen/Addavailability';
+import Doctorprofile from '../../screen/Doctorprofile';
 
 export default function DoctorProfilestack() {
-
-    const Stack = createNativeStackNavigator();
-
-
+  const Stack = createNativeStackNavigator();
 
   return (
-      <Stack.Navigator>
-        <Stack.Screen name="Profile" component={Profile} options={{headerShown:false}} />
-        <Stack.Screen name="Addavailability" component={Addavailability} options={{headerShown:false}} />
-      </Stack.Navigator>
-  )
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Profile"
+        component={Doctorprofile}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Addavailability"
+        component={DoctorAvailabilityWithId}
+        options={{headerShown: false}}
+      />
+    </Stack.Navigator>
+  );
 }

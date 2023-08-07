@@ -10,14 +10,30 @@ import Color from '../asset/Color';
 import {useAddavailability} from './../customhook/useAddavailability';
 import uuid from 'react-native-uuid';
 import {useNavigation} from '@react-navigation/native';
+import Navbar from '../components/Navbar';
 
-export default function Addavailability() {
+export default function LoggedInDoctorAvailability() {
   const Appdata = useSelector((state: RootState) => state);
-  const navigation = useNavigation();
+  return <DoctorAvailabilityWithId id={Appdata.Appdata.userid} />;
+}
 
+export const DoctorAvaiability = (props: any) => {
+  return (
+    <DoctorAvailabilityWithId
+      id={props.route.params?.id}
+      clinic_id={props.route.params?.clinic_id}
+    />
+  );
+};
+
+export function DoctorAvailabilityWithId(props: {
+  id: string;
+  clinic_id?: string;
+}) {
+  const navigation = useNavigation();
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
-  const [selectedclinic, setselectedclinic] = useState(null);
+  const [selectedclinic, setselectedclinic] = useState(props.clinic_id ?? null);
   const [datefrom, setDatefrom] = useState(new Date());
   const [dateto, setDateto] = useState(new Date());
   const [cliniclist, setcliniclist] = useState([]);
@@ -58,20 +74,13 @@ export default function Addavailability() {
     getcliniclist();
   }, []);
 
-  useEffect(() => {
-    console.log('setselectedday', selectedday);
-    console.log('selectedclinic', selectedclinic);
-  }, [selectedday, selectedclinic]);
-
   async function getcliniclist() {
     try {
       let payload = {
-        doctor_id: Appdata.Appdata.userid,
+        doctor_id: props.id,
       };
 
       let res: any = await useGetcliniclist(payload);
-
-      console.log('res', res.data);
 
       let newdata: any = res.data.data.map((i: any) => {
         return {...i, label: i.name, value: i.clinic_id};
@@ -84,7 +93,6 @@ export default function Addavailability() {
 
   const onChangefrom = (event: any, selectedDate: any) => {
     const currentDate = selectedDate;
-    console.log('currentDate', currentDate);
     setDatefrom(currentDate);
   };
 
@@ -117,7 +125,7 @@ export default function Addavailability() {
     try {
       let payload: any = {
         entry_id: uuid.v4(),
-        doctor_id: Appdata.Appdata.userid,
+        doctor_id: props.id,
         clinic_id: selectedclinic,
         week_day: selectedday,
         from_time: sendtime(datefrom.getTime()),
@@ -125,11 +133,7 @@ export default function Addavailability() {
         no_of_slot: noofslot,
       };
 
-      console.log('payload', payload);
-
       let res: any = await useAddavailability(payload);
-
-      console.log('res', res.data);
 
       if (res.data.Success) {
         navigation.navigate('Profile');
@@ -141,36 +145,24 @@ export default function Addavailability() {
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text
-          style={{
-            color: 'black',
-            justifyContent: 'center',
-            alignItems: 'center',
-            fontWeight: '600',
-            fontSize: 16,
-          }}>
-          Add Availability
-        </Text>
-      </View>
-
-      <View style={{flex: 1.5, marginHorizontal: 20}}>
-        <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
-          Select Clinic
-        </Text>
-        <View style={{marginTop: 10}}>
-          <DropDownPicker
-            open={open1}
-            value={selectedclinic}
-            items={cliniclist}
-            setOpen={setOpen1}
-            setValue={setselectedclinic}
-            // setItems={setItems}
-            placeholder="Select Clinic"
-          />
+      <Navbar title="Add Availability" />
+      {!props.clinic_id && (
+        <View style={{flex: 1.5, marginHorizontal: 20}}>
+          <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+            Select Clinic
+          </Text>
+          <View style={{marginTop: 10}}>
+            <DropDownPicker
+              open={open1}
+              value={selectedclinic}
+              items={cliniclist}
+              setOpen={setOpen1}
+              setValue={setselectedclinic}
+              placeholder="Select Clinic"
+            />
+          </View>
         </View>
-      </View>
-
+      )}
       <View
         style={{
           flex: 0.8,

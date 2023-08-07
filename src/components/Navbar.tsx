@@ -16,7 +16,7 @@ const Navbar = (props: {title: string}) => {
       <View style={{marginRight: 20}} onTouchEnd={() => navigation.goBack()}>
         <Icon
           name="keyboard-arrow-left"
-          size={20}
+          size={24}
           style={{color: Color.primary}}
         />
       </View>

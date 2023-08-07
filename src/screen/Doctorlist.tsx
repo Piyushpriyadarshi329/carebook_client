@@ -17,25 +17,6 @@ export default function Doctorlist() {
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
-      <View
-        style={{
-          flex: 0.5,
-          flexDirection: 'row',
-          marginTop: 10,
-          marginHorizontal: 20,
-          // backgroundColor:"red"
-        }}>
-        <Icon name={'chevron-back-sharp'} color={Color.primary} size={24} />
-        <Text
-          style={{
-            color: 'black',
-            fontSize: 18,
-            fontWeight: '700',
-            marginLeft: 10,
-          }}>
-          Doctor List
-        </Text>
-      </View>
       <View style={{flex: 10}}>
         <View style={{flex: 1, alignItems: 'flex-end', marginRight: 20}}>
           <TouchableOpacity
@@ -48,16 +29,14 @@ export default function Doctorlist() {
 
         <View style={{flex: 20}}>
           {doctorlist?.data?.length == 0 ? (
-            <>
-              <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                <Text style={{color: 'black'}}>No Doctor FOund</Text>
-              </View>
-            </>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Text style={{color: 'black'}}>No Doctor FOund</Text>
+            </View>
           ) : (
             <ScrollView>
-              {doctorlist?.data?.map((i: any) => {
+              {doctorlist?.data?.map((i: any, index: number) => {
                 return (
-                  <View style={{flex: 1}}>
+                  <View style={{flex: 1}} key={index}>
                     <Doctorcard data={i} />
                   </View>
                 );

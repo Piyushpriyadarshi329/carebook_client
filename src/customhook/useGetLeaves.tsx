@@ -1,24 +1,12 @@
 import axios from 'axios';
 import {GETLEAVE_URL} from '../API_CONFIG';
+import {useQuery} from '@tanstack/react-query';
+import {DataResponse, LeaveDto} from '../types';
 
-export async function useGetLeaves(payload: any) {
-  // const config: any =  {
-  //     headers: {
-  //       Authorization: `Bearer ${rentalbikedetails.accessToken}`,
-  //     },
-  //   };
-
-  let myPromise = new Promise(async function (myResolve, myReject) {
-    try {
-      var res = await axios.post(GETLEAVE_URL, payload);
-
-      // console.log('res', res.data);
-
-      myResolve(res);
-    } catch (error: any) {
-      myReject(error);
-    }
-  });
-
-  return myPromise;
+export function useGetLeaves(payload: any) {
+  return useQuery(
+    ['LEAVES', payload],
+    () => axios.post<DataResponse<LeaveDto[]>>(GETLEAVE_URL, payload),
+    {select: data => data.data.data},
+  );
 }

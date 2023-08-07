@@ -1,14 +1,8 @@
-import {View, Text} from 'react-native';
-import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Home from '../screen/Home';
-import Profile from '../screen/Doctorprofile';
-import Appointments from '../screen/Appointments';
 import {NavigationContainer} from '@react-navigation/native';
+import React from 'react';
 import Icon from 'react-native-vector-icons/Entypo';
 import Color from '../asset/Color';
-import Clinicprofile from '../screen/Clinicprofile';
-import Doctorlist from '../screen/Doctorlist';
 import Clinicdoctorliststack from './stack/Clinicdoctorliststack';
 import Clinicprofilestack from './stack/Clinicprofilestack';
 
@@ -21,13 +15,8 @@ export default function DocterRoute() {
         screenOptions={({route}) => ({
           tabBarShowLabel: false,
           tabBarHideOnKeyboard: true,
-          //   style: {
-          //     borderRadius: 15,
-          //     height: 90,
-          // },
-          tabBarIcon: ({focused, color, size}) => {
+          tabBarIcon: () => {
             let iconName;
-
             switch (route.name) {
               case 'Home':
                 iconName = 'home';
@@ -41,26 +30,21 @@ export default function DocterRoute() {
               default:
                 break;
             }
-            // return <Ionicons name={iconName} size={size} color={color} />;
-            // return <LottieView source={filePath} loop={false} autoPlay={focused} />;
+
             return <Icon name={iconName} color={Color.primary} size={24} />;
           },
         })}>
-        {/* <Tab.Screen name="Home" component={Home} 
-      options={{headerShown:false}}
-      /> */}
+        <Tab.Screen
+          name="Appointments"
+          component={Clinicdoctorliststack}
+          options={{headerShown: false}}
+        />
         <Tab.Screen
           name="Profile"
           component={Clinicprofilestack}
           options={{
             headerShown: false,
-            // tabBarIcon:        return  (  <Icon name="plus" size={30} color="red" />)
           }}
-        />
-        <Tab.Screen
-          name="Appointments"
-          component={Clinicdoctorliststack}
-          options={{headerShown: false}}
         />
       </Tab.Navigator>
     </NavigationContainer>

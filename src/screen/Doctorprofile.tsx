@@ -11,6 +11,7 @@ import {useForm, FormProvider} from 'react-hook-form';
 import {RHFTextInput} from '../components/RHFTextInput';
 import {useGetDoctor, useMutateDoctorProfile} from './useDoctorQuery';
 import {useGetLeaves} from '../customhook/useGetLeaves';
+import Navbar from '../components/Navbar';
 
 interface ProfileForm {
   username: string;
@@ -18,13 +19,41 @@ interface ProfileForm {
   consultationTime: string;
   fees: string;
 }
-export default function Doctorprofile() {
-  const dispatch = useDispatch();
-  const navigation = useNavigation();
+export default function LoggedInDoctorProfile() {
   const Appdata = useSelector((state: RootState) => state);
+  return (
+    <>
+      <DoctorProfileWithId id={Appdata.Appdata.userid} />
+      <View style={{flex: 1, alignItems: 'center'}}>
+        <TouchableOpacity
+          style={{backgroundColor: Color.primary, borderRadius: 5}}
+          onPress={() => {
+            dispatch(
+              updateappstate({
+                islogin: false,
+                isdoctor: false,
+              }),
+            );
+          }}>
+          <Text style={{color: 'black', fontSize: 20, padding: 5}}>Logout</Text>
+        </TouchableOpacity>
+      </View>
+    </>
+  );
+}
+export const DoctorProfile = (props: any) => {
+  return (
+    <DoctorProfileWithId
+      id={props.route.params?.id}
+      clinic_id={props.route.params?.clinic_id}
+    />
+  );
+};
+function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
+  const navigation = useNavigation();
   const [Availability, setAvailability] = useState([]);
   const [editMode, setEditMode] = useState(false);
-  const {data: doctorDetails} = useGetDoctor(Appdata.Appdata.userid, data => {
+  const {data: doctorDetails} = useGetDoctor(props.id, data => {
     formMethods.setValue('about', data?.[0]?.about ?? '');
     formMethods.setValue(
       'consultationTime',
@@ -37,17 +66,15 @@ export default function Doctorprofile() {
       about: doctorDetails?.[0]?.about,
       consultationTime: doctorDetails?.[0]?.appointment_time?.toString(),
       fees: doctorDetails?.[0]?.fees?.toString(),
-      username: Appdata.Appdata.username ?? '',
+      username: doctorDetails?.[0]?.name ?? '',
     },
   });
-  const {mutate: updateDoctor} = useMutateDoctorProfile(
-    Appdata.Appdata.userid,
-    () => {
-      setEditMode(false);
-    },
-  );
+  const {mutate: updateDoctor} = useMutateDoctorProfile(props.id, () => {
+    setEditMode(false);
+  });
 
-  const [leaves, setleaves] = useState([]);
+  const {data: leaves} = useGetLeaves({doctor_id: props.id});
+
   const days = [
     {
       value: 0,
@@ -84,16 +111,13 @@ export default function Doctorprofile() {
 
   useEffect(() => {
     getdoctoravailability();
-    getleaves();
   }, []);
 
   async function getdoctoravailability() {
     try {
       let payload: any = {
-        doctor_id: Appdata.Appdata.userid,
+        doctor_id: props.id,
       };
-
-      console.log('payload', payload);
 
       let res: any = await useGetavailability(payload);
 
@@ -103,9 +127,6 @@ export default function Doctorprofile() {
         let local = newdata.filter((j: any) => j.entry_id == i.entry_id);
 
         if (local.length > 0) {
-          // console.log("local.length",local.length)
-
-          // console.log("index",newdata.indexOf(i))
           newdata = newdata.map((k: any) => {
             if (k.entry_id == i.entry_id) {
               return {
@@ -127,49 +148,27 @@ export default function Doctorprofile() {
     }
   }
 
-  async function getleaves() {
-    try {
-      let payload: {
-        doctor_id: string;
-      } = {
-        doctor_id: Appdata.Appdata.userid,
-      };
-
-      console.log('payload getleaves', payload);
-
-      let getleaveres: any = await useGetLeaves(payload);
-
-      console.log('getleaveres', getleaveres.data);
-      setleaves(getleaveres.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   const toggleNumberOfLines = () => {
-    //To toggle the show text or hide it
     setTextShown(!textShown);
   };
 
   const onTextLayout = useCallback(e => {
-    setLengthMore(e.nativeEvent.lines.length >= 4); //to check the text is more than 4 lines or not
-    // console.log(e.nativeEvent);
+    setLengthMore(e.nativeEvent.lines.length >= 4);
   }, []);
 
   const updateProfileHandler = (formValues: ProfileForm) => {
     console.log(formValues);
     updateDoctor({
       name: formValues.username,
-      // speciality: '',
-      // degree: '',
       appointment_time: Number(formValues.consultationTime),
       fees: Number(formValues.fees),
       about: formValues.about,
     });
   };
-  console.log('doctorDetails: ', doctorDetails);
+
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
+      <Navbar title="" />
       <FormProvider {...formMethods}>
         <View style={{flex: 2, flexDirection: 'row', marginHorizontal: 20}}>
           <View style={{flex: 2, marginTop: 30}}>
@@ -185,7 +184,7 @@ export default function Doctorprofile() {
                 </View>
               ) : (
                 <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
-                  Dr. {Appdata.Appdata.username}
+                  Dr. {doctorDetails?.[0]?.name}
                 </Text>
               )}
             </View>
@@ -321,7 +320,10 @@ export default function Doctorprofile() {
             </Text>
             <Pressable
               onPress={() => {
-                navigation.navigate('Addavailability');
+                navigation.navigate('Addavailability', {
+                  id: props.id,
+                  clinic_id: props.clinic_id,
+                });
               }}
               style={{flex: 1, alignItems: 'flex-end', marginRight: 30}}>
               <Icon name="plus" size={30} color={Color.primary} />
@@ -376,7 +378,7 @@ export default function Doctorprofile() {
           {/* [{"active": 1, "created_datetime": "1691349426749", "doctor_id": "437f34af-723a-41e8-aee1-014ce2d97f0a", "fromdate": "1692835200000", "fullday": 0, "id": "0dc9aba9-260f-42b3-a6c5-ce2a7e1f4f7e", "reason": "Test", "todate": "1692662400000", "worktime_id": "5d7ec9cd-fb88-4570-865f-62c6d557446d"}, {"active": 1, "created_datetime": "1691347933499", "doctor_id": "437f34af-723a-41e8-aee1-014ce2d97f0a", "fromdate": "1693440000000", "fullday": 1, "id": "331f0cf8-ea3a-4fbf-8a42-cf6a645b4df6", "reason": "Test ", "todate": "1692748800000", "worktime_id": ""}] */}
 
           <View style={{flex: 10}}>
-            {leaves.map((i: any) => {
+            {leaves?.map((i: any) => {
               return (
                 <View
                   style={{
@@ -411,23 +413,6 @@ export default function Doctorprofile() {
               );
             })}
           </View>
-        </View>
-
-        <View style={{flex: 1, alignItems: 'center'}}>
-          <TouchableOpacity
-            style={{backgroundColor: Color.primary, borderRadius: 5}}
-            onPress={() => {
-              dispatch(
-                updateappstate({
-                  islogin: false,
-                  isdoctor: false,
-                }),
-              );
-            }}>
-            <Text style={{color: 'black', fontSize: 20, padding: 5}}>
-              Logout
-            </Text>
-          </TouchableOpacity>
         </View>
       </View>
     </View>
