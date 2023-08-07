@@ -115,8 +115,6 @@ export function LeaveById(props: {id: string}) {
         }
       });
 
-      console.log('newdata', newdata);
-
       setAvailability(newdata);
     } catch (error) {
       console.log(error);
@@ -124,13 +122,19 @@ export function LeaveById(props: {id: string}) {
   }
 
   async function markunavailablefun() {
+    console.log(
+      'todate',
+      todate + 'T00:00:00Z',
+      new Date(fromdate + 'T00:00:00Z').getTime(),
+    );
+    // return;
     try {
       let payload: AddLeaveRequest = {
         doctor_id: Appdata.Appdata.userid,
-        fromdate: new Date(todate + 'T00:00:00Z').getTime(),
+        fromdate: new Date(fromdate + 'T00:00:00Z').getTime(),
         todate: multipledate
-          ? new Date(fromdate + 'T00:00:00Z').getTime()
-          : new Date(todate + 'T00:00:00Z').getTime(),
+          ? new Date(todate + 'T00:00:00Z').getTime()
+          : new Date(fromdate + 'T00:00:00Z').getTime(),
         worktime_id: fullday ? '' : worktime_id.id,
         fullday: fullday,
         reason: reason,
@@ -199,6 +203,8 @@ export function LeaveById(props: {id: string}) {
           <View>
             <Calendar
               onDayPress={day => {
+                console.log('day.dateString', day.dateString);
+
                 settodate(day.dateString);
               }}
               theme={{
@@ -242,7 +248,6 @@ export function LeaveById(props: {id: string}) {
           <ScrollView>
             <View style={{flex: 7, marginTop: 50, marginHorizontal: 20}}>
               {Availability.map((i: any) => {
-                console.log('i', i);
                 return (
                   <TouchableOpacity
                     onPress={() => {
@@ -415,7 +420,7 @@ export function LeaveById(props: {id: string}) {
                       padding: 5,
                       color: 'black',
                     }}>
-                    Clinic 1
+                    {worktime_id.clinic_name}
                   </Text>
                   <Text style={{padding: 5, color: 'black'}}>
                     Slots: {worktime_id.no_of_slot}
