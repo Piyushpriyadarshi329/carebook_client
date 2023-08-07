@@ -25,10 +25,7 @@ export default function Home() {
 
   const [datelabel, setdatelabel] = useState<string[]>([]);
 
-  const [Appointmentdata, setAppointmentdata] = useState([]);
-
   useEffect(() => {
-    getAppointments();
     let localdate = [];
 
     for (let i = 1; i < 7; i++) {
@@ -80,21 +77,9 @@ export default function Home() {
       },
     ],
   };
-
-  async function getAppointments() {
-    try {
-      let payload = {
-        doctorId: Appdata.Appdata.userid,
-      };
-
-      let getAppointmentsres: any = await usegetAppointments(payload);
-
-      console.log('getAppointmentsres', getAppointmentsres);
-      setAppointmentdata(getAppointmentsres.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const {data: Appointmentdata} = usegetAppointments({
+    doctorId: Appdata.Appdata.userid,
+  });
 
   return (
     <View style={{flex: 1, flexDirection: 'column', backgroundColor: 'white'}}>
@@ -127,7 +112,7 @@ export default function Home() {
 
         <View style={{flex: 1}}>
           <ScrollView horizontal={true}>
-            {Appointmentdata.map(i => {
+            {Appointmentdata?.map(i => {
               return (
                 <View style={{marginHorizontal: 10}}>
                   <Appointmentcard data={i} />

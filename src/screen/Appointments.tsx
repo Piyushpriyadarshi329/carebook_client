@@ -1,4 +1,11 @@
-import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  Button,
+} from 'react-native';
 import React, {useState, useEffect, useMemo} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Color from '../asset/Color';
@@ -7,13 +14,72 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../redux/Store';
 import {usegetAppointments} from '../customhook/usegetAppointments';
 import {useNavigation} from '@react-navigation/native';
+
+export const UpcomingDateTile = (props: {date: any; setselecteddate: any}) => {
+  const Appdata = useSelector((state: RootState) => state);
+  const {data: appointmentdata} = usegetAppointments({
+    doctorId: Appdata.Appdata.userid,
+    appointment_date: props.date.value,
+  });
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        props.setselecteddate(props.date.value);
+      }}>
+      <View
+        style={{
+          backgroundColor: Color.primary,
+          width: 60,
+          height: 100,
+          marginHorizontal: 5,
+          borderRadius: 3,
+        }}>
+        <View style={{alignItems: 'flex-end'}}>
+          <View
+            style={{
+              width: 20,
+              height: 20,
+              margin: 5,
+              borderRadius: 20,
+              backgroundColor: Color.secondary,
+            }}>
+            <Text style={{textAlign: 'center', color: 'black'}}>
+              {appointmentdata?.length}
+            </Text>
+          </View>
+        </View>
+
+        <View style={{marginTop: 10}}>
+          <Text
+            style={{
+              textAlign: 'center',
+              color: 'black',
+              fontWeight: '600',
+            }}>
+            {props.date.day}
+          </Text>
+        </View>
+        <View style={{marginTop: 3}}>
+          <Text
+            style={{
+              textAlign: 'center',
+              color: 'black',
+              fontWeight: '600',
+            }}>
+            {props.date.date}
+          </Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
 export default function Appointments() {
   const Appdata = useSelector((state: RootState) => state);
 
   const navigation = useNavigation();
 
   const [selected, setselected] = useState('current');
-  const [appointmentdata, setappointmentdata] = useState([{}]);
   const [selecteddate, setselecteddate] = useState(
     new Date(
       `${
@@ -25,10 +91,6 @@ export default function Appointments() {
       }T00:00:00Z`,
     ).getTime(),
   );
-
-  useEffect(() => {
-    getappointlist();
-  }, [selecteddate]);
 
   const upcomingDates = useMemo(() => {
     let localdate = [];
@@ -65,45 +127,13 @@ export default function Appointments() {
 
     return localdate;
   }, []);
-
-  async function getappointlist() {
-    try {
-      let payload = {
-        doctorId: Appdata.Appdata.userid,
-        appointment_date: selecteddate,
-      };
-
-      let getAppointmentsres: any = await usegetAppointments(payload);
-
-      console.log('getAppointmentsres', getAppointmentsres);
-
-      // setappointmentdata(getAppointmentsres.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const {data: appointmentdata} = usegetAppointments({
+    doctorId: Appdata.Appdata.userid,
+    appointment_date: selecteddate,
+  });
+  console.log('appointmentdata: ', appointmentdata);
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          marginTop: 10,
-          marginHorizontal: 20,
-          // backgroundColor:"red"
-        }}>
-        <Icon name={'chevron-back-sharp'} color={Color.primary} size={24} />
-        <Text
-          style={{
-            color: 'black',
-            fontSize: 18,
-            fontWeight: '700',
-            marginLeft: 10,
-          }}>
-          Appointments
-        </Text>
-      </View>
-
       <View
         style={{
           flex: 3,
@@ -112,65 +142,15 @@ export default function Appointments() {
           marginTop: 5,
         }}>
         <ScrollView horizontal={true}>
-          {upcomingDates.map(i => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  setselecteddate(i.value);
-                }}>
-                <View
-                  style={{
-                    backgroundColor: Color.primary,
-                    width: 60,
-                    height: 100,
-                    marginHorizontal: 5,
-                    borderRadius: 3,
-                  }}>
-                  <View style={{alignItems: 'flex-end'}}>
-                    <View
-                      style={{
-                        width: 20,
-                        height: 20,
-                        margin: 5,
-                        borderRadius: 20,
-                        backgroundColor: Color.secondary,
-                      }}>
-                      <Text style={{textAlign: 'center', color: 'black'}}>
-                        20
-                      </Text>
-                    </View>
-                  </View>
-
-                  <View style={{marginTop: 10}}>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        color: 'black',
-                        fontWeight: '600',
-                      }}>
-                      {i.day}
-                    </Text>
-                  </View>
-                  <View style={{marginTop: 3}}>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        color: 'black',
-                        fontWeight: '600',
-                      }}>
-                      {i.date}
-                    </Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            );
+          {upcomingDates.map(date => {
+            return <UpcomingDateTile {...{date, setselecteddate}} />;
           })}
         </ScrollView>
       </View>
 
       <View style={{flex: 10, marginHorizontal: 30}}>
         <ScrollView>
-          {appointmentdata.length == 0 ? (
+          {appointmentdata?.length == 0 ? (
             <>
               <View
                 style={{
@@ -183,7 +163,7 @@ export default function Appointments() {
             </>
           ) : (
             <>
-              {appointmentdata.map(i => {
+              {appointmentdata?.map(appointment => {
                 return (
                   <View
                     style={{
@@ -229,15 +209,17 @@ export default function Appointments() {
                       </View>
 
                       <View style={{flex: 2}}>
-                        <Text>customer name</Text>
-                        <Text>Slot -1</Text>
-
-                        <TouchableOpacity
-                          onPress={() => {
-                            navigation.navigate('Leave');
-                          }}>
-                          <Text> Mark unavailable</Text>
-                        </TouchableOpacity>
+                        <Text style={{color: 'black'}}>customer name</Text>
+                        <Text style={{color: 'black'}}>
+                          Slot {appointment.slot_index}
+                        </Text>
+                        <View style={{paddingTop: 10, marginHorizontal: 30}}>
+                          <Button
+                            title="Mark Unavailable"
+                            color={Color.primary}
+                            onPress={() => navigation.navigate('Leave')}
+                          />
+                        </View>
                       </View>
                     </View>
                   </View>

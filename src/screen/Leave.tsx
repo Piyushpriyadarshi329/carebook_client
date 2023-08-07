@@ -439,7 +439,12 @@ export function LeaveById(props: {id: string}) {
 
         <TextInput
           multiline
-          style={{borderWidth: 1, marginTop: 10, height: 100, borderRadius: 5}}
+          style={{
+            borderWidth: 1,
+            marginTop: 10,
+            borderRadius: 5,
+            color: 'black',
+          }}
           onChangeText={text => {
             setreason(text);
           }}></TextInput>

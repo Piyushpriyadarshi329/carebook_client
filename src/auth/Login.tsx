@@ -89,6 +89,7 @@ export default function Login() {
               marginLeft: 10,
               flex: 1,
               height: 50,
+              color: 'black',
             }}
             placeholder="Please Enter Email."
             keyboardType="default"
@@ -116,6 +117,7 @@ export default function Login() {
               marginLeft: 10,
               flex: 1,
               height: 40,
+              color: 'black',
             }}
             placeholder="Please Enter Password."
             keyboardType="default"

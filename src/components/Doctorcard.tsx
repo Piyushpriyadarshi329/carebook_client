@@ -3,6 +3,7 @@ import React from 'react';
 import Color from '../asset/Color';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Entypo';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux/Store';
 
@@ -53,8 +54,8 @@ export default function Doctorcard({data}: any) {
             });
           }}
         />
-        <Icon
-          name="user"
+        <IonIcon
+          name="exit-outline"
           style={{color: Color.primary, fontSize: 24}}
           onPress={() => {
             navigation.navigate('Leave', {

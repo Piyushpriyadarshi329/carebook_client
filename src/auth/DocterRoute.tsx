@@ -41,16 +41,16 @@ export default function DocterRoute() {
           options={{headerShown: false}}
         />
         <Tab.Screen
+          name="Appointments"
+          component={Appointmentsstack}
+          options={{headerShown: false}}
+        />
+        <Tab.Screen
           name="Profile"
           component={DoctorProfilestack}
           options={{
             headerShown: false,
           }}
-        />
-        <Tab.Screen
-          name="Appointments"
-          component={Appointmentsstack}
-          options={{headerShown: false}}
         />
       </Tab.Navigator>
     </NavigationContainer>

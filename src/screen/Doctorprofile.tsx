@@ -1,4 +1,11 @@
-import {View, Text, Image, Pressable, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  Pressable,
+  TouchableOpacity,
+  Button,
+} from 'react-native';
 import React, {useState, useCallback, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/Entypo';
 import Color from '../asset/Color';
@@ -20,25 +27,26 @@ interface ProfileForm {
   fees: string;
 }
 export default function LoggedInDoctorProfile() {
+  const dispatch = useDispatch();
   const Appdata = useSelector((state: RootState) => state);
   return (
-    <>
+    <View style={{backgroundColor: 'white', flex: 1}}>
       <DoctorProfileWithId id={Appdata.Appdata.userid} />
-      <View style={{flex: 1, alignItems: 'center'}}>
-        <TouchableOpacity
-          style={{backgroundColor: Color.primary, borderRadius: 5}}
-          onPress={() => {
+      <View style={{flex: 0.1, alignItems: 'center'}}>
+        <Button
+          title="Log out"
+          color={Color.primary}
+          onPress={() =>
             dispatch(
               updateappstate({
                 islogin: false,
                 isdoctor: false,
               }),
-            );
-          }}>
-          <Text style={{color: 'black', fontSize: 20, padding: 5}}>Logout</Text>
-        </TouchableOpacity>
+            )
+          }
+        />
       </View>
-    </>
+    </View>
   );
 }
 export const DoctorProfile = (props: any) => {
@@ -312,8 +320,7 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
       </FormProvider>
 
       <View style={{flexDirection: 'column', flex: 8}}>
-        <View style={{flex: textShown ? 5 : 6, marginHorizontal: 20}}>
-          {/* <View style={{flex: 3, marginHorizontal: 20}}> */}
+        <View style={{flex: textShown ? 5 : 6, marginHorizontal: 20, flex: 3}}>
           <View style={{flexDirection: 'row', flex: 1}}>
             <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
               Availablity
@@ -326,7 +333,7 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
                 });
               }}
               style={{flex: 1, alignItems: 'flex-end', marginRight: 30}}>
-              <Icon name="plus" size={30} color={Color.primary} />
+              <Icon name="plus" size={24} color={Color.primary} />
             </Pressable>
           </View>
 

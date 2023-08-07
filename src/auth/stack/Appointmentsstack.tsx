@@ -8,11 +8,7 @@ export default function Appointmentsstack() {
 
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name="Appointments"
-        component={Appointments}
-        options={{headerShown: false}}
-      />
+      <Stack.Screen name="Appointments" component={Appointments} />
       <Stack.Screen
         name="Leave"
         component={Leave}

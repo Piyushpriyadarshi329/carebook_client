@@ -35,7 +35,7 @@ export default function Appointmentcard({data}: {data: any}) {
         {data.customerName}
       </Text>
       <Text style={{color: 'black', marginLeft: 10, marginTop: 10}}>
-        {new Date(data.appointment_date).toISOString().substring(0, 10)}
+        {new Date(Number(data.appointment_date)).toISOString().substring(0, 10)}
       </Text>
       <Text
         style={{color: 'black', marginLeft: 10, marginTop: 3, fontSize: 12}}>
