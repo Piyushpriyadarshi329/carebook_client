@@ -108,7 +108,11 @@ export default function Clinicprofile() {
   }, []);
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
-      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}>
         <View
           style={{
             flex: 1,
@@ -222,12 +226,6 @@ export default function Clinicprofile() {
                 </TouchableOpacity>
               </View>
             </View>
-          </View>
-
-          <View style={{flexDirection: 'row', marginTop: 5}}>
-            <Text style={{color: 'black'}}>consultation Fees:</Text>
-
-            <Text style={{color: 'black', marginLeft: 10}}> ---------.</Text>
           </View>
         </View>
         <View style={{flex: 1}}>
