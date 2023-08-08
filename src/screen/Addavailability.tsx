@@ -38,7 +38,7 @@ export function DoctorAvailabilityWithId(props: {
   const [dateto, setDateto] = useState(new Date());
   const [cliniclist, setcliniclist] = useState([]);
   const [selectedday, setselectedday] = useState([]);
-  const [noofslot, setnoofslot] = useState<Number>(0);
+  const [noofslot, setnoofslot] = useState<number>(0);
   const days = [
     {
       value: 0,
@@ -120,24 +120,21 @@ export function DoctorAvailabilityWithId(props: {
       display: 'spinner',
     });
   };
-
+  const {mutate: addAvailability} = useAddavailability({
+    onSuccess: ()=>navigation.navigate('Profile');
+  });
   async function submithandler() {
     try {
-      let payload: any = {
-        entry_id: uuid.v4(),
+      let payload = {
+        entry_id: uuid.v4().toString(),
         doctor_id: props.id,
-        clinic_id: selectedclinic,
-        week_day: selectedday,
+        clinic_id: selectedclinic ?? '',
+        week_day: selectedday ?? [],
         from_time: sendtime(datefrom.getTime()),
         to_time: sendtime(dateto.getTime()),
         no_of_slot: noofslot,
       };
-
-      let res: any = await useAddavailability(payload);
-
-      if (res.data.Success) {
-        navigation.navigate('Profile');
-      }
+      addAvailability(payload);
     } catch (error) {
       console.log(error);
     }

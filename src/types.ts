@@ -179,10 +179,12 @@ export interface WorkingTimeDto {
   week_day: number;
   from_time: string;
   to_time: string;
-  week: number;
+  week?: number;
   no_of_slot: number;
 }
-
+export type AddAvailabilityRequest = Omit<WorkingTimeDto, 'id' | 'week_day'> & {
+  week_day: number[];
+};
 export interface OccupiedDto {
   work_time_id: string;
   doctor_clinic_id: string;
