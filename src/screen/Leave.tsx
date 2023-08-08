@@ -33,7 +33,6 @@ export function LeaveById(props: {id: string}) {
   const Appdata = useSelector((state: RootState) => state);
   const navigation = useNavigation();
 
-  const [Availability, setAvailability] = useState([]);
   const [multipledate, setmultipledate] = useState(false);
   const [fullday, setfullday] = useState(false);
   const [reason, setreason] = useState('');
@@ -44,82 +43,7 @@ export function LeaveById(props: {id: string}) {
   const [modalVisibleto, setModalVisibleto] = useState(false);
 
   const [worktime_id, setworktime_id] = useState<any>(null);
-
-  useEffect(() => {
-    getdoctoravailability();
-  }, []);
-  const days = [
-    {
-      value: 0,
-      label: 'SUN',
-    },
-    {
-      value: 1,
-      label: 'MON',
-    },
-    {
-      value: 2,
-      label: 'TUE',
-    },
-    {
-      value: 3,
-      label: 'WED',
-    },
-    {
-      value: 4,
-      label: 'THU',
-    },
-    {
-      value: 5,
-      label: 'FRI',
-    },
-    {
-      value: 6,
-      label: 'SAT',
-    },
-  ];
-
-  async function getdoctoravailability() {
-    try {
-      let payload: any = {
-        doctor_id: Appdata.Appdata.userid,
-      };
-
-      console.log('payload', payload);
-
-      let res: any = await useGetavailability(payload);
-
-      console.log('res', res.data.data);
-
-      let newdata: any = [];
-
-      res.data.data.map((i: any) => {
-        let local = newdata.filter((j: any) => j.entry_id == i.entry_id);
-
-        if (local.length > 0) {
-          // console.log("local.length",local.length)
-
-          // console.log("index",newdata.indexOf(i))
-          newdata = newdata.map((k: any) => {
-            if (k.entry_id == i.entry_id) {
-              return {
-                ...k,
-                week_day: k.week_day + ',' + days[i.week_day].label,
-              };
-            } else {
-              return k;
-            }
-          });
-        } else {
-          newdata.push({...i, week_day: days[i.week_day].label});
-        }
-      });
-
-      setAvailability(newdata);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const {data: Availability} = useGetavailability({doctor_id: props.id});
 
   async function markunavailablefun() {
     console.log(
@@ -247,7 +171,7 @@ export function LeaveById(props: {id: string}) {
         <View style={{flex: 1, backgroundColor: 'white'}}>
           <ScrollView>
             <View style={{flex: 7, marginTop: 50, marginHorizontal: 20}}>
-              {Availability.map((i: any) => {
+              {Availability?.map((i: any) => {
                 return (
                   <TouchableOpacity
                     onPress={() => {
