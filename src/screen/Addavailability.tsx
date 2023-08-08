@@ -245,7 +245,12 @@ export function DoctorAvailabilityWithId(props: {
 
         <View style={{flex: 1, marginHorizontal: 20}}>
           <TextInput
-            style={{borderWidth: 1, borderRadius: 5, textAlign: 'center'}}
+            style={{
+              borderWidth: 1,
+              borderRadius: 5,
+              textAlign: 'center',
+              color: 'black',
+            }}
             keyboardType="numeric"
             onChangeText={text => {
               console.log('text');
