@@ -121,7 +121,7 @@ export function DoctorAvailabilityWithId(props: {
     });
   };
   const {mutate: addAvailability} = useAddavailability({
-    onSuccess: ()=>navigation.navigate('Profile');
+    onSuccess: () => navigation.navigate('Profile'),
   });
   async function submithandler() {
     try {

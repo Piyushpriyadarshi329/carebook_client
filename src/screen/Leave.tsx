@@ -45,6 +45,10 @@ export function LeaveById(props: {id: string}) {
   const [worktime_id, setworktime_id] = useState<any>(null);
   const {data: Availability} = useGetavailability({doctor_id: props.id});
 
+  const {mutate: addleave} = useAddleave(() => {
+    alert('Mark Unavailable add Successfully');
+    navigation.goBack();
+  });
   async function markunavailablefun() {
     console.log(
       'todate',
@@ -66,14 +70,7 @@ export function LeaveById(props: {id: string}) {
 
       console.log('payload addleave', payload);
 
-      let addleaveres: any = await useAddleave(payload);
-
-      console.log('addleaveres', addleaveres.data);
-
-      if (addleaveres.data.Success) {
-        alert('Mark Unavailable add Successfully');
-        navigation.goBack();
-      }
+      addleave(payload);
     } catch (error) {
       console.log(error);
     }
