@@ -1,25 +1,17 @@
-import {
-  View,
-  Text,
-  Image,
-  Pressable,
-  TouchableOpacity,
-  Button,
-  ScrollView,
-} from 'react-native';
-import React, {useState, useCallback, useEffect} from 'react';
-import Icon from 'react-native-vector-icons/Entypo';
-import Color from '../asset/Color';
-import {useSelector, useDispatch} from 'react-redux';
-import {updateappstate} from '../redux/reducer/Authreducer';
-import type {RootState} from '../redux/Store';
 import {useNavigation} from '@react-navigation/native';
-import {useGetavailability} from '../customhook/useGetavailability';
-import {useForm, FormProvider} from 'react-hook-form';
-import {RHFTextInput} from '../components/RHFTextInput';
-import {useGetDoctor, useMutateDoctorProfile} from './useDoctorQuery';
-import {useGetLeaves} from '../customhook/useGetLeaves';
+import React, {useCallback, useState} from 'react';
+import {FormProvider, useForm} from 'react-hook-form';
+import {Button, Image, Pressable, ScrollView, Text, View} from 'react-native';
+import Icon from 'react-native-vector-icons/Entypo';
+import {useDispatch, useSelector} from 'react-redux';
+import Color from '../asset/Color';
 import Navbar from '../components/Navbar';
+import {RHFTextInput} from '../components/RHFTextInput';
+import {useGetLeaves} from '../customhook/useGetLeaves';
+import {useGetavailability} from '../customhook/useGetavailability';
+import type {RootState} from '../redux/Store';
+import {updateappstate} from '../redux/reducer/Authreducer';
+import {useGetDoctor, useMutateDoctorProfile} from './useDoctorQuery';
 
 interface ProfileForm {
   username: string;
@@ -60,7 +52,6 @@ export const DoctorProfile = (props: any) => {
 };
 function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
   const navigation = useNavigation();
-  const [Availability, setAvailability] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const {data: doctorDetails} = useGetDoctor(props.id, data => {
     formMethods.setValue('about', data?.[0]?.about ?? '');
@@ -83,79 +74,10 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
   });
 
   const {data: leaves} = useGetLeaves({doctor_id: props.id});
-
-  const days = [
-    {
-      value: 0,
-      label: 'SUN',
-    },
-    {
-      value: 1,
-      label: 'MON',
-    },
-    {
-      value: 2,
-      label: 'TUE',
-    },
-    {
-      value: 3,
-      label: 'WED',
-    },
-    {
-      value: 4,
-      label: 'THU',
-    },
-    {
-      value: 5,
-      label: 'FRI',
-    },
-    {
-      value: 6,
-      label: 'SAT',
-    },
-  ];
+  const {data: Availability} = useGetavailability({doctor_id: props.id});
 
   const [textShown, setTextShown] = useState(false); //To show ur remaining Text
   const [lengthMore, setLengthMore] = useState(false); //to show the "Read more & Less Line"
-
-  useEffect(() => {
-    getdoctoravailability();
-  }, []);
-
-  async function getdoctoravailability() {
-    try {
-      let payload: any = {
-        doctor_id: props.id,
-      };
-
-      let res: any = await useGetavailability(payload);
-
-      let newdata: any = [];
-
-      res.data.data.map((i: any) => {
-        let local = newdata.filter((j: any) => j.entry_id == i.entry_id);
-
-        if (local.length > 0) {
-          newdata = newdata.map((k: any) => {
-            if (k.entry_id == i.entry_id) {
-              return {
-                ...k,
-                week_day: k.week_day + ',' + days[i.week_day].label,
-              };
-            } else {
-              return k;
-            }
-          });
-        } else {
-          newdata.push({...i, week_day: days[i.week_day].label});
-        }
-      });
-
-      setAvailability(newdata);
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   const toggleNumberOfLines = () => {
     setTextShown(!textShown);
@@ -339,7 +261,7 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
           </View>
 
           <View style={{flex: 10}}>
-            {Availability.map((i: any) => {
+            {Availability?.map((i: any) => {
               return (
                 <View
                   style={{
