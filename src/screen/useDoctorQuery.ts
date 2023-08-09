@@ -1,12 +1,15 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import axios from 'axios';
 import {
+  ADDDOCTOR_URL,
   GETDOCTORLIST_URL,
   GET_DOCTOR,
   LINK_DOCTOR_URL,
   UPDATE_DOCTOR,
 } from '../API_CONFIG';
 import {
+  AddDoctorRequest,
+  AddDoctorResponse,
   DoctorDto,
   GetDoctorsListResponse,
   GetDotcorsListRequest,
@@ -19,7 +22,7 @@ export const useGetDoctorsList = (
   enabled?: boolean,
 ) => {
   return useQuery(
-    ['DOCTORS'],
+    ['DOCTORS', payload],
     () => axios.post<GetDoctorsListResponse>(GETDOCTORLIST_URL, payload),
     {
       select: data => data.data.data,
@@ -56,9 +59,33 @@ export const useMutateDoctorProfile = (doctor_id: string, onSuccess?: any) => {
   );
 };
 
-export const useLinkDoctorMutation = () => {
+export const useLinkDoctorMutation = (onSuccess: any) => {
+  const qc = useQueryClient();
   return useMutation(
     (payload: LinkDoctorRequest) => axios.post(LINK_DOCTOR_URL, payload),
-    {},
+    {
+      onSuccess: () => {
+        qc.invalidateQueries(['DOCTORS']);
+        onSuccess();
+      },
+    },
+  );
+};
+
+export const useAddDoctor = ({onSuccess}: {onSuccess: () => void}) => {
+  const qc = useQueryClient();
+  return useMutation(
+    (payload: AddDoctorRequest) => {
+      return axios.post<AddDoctorResponse>(ADDDOCTOR_URL, payload);
+    },
+    {
+      onSuccess: () => {
+        qc.invalidateQueries(['DOCTORS']);
+        onSuccess();
+      },
+      onError: e => {
+        alert(e.Message);
+      },
+    },
   );
 };

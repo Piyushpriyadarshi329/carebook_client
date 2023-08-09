@@ -7,10 +7,13 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
 import Color from '../asset/Color';
-import {useAddDoctor} from '../customhook/useadddoctor';
 import type {RootState} from '../redux/Store';
 import {AddDoctorRequest} from '../types';
-import {useGetDoctorsList, useLinkDoctorMutation} from './useDoctorQuery';
+import {
+  useAddDoctor,
+  useGetDoctorsList,
+  useLinkDoctorMutation,
+} from './useDoctorQuery';
 
 const specialitylist = [
   {
@@ -45,6 +48,9 @@ export default function Adddoctor() {
       navigation.goBack();
     },
   });
+  const {mutate: linkDoctorMutate} = useLinkDoctorMutation(() => {
+    navigation.goBack();
+  });
   const [name, setname] = useState('');
   const [mobile, setmobile] = useState('');
   const [email, setemail] = useState('');
@@ -75,13 +81,13 @@ export default function Adddoctor() {
       console.log(error);
     }
   }
-  const {mutate: linkDoctorMutate} = useLinkDoctorMutation();
   const linkDoctor = () => {
     linkDoctorMutate({
       clinic_id: Appdata.Appdata.userid,
       doctor_id: existingDoctors?.[0].id ?? '',
     });
   };
+
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <View style={{flex: 1}}></View>
@@ -117,13 +123,11 @@ export default function Adddoctor() {
             placeholder="Please enter Mobile No."
             keyboardType="numeric"
             onChangeText={text => {
-              if (text.length === 10) {
-              }
-              setmobile(text);
+              setmobile(text.trim());
             }}
           />
         </View>
-        {!!existingDoctors?.length ? (
+        {!existingDoctors?.length ? (
           <>
             <View
               style={{
@@ -235,11 +239,19 @@ export default function Adddoctor() {
             </View>
           </>
         ) : (
-          <View>
-            <Text>{existingDoctors?.[0].name}</Text>
-            <Text>{existingDoctors?.[0].email}</Text>
-            <Text>{existingDoctors?.[0].speciality}</Text>
-            <Button title="Link" onPress={linkDoctor} />
+          <View
+            style={{
+              backgroundColor: Color.tertiary,
+              marginHorizontal: 50,
+              borderRadius: 10,
+              padding: 20,
+            }}>
+            <Text style={{color: 'black'}}>{existingDoctors?.[0]?.name}</Text>
+            <Text style={{color: 'black'}}>{existingDoctors?.[0]?.email}</Text>
+            <Text style={{color: 'black'}}>
+              {existingDoctors?.[0]?.speciality}
+            </Text>
+            <Button title="Link" onPress={linkDoctor} color={Color.primary} />
           </View>
         )}
       </View>
