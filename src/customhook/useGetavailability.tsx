@@ -45,7 +45,10 @@ export interface Availability extends Omit<AvailabilityRes, 'week_day'> {
 export function useGetavailability(payload: GetAvailabilityRequest) {
   return useQuery(
     ['AVAILABILITY', payload],
-    () => axios.post<GetAvailabilityResponse>(GETAVAILABILITY_URL, payload),
+    () => {
+      console.log('getavailablity');
+      return axios.post<GetAvailabilityResponse>(GETAVAILABILITY_URL, payload);
+    },
     {
       select: data => {
         let transformedData = data.data.data;

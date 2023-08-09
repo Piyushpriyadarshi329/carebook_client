@@ -1,4 +1,5 @@
-var BASE_URL = 'http://16.171.126.47:80/api/v1';
+const BASE_URL = 'http://16.171.126.47:80/api/v1'; //dev
+// const BASE_URL = 'http://13.233.253.68:5000/api/v1'; //prod
 
 export const LOGIN_URL = BASE_URL + '/login';
 export const signup_URL = BASE_URL + '/signup';
@@ -15,3 +16,4 @@ export const GETADDRESS_URL = BASE_URL + '/getaddress';
 export const ADDLEAVE_URL = BASE_URL + '/addLeave';
 export const UPDATE_DOCTOR = BASE_URL + '/updateDoctor';
 export const GETLEAVE_URL = BASE_URL + '/getLeaves';
+export const UPDATESLOTSSTATUS_URL = BASE_URL + '/updateSlotsStatus';

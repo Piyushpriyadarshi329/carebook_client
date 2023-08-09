@@ -139,6 +139,7 @@ export default function Editprofile() {
               height: 40,
               marginLeft: 10,
               flex: 1,
+              color: 'black',
             }}
             placeholder="Please enter city."
             keyboardType="default"
@@ -165,6 +166,7 @@ export default function Editprofile() {
               height: 40,
               marginLeft: 10,
               flex: 1,
+              color: 'black',
             }}
             placeholder="Please enter State"
             onChangeText={text => {
@@ -190,6 +192,7 @@ export default function Editprofile() {
               height: 40,
               marginLeft: 10,
               flex: 1,
+              color: 'black',
             }}
             placeholder="Please enter Pincode"
             onChangeText={text => {

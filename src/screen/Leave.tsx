@@ -10,7 +10,6 @@ import React, {useState, useEffect} from 'react';
 import Navbar from '../components/Navbar';
 import CheckBox from 'react-native-check-box';
 import Color from '../asset/Color';
-import DropDownPicker from 'react-native-dropdown-picker';
 
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 import {AddLeaveRequest} from '../types';
@@ -45,6 +44,10 @@ export function LeaveById(props: {id: string}) {
   const [worktime_id, setworktime_id] = useState<any>(null);
   const {data: Availability} = useGetavailability({doctor_id: props.id});
 
+  const {mutate: addleave} = useAddleave(() => {
+    alert('Mark Unavailable add Successfully');
+    navigation.goBack();
+  });
   async function markunavailablefun() {
     console.log(
       'todate',
@@ -66,14 +69,7 @@ export function LeaveById(props: {id: string}) {
 
       console.log('payload addleave', payload);
 
-      let addleaveres: any = await useAddleave(payload);
-
-      console.log('addleaveres', addleaveres.data);
-
-      if (addleaveres.data.Success) {
-        alert('Mark Unavailable add Successfully');
-        navigation.goBack();
-      }
+      addleave(payload);
     } catch (error) {
       console.log(error);
     }
@@ -89,6 +85,7 @@ export function LeaveById(props: {id: string}) {
                 console.log('day.dateString', day.dateString);
                 setfromdate(day.dateString);
               }}
+              minDate={new Date()}
               theme={{
                 backgroundColor: '#ffffff',
                 calendarBackground: '#ffffff',
@@ -131,6 +128,7 @@ export function LeaveById(props: {id: string}) {
 
                 settodate(day.dateString);
               }}
+              minDate={new Date(fromdate + 'T00:00:00Z') || new Date()}
               theme={{
                 backgroundColor: '#ffffff',
                 calendarBackground: '#ffffff',

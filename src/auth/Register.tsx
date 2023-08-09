@@ -74,6 +74,7 @@ export default function Register() {
               marginLeft: 10,
               height: 40,
               flex: 1,
+              color: 'black',
             }}
             placeholder="Please enter Full Name."
             onChangeText={text => {
@@ -98,6 +99,7 @@ export default function Register() {
               height: 40,
               marginLeft: 10,
               flex: 1,
+              color: 'black',
             }}
             placeholder="Please enter Mobile No."
             keyboardType="numeric"
@@ -124,6 +126,7 @@ export default function Register() {
               height: 40,
               marginLeft: 10,
               flex: 1,
+              color: 'black',
             }}
             placeholder="Please enter Email"
             keyboardType="numeric"

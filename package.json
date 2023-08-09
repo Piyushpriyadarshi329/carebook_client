@@ -7,7 +7,9 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "releaseLin": "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/; rm -r ./android/app/src/main/res/raw; rm -r ./android/app/src/main/res/drawable-*;cd android; ./gradlew assembleRelease;",
+    "bundleLin": "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/; rm -r ./android/app/src/main/res/raw; rm -r ./android/app/src/main/res/drawable-*;cd android; ./gradlew bundleRelease;"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.19.1",

@@ -84,12 +84,12 @@ export default function Login() {
           </View>
           <TextInput
             style={{
+              color: 'black',
               borderBottomWidth: 1,
               borderRadius: 5,
               marginLeft: 10,
               flex: 1,
               height: 50,
-              color: 'black',
             }}
             placeholder="Please Enter Email."
             keyboardType="default"

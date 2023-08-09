@@ -238,6 +238,10 @@ export interface AddAdressRequest {
 export interface GetAdressRequest {
   user_id?: string;
 }
+export interface updateSlotsStatusRequest {
+  id?: string;
+  status?: string;
+}
 
 export interface AddAdresstdto extends AddAdressRequest {
   id?: string;
