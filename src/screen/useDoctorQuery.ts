@@ -1,14 +1,29 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import axios from 'axios';
-import {GETDOCTORLIST_URL, GET_DOCTOR, UPDATE_DOCTOR} from '../API_CONFIG';
-import {DoctorDto, GetDoctorsListResponse, UpdateDoctorRequest} from '../types';
+import {
+  GETDOCTORLIST_URL,
+  GET_DOCTOR,
+  LINK_DOCTOR_URL,
+  UPDATE_DOCTOR,
+} from '../API_CONFIG';
+import {
+  DoctorDto,
+  GetDoctorsListResponse,
+  GetDotcorsListRequest,
+  LinkDoctorRequest,
+  UpdateDoctorRequest,
+} from '../types';
 
-export const useGetDoctorsList = (clinic_id: string) => {
+export const useGetDoctorsList = (
+  payload: GetDotcorsListRequest,
+  enabled?: boolean,
+) => {
   return useQuery(
     ['DOCTORS'],
-    () => axios.post<GetDoctorsListResponse>(GETDOCTORLIST_URL, {clinic_id}),
+    () => axios.post<GetDoctorsListResponse>(GETDOCTORLIST_URL, payload),
     {
-      select: data => data.data,
+      select: data => data.data.data,
+      enabled: enabled,
     },
   );
 };
@@ -38,5 +53,12 @@ export const useMutateDoctorProfile = (doctor_id: string, onSuccess?: any) => {
         onSuccess?.();
       },
     },
+  );
+};
+
+export const useLinkDoctorMutation = () => {
+  return useMutation(
+    (payload: LinkDoctorRequest) => axios.post(LINK_DOCTOR_URL, payload),
+    {},
   );
 };
