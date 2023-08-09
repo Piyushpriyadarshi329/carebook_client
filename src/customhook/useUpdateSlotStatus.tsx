@@ -3,15 +3,15 @@ import axios from 'axios';
 import {UPDATESLOTSSTATUS_URL} from '../API_CONFIG';
 import {AddLeaveRequest, updateSlotsStatusRequest} from '../types';
 
-export function useAddleave(onSuccess: any) {
+export function useUpdateSlotStatus(onSuccess: any) {
   const qc = useQueryClient();
 
   return useMutation(
     (payload: updateSlotsStatusRequest) =>
       axios.post(UPDATESLOTSSTATUS_URL, payload),
     {
-      onSuccess: () => {
-        // qc.invalidateQueries(['LEAVES']);
+      onSuccess: (data, variables) => {
+        qc.invalidateQueries(['APPOINTMENTS']);
         // onSuccess();
       },
     },
