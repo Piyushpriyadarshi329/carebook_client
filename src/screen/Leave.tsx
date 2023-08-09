@@ -10,7 +10,6 @@ import React, {useState, useEffect} from 'react';
 import Navbar from '../components/Navbar';
 import CheckBox from 'react-native-check-box';
 import Color from '../asset/Color';
-import DropDownPicker from 'react-native-dropdown-picker';
 
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 import {AddLeaveRequest} from '../types';
@@ -86,6 +85,7 @@ export function LeaveById(props: {id: string}) {
                 console.log('day.dateString', day.dateString);
                 setfromdate(day.dateString);
               }}
+              minDate={new Date()}
               theme={{
                 backgroundColor: '#ffffff',
                 calendarBackground: '#ffffff',
@@ -128,6 +128,7 @@ export function LeaveById(props: {id: string}) {
 
                 settodate(day.dateString);
               }}
+              minDate={new Date(fromdate + 'T00:00:00Z') || new Date()}
               theme={{
                 backgroundColor: '#ffffff',
                 calendarBackground: '#ffffff',

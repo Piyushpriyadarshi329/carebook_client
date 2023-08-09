@@ -101,6 +101,7 @@ export default function Adddoctor() {
               marginLeft: 10,
               height: 40,
               flex: 1,
+              color: 'black',
             }}
             placeholder="Please enter Full Name."
             onChangeText={text => {
@@ -141,6 +142,7 @@ export default function Adddoctor() {
               height: 40,
               marginLeft: 10,
               flex: 1,
+              color: 'black',
             }}
             placeholder="Please enter Mobile No."
             keyboardType="numeric"
@@ -167,6 +169,7 @@ export default function Adddoctor() {
               height: 40,
               marginLeft: 10,
               flex: 1,
+              color: 'black',
             }}
             placeholder="Please enter Email"
             onChangeText={text => {
@@ -192,6 +195,7 @@ export default function Adddoctor() {
               height: 40,
               marginLeft: 10,
               flex: 1,
+              color: 'black',
             }}
             placeholder="Please enter Password"
             onChangeText={text => {

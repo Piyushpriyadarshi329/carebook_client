@@ -22,6 +22,7 @@ export interface DoctorDto {
 export interface GetDotcorsListRequest {
   clinic_id?: string;
   doctor_id?: string;
+  mobile?: string;
 }
 
 export type GetDoctorsListResponse = DataResponse<DoctorDto[]>;
@@ -115,6 +116,8 @@ export enum BookingStatus {
   CANCELLED = 'CANCELLED',
   RESCHEDULED = 'RESCHEDULED',
   COMPLETED = 'COMPLETED',
+  STARTED = 'STARTED',
+  NA = 'NA',
 }
 export interface BookingDto {
   id: string;
@@ -229,6 +232,10 @@ export interface AddAdressRequest {
 }
 export interface GetAdressRequest {
   user_id?: string;
+}
+export interface updateSlotsStatusRequest {
+  id?: string;
+  status?: string;
 }
 
 export interface AddAdresstdto extends AddAdressRequest {

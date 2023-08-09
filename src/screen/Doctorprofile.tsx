@@ -303,10 +303,20 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
             <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
               Leaves
             </Text>
+            <Pressable
+              onPress={() => {
+                navigation.navigate('Leave', {
+                  id: props.id,
+                  clinic_id: props.clinic_id,
+                });
+              }}
+              style={{flex: 1, alignItems: 'flex-end', marginRight: 30}}>
+              <Icon name="plus" size={24} color={Color.primary} />
+            </Pressable>
           </View>
 
-          <ScrollView>
-            <View style={{flex: 10}}>
+          <View style={{flex: 10}}>
+            <ScrollView>
               {leaves?.map((i: any) => {
                 return (
                   <View
@@ -341,8 +351,8 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
                   </View>
                 );
               })}
-            </View>
-          </ScrollView>
+            </ScrollView>
+          </View>
         </View>
       </View>
     </View>
