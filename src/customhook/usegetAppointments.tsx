@@ -1,9 +1,9 @@
 import axios from 'axios';
 import {GETAPPOINTMENTS_URL} from '../API_CONFIG';
 import {useQueries, useQuery} from '@tanstack/react-query';
-import {GetAppointmentResponse} from '../types';
+import {GetAppointmentResponse, GetAppointmentsRequest} from '../types';
 
-export function usegetAppointments(payload: any) {
+export function usegetAppointments(payload: GetAppointmentsRequest) {
   return useQuery(
     ['APPOINTMENTS', payload],
     () => axios.post<GetAppointmentResponse>(GETAPPOINTMENTS_URL, payload),

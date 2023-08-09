@@ -15,6 +15,7 @@ import {RootState} from '../redux/Store';
 import {usegetAppointments} from '../customhook/usegetAppointments';
 import {useNavigation} from '@react-navigation/native';
 import CheckBox from 'react-native-check-box';
+import {useUpdateSlotStatus} from '../customhook/useUpdateSlotStatus';
 
 export const UpcomingDateTile = (props: {date: any; setselecteddate: any}) => {
   const Appdata = useSelector((state: RootState) => state);
@@ -80,6 +81,12 @@ export default function Appointments() {
 
   const navigation = useNavigation();
 
+  const {mutate: UpdateSlotStatus} = useUpdateSlotStatus(() => {
+    alert('Status updated Successfully');
+
+    // navigation.goBack();
+  });
+
   const [selected, setselected] = useState('current');
   const [start, setstart] = useState(false);
   const [completed, setcompleted] = useState(false);
@@ -139,6 +146,10 @@ export default function Appointments() {
   async function updateslot(bookingid: string, status: string) {
     try {
       //updateslot api call  status
+      UpdateSlotStatus({
+        id: bookingid,
+        status: status,
+      });
     } catch (error) {
       console.log('error');
     }
@@ -231,16 +242,53 @@ export default function Appointments() {
                             marginHorizontal: 10,
                             flexDirection: 'row',
                           }}>
-                          <View style={{flexDirection: 'row'}}>
+                          {appointment.status == 'BOOKED' ? (
+                            <>
+                              <Button
+                                color={Color.primary}
+                                title="Start"
+                                onPress={() => {
+                                  updateslot(appointment.id, 'STARTED');
+                                }}></Button>
+                            </>
+                          ) : null}
+
+                          {appointment.status == 'STARTED' ? (
+                            <>
+                              <Button
+                                color={Color.primary}
+                                title="Complete"
+                                onPress={() => {
+                                  updateslot(appointment.id, 'COMPLETED');
+                                }}></Button>
+                            </>
+                          ) : null}
+
+                          {appointment.status == 'COMPLETED' ? (
+                            <>
+                              <View>
+                                <Text style={{color: 'green'}}>Completed</Text>
+                              </View>
+                            </>
+                          ) : null}
+
+                          {/* <View style={{flexDirection: 'row'}}>
                             <View>
                               <CheckBox
                                 style={{flex: 1, padding: 10}}
                                 checkBoxColor={Color.primary}
                                 onClick={() => {
-                                  setstart(true);
-                                  updateslot(appointment.id, 'START');
+                                  if (appointment.status == 'BOOKED') {
+                                    setstart(true);
+
+                                    updateslot(appointment.id, 'START');
+                                  }
                                 }}
-                                isChecked={start}
+                                isChecked={
+                                  appointment.status == 'COMPLETED' ||
+                                  appointment.status == 'START' ||
+                                  start
+                                }
                                 leftText={''}
                               />
                             </View>
@@ -248,24 +296,29 @@ export default function Appointments() {
                               <Text style={{color: 'black'}}>Start</Text>
                             </View>
                           </View>
+
                           <View style={{flexDirection: 'row'}}>
                             <View>
                               <CheckBox
                                 style={{flex: 1, padding: 10}}
                                 checkBoxColor={Color.primary}
                                 onClick={() => {
-                                  setcompleted(true);
+                                  if (appointment.status == 'START' || start) {
+                                    setcompleted(true);
 
-                                  updateslot(appointment.id, 'COMPLETED');
+                                    updateslot(appointment.id, 'COMPLETED');
+                                  }
                                 }}
-                                isChecked={completed}
+                                isChecked={
+                                  appointment.status == 'COMPLETED' || completed
+                                }
                                 leftText={''}
                               />
                             </View>
                             <View style={{marginTop: 15, marginLeft: 10}}>
                               <Text style={{color: 'black'}}>Completed</Text>
                             </View>
-                          </View>
+                          </View> */}
                         </View>
                       </View>
                     </View>
