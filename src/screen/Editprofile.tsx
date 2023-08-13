@@ -7,9 +7,9 @@ import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import Color from '../asset/Color';
 import {useAddaddress} from '../customhook/useAddaddress';
-import {useAddDoctor} from '../customhook/useadddoctor';
 import type {RootState} from '../redux/Store';
 import {AddAdressRequest} from '../types';
+import {useAddDoctor} from './useDoctorQuery';
 
 export default function Editprofile() {
   const dispatch = useDispatch();

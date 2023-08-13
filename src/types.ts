@@ -31,8 +31,13 @@ export type AddDoctorRequest = Omit<DoctorDto, 'id'> & {
   password: string;
   clinic_id: string;
 };
-
 export type AddDoctorResponse = DataResponse<any>;
+
+export interface LinkDoctorRequest {
+  clinic_id: string;
+  doctor_id: string;
+}
+
 export type UpdateDoctorReqParams = {id: string};
 export type UpdateDoctorRequest = {
   name?: string;

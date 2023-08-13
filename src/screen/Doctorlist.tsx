@@ -1,11 +1,10 @@
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React from 'react';
+import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useSelector} from 'react-redux';
 import Color from '../asset/Color';
 import Doctorcard from '../components/Doctorcard';
-import {useNavigation} from '@react-navigation/native';
-import {useGetdoctorlist} from '../customhook/useGetdoctorlist';
-import {useSelector, useDispatch} from 'react-redux';
 import type {RootState} from '../redux/Store';
 import {useGetDoctorsList} from './useDoctorQuery';
 
@@ -13,7 +12,9 @@ export default function Doctorlist() {
   const navigation = useNavigation();
   const Appdata = useSelector((state: RootState) => state);
 
-  const {data: doctorlist} = useGetDoctorsList(Appdata.Appdata.userid ?? '');
+  const {data: doctorlist} = useGetDoctorsList({
+    clinic_id: Appdata.Appdata.userid ?? '',
+  });
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -28,13 +29,13 @@ export default function Doctorlist() {
         </View>
 
         <View style={{flex: 20}}>
-          {doctorlist?.data?.length == 0 ? (
+          {doctorlist?.length == 0 ? (
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <Text style={{color: 'black'}}>No Doctor FOund</Text>
             </View>
           ) : (
             <ScrollView>
-              {doctorlist?.data?.map((i: any, index: number) => {
+              {doctorlist?.map((i: any, index: number) => {
                 return (
                   <View style={{flex: 1}} key={index}>
                     <Doctorcard data={i} />

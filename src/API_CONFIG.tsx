@@ -1,15 +1,12 @@
-// var BASE_URL = "http://localhost:5000/api/v1";
-// var BASE_URL = 'http://192.168.100.39:5000/api/v1';
-// var BASE_URL = "http://192.168.1.39:5000/api/v1";
-var BASE_URL = 'http://16.171.126.47:80/api/v1'; //dev
-// var BASE_URL = 'http://13.233.253.68:5000/api/v1'; //prod
-// var BASE_URL = 'http://43.204.45.2:5000/api/v1'; //prod
+const BASE_URL = 'http://16.171.126.47:80/api/v1'; //dev
+// const BASE_URL = 'http://13.233.253.68:5000/api/v1'; //prod
 
 export const LOGIN_URL = BASE_URL + '/login';
 export const signup_URL = BASE_URL + '/signup';
 export const GETDOCTORLIST_URL = BASE_URL + '/getdoctorlist';
 export const GET_DOCTOR = BASE_URL + '/getdoctor';
 export const ADDDOCTOR_URL = BASE_URL + '/adddoctor';
+export const LINK_DOCTOR_URL = BASE_URL + '/linkDoctor';
 export const GETCLINICLIST_URL = BASE_URL + '/getcliniclist';
 export const ADDAVAILABILITY_URL = BASE_URL + '/addavailability';
 export const GETAVAILABILITY_URL = BASE_URL + '/getavailability';
