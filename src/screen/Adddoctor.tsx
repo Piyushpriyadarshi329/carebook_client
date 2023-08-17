@@ -1,12 +1,11 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
-import {Button, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/AntDesign';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
 import Color from '../asset/Color';
+import {commonStyles} from '../asset/styles';
 import type {RootState} from '../redux/Store';
 import {AddDoctorRequest} from '../types';
 import {
@@ -90,36 +89,17 @@ export default function Adddoctor() {
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
-      <View style={{flex: 1}}></View>
-      <View style={{flex: 0.7, marginLeft: 50}}>
-        <Text style={{color: Color.black, fontSize: 22, fontWeight: 'bold'}}>
-          Fill Doctor Details
-        </Text>
+      <View style={styles.headContainer}>
+        <Text style={styles.head}>Fill Doctor Details</Text>
       </View>
 
-      <View style={{flex: 1, marginLeft: 50}}></View>
-
-      <View style={{flex: 6}}>
-        <View
-          style={{
-            marginHorizontal: 70,
-            flex: 1,
-            justifyContent: 'flex-start',
-            flexDirection: 'row',
-          }}>
-          <View style={{marginTop: 10}}>
-            <Icon name="mobile1" size={20} color="black" />
-          </View>
+      <View style={styles.formContainer}>
+        <View style={styles.fieldContainer}>
+          <Icon name="mobile1" size={20} color="black" />
           <TextInput
-            style={{
-              borderBottomWidth: 1,
-              borderRadius: 5,
-              height: 40,
-              marginLeft: 10,
-              flex: 1,
-              color: 'black',
-            }}
-            placeholder="Please enter Mobile No."
+            placeholderTextColor={'black'}
+            style={styles.textInput}
+            placeholder="Mobile No."
             keyboardType="numeric"
             onChangeText={text => {
               setmobile(text.trim());
@@ -128,93 +108,54 @@ export default function Adddoctor() {
         </View>
         {!existingDoctors?.length ? (
           <>
-            <View
-              style={{
-                marginHorizontal: 70,
-                flex: 1,
-                justifyContent: 'flex-start',
-                flexDirection: 'row',
-              }}>
-              <View style={{marginTop: 10}}>
-                <Icon name="user" size={20} color="black" />
-              </View>
+            <View style={styles.fieldContainer}>
+              <Icon name="user" size={20} color="black" />
               <TextInput
-                style={{
-                  borderBottomWidth: 1,
-                  borderRadius: 5,
-                  marginLeft: 10,
-                  height: 40,
-                  flex: 1,
-                  color: 'black',
-                }}
-                placeholder="Please enter Full Name."
+                placeholderTextColor={'black'}
+                style={styles.textInput}
+                placeholder="Full Name."
                 onChangeText={text => {
                   setname(text);
                 }}
               />
             </View>
 
-            <View style={{flex: 2, marginHorizontal: 70}}>
-              <View style={{marginTop: 10}}>
+            <View style={styles.fieldContainer}>
+              <Icon name="tago" size={20} color="black" />
+              <View style={{width: '80%'}}>
                 <DropDownPicker
-                  style={{borderBottomWidth: 1}}
                   open={open1}
+                  style={[styles.textInput, {width: '100%'}]}
                   value={speciality}
                   items={specialitylist}
                   setOpen={setOpen1}
                   setValue={setspeciality}
-                  // setItems={setItems}
                   placeholder="Select speciality"
                 />
               </View>
             </View>
 
-            <View
-              style={{
-                marginHorizontal: 70,
-                flex: 1,
-                justifyContent: 'flex-start',
-                flexDirection: 'row',
-              }}>
+            <View style={styles.fieldContainer}>
               <View style={{marginTop: 10}}>
-                <MaterialIcon name="email" size={20} color="black" />
+                <Icon name="mail" size={20} color="black" />
               </View>
               <TextInput
-                style={{
-                  borderBottomWidth: 1,
-                  borderRadius: 5,
-                  height: 40,
-                  marginLeft: 10,
-                  flex: 1,
-                  color: 'black',
-                }}
-                placeholder="Please enter Email"
+                placeholderTextColor={'black'}
+                style={styles.textInput}
+                placeholder="Email"
                 onChangeText={text => {
                   setemail(text);
                 }}
               />
             </View>
 
-            <View
-              style={{
-                marginHorizontal: 70,
-                flex: 1,
-                justifyContent: 'flex-start',
-                flexDirection: 'row',
-              }}>
-              <View style={{marginTop: 10}}>
-                <FontAwesome5 name="lock" size={20} color="black" />
-              </View>
+            <View style={styles.fieldContainer}>
+              <Icon name="key" size={20} color="black" />
+
               <TextInput
-                style={{
-                  borderBottomWidth: 1,
-                  borderRadius: 5,
-                  height: 40,
-                  marginLeft: 10,
-                  flex: 1,
-                  color: 'black',
-                }}
-                placeholder="Please enter Password"
+                placeholderTextColor={'black'}
+                style={styles.textInput}
+                placeholder="Password"
                 onChangeText={text => {
                   setpassword(text);
                 }}
@@ -263,3 +204,34 @@ export default function Adddoctor() {
     </View>
   );
 }
+
+export const styles = StyleSheet.create({
+  formContainer: {
+    flex: 6,
+    justifyContent: 'space-between',
+    alignSelf: 'center',
+  },
+  fieldContainer: {
+    ...commonStyles.flexRowAlignCenter,
+    gap: 15,
+    paddingHorizontal: 10,
+  },
+  textInput: {
+    borderWidth: 0,
+    borderBottomWidth: 1,
+    borderRadius: 5,
+    color: 'black',
+    width: '80%',
+  },
+  headContainer: {
+    marginVertical: 60,
+    paddingVertical: 60,
+    justifyContent: 'center',
+  },
+  head: {
+    color: Color.black,
+    fontSize: 22,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+});
