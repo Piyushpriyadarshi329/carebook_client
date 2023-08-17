@@ -1,14 +1,24 @@
-import React, {useMemo, useState} from 'react';
-import {Button, Image, ScrollView, Text, View} from 'react-native';
+import {default as React, useMemo, useState} from 'react';
+import {
+  Button,
+  Image,
+  Modal,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {Calendar} from 'react-native-calendars';
+import Icon from 'react-native-vector-icons/AntDesign';
 import {useSelector} from 'react-redux';
 import Color from '../asset/Color';
 import {UpcomingDateTile} from '../components/DateTile';
+import Navbar from '../components/Navbar';
 import {useUpdateSlotStatus} from '../customhook/useUpdateSlotStatus';
 import {usegetAppointments} from '../customhook/usegetAppointments';
 import {RootState} from '../redux/Store';
-import {daylist, monthlist} from './../Appconstant';
-import Navbar from '../components/Navbar';
 import {useAlert} from '../utils/useShowAlert';
+import {daylist, monthlist} from './../Appconstant';
 
 export const LoggedInUserAppointments = () => {
   const userId = useSelector((state: RootState) => state.Appdata.userid);
@@ -20,6 +30,8 @@ export const AppointmentForDoctor = (props: any) => {
 
 function Appointments({doctorId}: {doctorId: string}) {
   const {successAlert} = useAlert();
+  const [centerdate, setcenterdate] = useState(new Date());
+  const [modalVisible, setModalVisible] = useState(false);
   const {mutate: UpdateSlotStatus} = useUpdateSlotStatus(() => {
     successAlert('Status updated Successfully');
   });
@@ -39,8 +51,8 @@ function Appointments({doctorId}: {doctorId: string}) {
   const upcomingDates = useMemo(() => {
     let localdate = [];
 
-    for (let i = 0; i < 6; i++) {
-      let date = new Date();
+    for (let i = -2; i < 3; i++) {
+      let date = new Date(centerdate);
 
       date.setDate(date.getDate() + i);
 
@@ -68,7 +80,7 @@ function Appointments({doctorId}: {doctorId: string}) {
     }
 
     return localdate;
-  }, []);
+  }, [centerdate]);
   const {data: appointmentdata} = usegetAppointments({
     doctorId: doctorId,
     appointment_date: selecteddate,
@@ -84,18 +96,69 @@ function Appointments({doctorId}: {doctorId: string}) {
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <Navbar title="Appointments" />
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <View style={{flex: 1, backgroundColor: 'white'}}>
+          <View>
+            <Calendar
+              onDayPress={day => {
+                setcenterdate(day.dateString);
+              }}
+              theme={{
+                backgroundColor: '#ffffff',
+                calendarBackground: '#ffffff',
+                textSectionTitleColor: '#b6c1cd',
+                selectedDayBackgroundColor: Color.primary,
+                selectedDayTextColor: '#ffffff',
+                todayTextColor: '#00adf5',
+                dayTextColor: '#2d4150',
+              }}
+              markedDates={{
+                [centerdate]: {
+                  selected: true,
+                  disableTouchEvent: true,
+                  selectedDotColor: 'orange',
+                },
+              }}
+            />
+          </View>
+
+          <View style={{flex: 1, alignItems: 'center', marginTop: 20}}>
+            <TouchableOpacity
+              style={{backgroundColor: Color.primary, borderRadius: 5}}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}>
+              <Text style={{fontSize: 16, color: 'black', padding: 10}}>
+                Confirm
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
       <View
         style={{
           flex: 3,
           flexDirection: 'row',
-          marginHorizontal: 20,
+          marginLeft: 10,
+          marginRight: 10,
           marginTop: 5,
         }}>
-        <ScrollView horizontal={true}>
-          {upcomingDates.map(date => {
-            return <UpcomingDateTile {...{date, setselecteddate}} />;
-          })}
-        </ScrollView>
+        <View style={{flex: 6}}>
+          <ScrollView horizontal={true}>
+            {upcomingDates.map(date => {
+              return <UpcomingDateTile {...{date, setselecteddate}} />;
+            })}
+          </ScrollView>
+        </View>
+        <View style={{flex: 1, marginTop: 10, alignItems: 'flex-end'}}>
+          <TouchableOpacity
+            onPress={() => {
+              setModalVisible(true);
+            }}>
+            <Icon name={'calendar'} color={Color.primary} size={24} />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={{flex: 10, marginHorizontal: 30}}>

@@ -34,3 +34,8 @@ address_details ka table create kar diya hai.
 also Api build and integrate for (doctor and clinic)
 
 
+
+
+/
+
+
