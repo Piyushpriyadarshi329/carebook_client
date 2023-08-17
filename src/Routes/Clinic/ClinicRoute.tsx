@@ -2,11 +2,10 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/Entypo';
-import Color from '../asset/Color';
-import Home from '../screen/Home';
-import DoctorProfilestack from './stack/Doctorprofilestack';
-
-import Appointmentsstack from './stack/Appointmentsstack';
+import Color from '../../asset/Color';
+import Clinicdoctorliststack from './Stack/ClinicdoctorlistStack';
+import Clinicprofilestack from './Stack/ClinicprofileStack';
+import {AppPages} from '../../appPages';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,37 +16,33 @@ export default function DocterRoute() {
         screenOptions={({route}) => ({
           tabBarShowLabel: false,
           tabBarHideOnKeyboard: true,
-          tabBarIcon: ({focused, color, size}) => {
+          tabBarIcon: () => {
             let iconName;
             switch (route.name) {
               case 'Home':
                 iconName = 'home';
                 break;
-              case 'Appointments':
-                iconName = 'book';
+              case AppPages.DoctorStack:
+                iconName = 'list';
                 break;
-              case 'Profile':
+              case 'ProfileStack':
                 iconName = 'user';
                 break;
               default:
                 break;
             }
+
             return <Icon name={iconName} color={Color.primary} size={24} />;
           },
         })}>
         <Tab.Screen
-          name="Home"
-          component={Home}
+          name={AppPages.DoctorStack}
+          component={Clinicdoctorliststack}
           options={{headerShown: false}}
         />
         <Tab.Screen
-          name="Appointments"
-          component={Appointmentsstack}
-          options={{headerShown: false}}
-        />
-        <Tab.Screen
-          name="Profile"
-          component={DoctorProfilestack}
+          name="ProfileStack"
+          component={Clinicprofilestack}
           options={{
             headerShown: false,
           }}

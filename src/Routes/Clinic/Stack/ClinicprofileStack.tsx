@@ -1,7 +1,7 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import Clinicprofile from '../../screen/Clinicprofile';
-import Editprofile from '../../screen/Editprofile';
+import Clinicprofile from '../../../screen/Clinic/Profile';
+import Editprofile from '../../../screen/Editprofile';
 
 export default function Clinicprofilestack() {
   const Stack = createNativeStackNavigator();

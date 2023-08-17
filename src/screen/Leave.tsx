@@ -20,16 +20,16 @@ import {useGetavailability} from '../customhook/useGetavailability';
 import {showtime} from '../AppFunction';
 import {useNavigation} from '@react-navigation/native';
 
-export default function LoggedInUserLeave() {
-  const Appdata = useSelector((state: RootState) => state);
-  return <LeaveById id={Appdata.Appdata.userid} />;
+export function LoggedInUserLeave() {
+  const userId = useSelector((state: RootState) => state.Appdata.userid);
+  return <LeaveById id={userId} />;
 }
 export const Leave = (props: any) => {
   return <LeaveById id={props.route.params.id} />;
 };
 
-export function LeaveById(props: {id: string}) {
-  const Appdata = useSelector((state: RootState) => state);
+function LeaveById(props: {id: string}) {
+  const userId = useSelector((state: RootState) => state.Appdata.userid);
   const navigation = useNavigation();
 
   const [multipledate, setmultipledate] = useState(false);
@@ -57,7 +57,7 @@ export function LeaveById(props: {id: string}) {
     // return;
     try {
       let payload: AddLeaveRequest = {
-        doctor_id: Appdata.Appdata.userid,
+        doctor_id: userId,
         fromdate: new Date(fromdate + 'T00:00:00Z').getTime(),
         todate: multipledate
           ? new Date(todate + 'T00:00:00Z').getTime()

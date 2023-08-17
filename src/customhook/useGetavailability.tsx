@@ -7,7 +7,7 @@ import {
   GetAvailabilityResponse,
 } from '../types';
 
-const days = [
+export const days = [
   {
     value: 0,
     label: 'SUN',

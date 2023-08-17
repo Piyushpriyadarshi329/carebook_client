@@ -6,28 +6,13 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import Color from '../asset/Color';
-import {useAddaddress} from '../customhook/useAddaddress';
+import {useAddaddress} from './Clinic/Profile/useAddaddress';
 import type {RootState} from '../redux/Store';
 import {AddAdressRequest} from '../types';
 import {useAddDoctor} from './useDoctorQuery';
 
 export default function Editprofile() {
-  const dispatch = useDispatch();
-  const navigation = useNavigation();
-  const Appdata = useSelector((state: RootState) => state);
-
-  const {mutate: addDoctor} = useAddDoctor({
-    onSuccess: () => {
-      console.log('success');
-      navigation.goBack();
-    },
-  });
-
-  // const [name, setname] = useState('');
-  // const [mobile, setmobile] = useState('');
-  // const [email, setemail] = useState('');
-  // const [password, setpassword] = useState('');
-  // const [speciality, setspeciality] = useState('');
+  const userId = useSelector((state: RootState) => state.Appdata.userid);
 
   const [address_line1, setaddress_line1] = useState('');
   const [address_line2, setaddress_line2] = useState('');
@@ -42,7 +27,7 @@ export default function Editprofile() {
         address_line2: address_line2,
         city: city,
         state: state,
-        user_id: Appdata.Appdata.userid ?? '',
+        user_id: userId ?? '',
         pincode: Number(pincode),
         lat: 0,
         lan: 0,

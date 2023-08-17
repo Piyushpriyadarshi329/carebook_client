@@ -1,24 +1,14 @@
 import axios from 'axios';
 import {GETADDRESS_URL} from '../API_CONFIG';
+import {useQuery} from '@tanstack/react-query';
+import {AddressDto, DataResponse, GetAdressRequest} from '../types';
 
-export async function useGetaddress(payload: any) {
-  // const config: any =  {
-  //     headers: {
-  //       Authorization: `Bearer ${rentalbikedetails.accessToken}`,
-  //     },
-  //   };
-
-  let myPromise = new Promise(async function (myResolve, myReject) {
-    try {
-      var res = await axios.post(GETADDRESS_URL, payload);
-
-      // console.log('res', res.data);
-
-      myResolve(res);
-    } catch (error: any) {
-      myReject(error);
-    }
-  });
-
-  return myPromise;
+export function useGetaddress(payload: GetAdressRequest) {
+  return useQuery(
+    ['ADDRESS', payload],
+    () => axios.post<DataResponse<AddressDto[]>>(GETADDRESS_URL, payload),
+    {
+      select: data => data.data.data,
+    },
+  );
 }

@@ -9,9 +9,6 @@ import OTP from './OTP';
 import Register from './Register';
 
 export default function Beforelogin() {
-  const Appdata = useSelector((state: RootState) => state);
-
-  console.log('Appdata', Appdata);
   const Stack = createNativeStackNavigator();
 
   return (
@@ -27,7 +24,7 @@ export default function Beforelogin() {
           component={OTP}
           options={{headerShown: false}}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="Register"
           component={Register}
           options={{headerShown: false}}

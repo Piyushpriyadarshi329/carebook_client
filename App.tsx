@@ -5,6 +5,7 @@ import Auth from './src/Auth';
 import {store} from './src/redux/Store';
 import {Provider} from 'react-redux';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 import Color from './src/asset/Color';
 import {
   useQuery,
@@ -20,7 +21,6 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <Fragment>
-          <SafeAreaView style={{flex: 0, backgroundColor: 'red'}} />
           <SafeAreaView style={{flex: 1, backgroundColor: 'blue'}}>
             <StatusBar
               backgroundColor={Color.primary}
@@ -30,6 +30,7 @@ export default function App() {
             <Auth />
           </SafeAreaView>
         </Fragment>
+        <Toast />
       </Provider>
     </QueryClientProvider>
   );

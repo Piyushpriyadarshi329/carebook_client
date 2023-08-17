@@ -12,6 +12,7 @@ import {useGetavailability} from '../customhook/useGetavailability';
 import type {RootState} from '../redux/Store';
 import {updateappstate} from '../redux/reducer/Authreducer';
 import {useGetDoctor, useMutateDoctorProfile} from './useDoctorQuery';
+import {AppPages} from '../appPages';
 
 interface ProfileForm {
   username: string;
@@ -21,10 +22,12 @@ interface ProfileForm {
 }
 export default function LoggedInDoctorProfile() {
   const dispatch = useDispatch();
-  const Appdata = useSelector((state: RootState) => state);
+
+  const userId = useSelector((state: RootState) => state.Appdata.userid);
+
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>
-      <DoctorProfileWithId id={Appdata.Appdata.userid} />
+      <DoctorProfileWithId id={userId} />
       <View style={{flex: 0.1, alignItems: 'center', marginTop: 10}}>
         <Button
           title="Log out"
@@ -305,7 +308,7 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
             </Text>
             <Pressable
               onPress={() => {
-                navigation.navigate('Leave', {
+                navigation.navigate(AppPages.Leave, {
                   id: props.id,
                   clinic_id: props.clinic_id,
                 });

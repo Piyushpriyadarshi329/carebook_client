@@ -42,14 +42,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    // paddingTop: Constants.statusBarHeight,
     padding: 8,
     backgroundColor: '#0e101c',
   },
   input: {
     backgroundColor: 'white',
     color: 'black',
-    borderColor: 'none',
     height: 40,
     padding: 10,
     borderRadius: 4,

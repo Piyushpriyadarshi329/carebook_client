@@ -3,8 +3,8 @@ import React, {useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
 import Beforelogin from './auth/Beforelogin';
-import ClinicRoute from './auth/ClinicRoute';
-import DocterRoute from './auth/DocterRoute';
+import ClinicRoute from './Routes/Clinic/ClinicRoute';
+import DocterRoute from './Routes/Doctor/DocterRoute';
 import type {RootState} from './redux/Store';
 import {updateappstate} from './redux/reducer/Authreducer';
 
@@ -35,11 +35,13 @@ export default function Auth() {
   return (
     <>
       {Appdata.islogin ? (
-        <>{Appdata.isdoctor ? <DocterRoute /> : <ClinicRoute />}</>
+        Appdata.isdoctor ? (
+          <DocterRoute />
+        ) : (
+          <ClinicRoute />
+        )
       ) : (
-        <>
-          <Beforelogin />
-        </>
+        <Beforelogin />
       )}
     </>
   );

@@ -10,21 +10,27 @@ import {useGetDoctorsList} from './useDoctorQuery';
 
 export default function Doctorlist() {
   const navigation = useNavigation();
-  const Appdata = useSelector((state: RootState) => state);
+  const userId = useSelector((state: RootState) => state.Appdata.userid);
 
   const {data: doctorlist} = useGetDoctorsList({
-    clinic_id: Appdata.Appdata.userid ?? '',
+    clinic_id: userId ?? '',
   });
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <View style={{flex: 10}}>
-        <View style={{flex: 1, alignItems: 'flex-end', marginRight: 20}}>
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'flex-end',
+            marginRight: 20,
+            margin: 10,
+          }}>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('Adddoctor');
             }}>
-            <Icon name="add-circle" color={Color.primary} size={35} />
+            <Icon name="add-circle" color={Color.primary} size={30} />
           </TouchableOpacity>
         </View>
 

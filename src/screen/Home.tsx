@@ -21,7 +21,7 @@ import {monthlist, daylist} from './../Appconstant';
 const screenWidth = Dimensions.get('window').width;
 
 export default function Home() {
-  const Appdata = useSelector((state: RootState) => state);
+  const Appdata = useSelector((state: RootState) => state.Appdata);
 
   const [datelabel, setdatelabel] = useState<string[]>([]);
 
@@ -78,7 +78,7 @@ export default function Home() {
     ],
   };
   const {data: Appointmentdata} = usegetAppointments({
-    doctorId: Appdata.Appdata.userid,
+    doctorId: Appdata.userid,
   });
 
   return (
@@ -93,7 +93,7 @@ export default function Home() {
         <View>
           <Text style={{color: 'black', fontSize: 14}}> Welcome back!</Text>
           <Text style={{color: 'black', fontSize: 16}}>
-            Dr. {Appdata.Appdata.username}
+            Dr. {Appdata.username}
           </Text>
         </View>
 
@@ -108,7 +108,9 @@ export default function Home() {
         </View>
       </View>
       <View style={{flex: 4, marginHorizontal: 10}}>
-        <Text style={{color: 'black'}}>Upcomming Appointment</Text>
+        <Text style={{color: 'black', fontWeight: '500'}}>
+          Upcomming Appointments
+        </Text>
 
         <View style={{flex: 1}}>
           <ScrollView horizontal={true}>
@@ -123,9 +125,6 @@ export default function Home() {
         </View>
       </View>
       <View style={{flex: 5, marginHorizontal: 10}}>
-        <View>
-          <Text style={{color: 'black'}}>Appointment Statistics</Text>
-        </View>
         <View style={{marginTop: 10}}>
           <BarChart
             style={{flex: 1}}

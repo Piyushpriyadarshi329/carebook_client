@@ -1,12 +1,12 @@
-import {View, Text, TextInput, TouchableOpacity, Pressable} from 'react-native';
-import React, {useState} from 'react';
-import Color from '../asset/Color';
 import {useNavigation} from '@react-navigation/native';
+import React, {useState} from 'react';
+import {Button, Text, TextInput, View} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
+import {useDispatch} from 'react-redux';
+import Color from '../asset/Color';
 import {useLogin} from '../customhook/useLogin';
 import {updateappstate} from './../redux/reducer/Authreducer';
-import {useSelector, useDispatch} from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {AuthStyles} from './authStyles';
 
 export default function Login() {
   const navigation = useNavigation();
@@ -47,8 +47,7 @@ export default function Login() {
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
-      <View style={{flex: 1}}></View>
-      <View style={{flex: 3, justifyContent: 'center'}}>
+      <View style={{flex: 2, justifyContent: 'center', alignItems: 'center'}}>
         <Text
           style={{
             textAlign: 'center',
@@ -58,40 +57,18 @@ export default function Login() {
           }}>
           Welcome To Carebook
         </Text>
-      </View>
-      <View style={{flex: 0.7, marginLeft: 50}}>
-        <Text style={{color: Color.black, fontSize: 22, fontWeight: 'bold'}}>
-          Login
-        </Text>
-      </View>
 
-      <View style={{flex: 0.7, marginLeft: 50}}>
         <Text style={{color: 'gray', fontSize: 18, fontWeight: '500'}}>
-          Please Signin to Continue
+          Signin to Continue
         </Text>
       </View>
 
-      <View style={{flex: 4}}>
-        <View
-          style={{
-            marginHorizontal: 70,
-            flex: 1,
-            justifyContent: 'flex-start',
-            flexDirection: 'row',
-          }}>
-          <View style={{marginTop: 10}}>
-            <Icon name="mobile1" size={20} color="black" />
-          </View>
+      <View style={AuthStyles.loginContainer}>
+        <View style={AuthStyles.authFieldRow}>
+          <Icon name="mobile1" size={20} color="black" />
           <TextInput
-            style={{
-              color: 'black',
-              borderBottomWidth: 1,
-              borderRadius: 5,
-              marginLeft: 10,
-              flex: 1,
-              height: 50,
-            }}
-            placeholder="Please Enter Email."
+            style={AuthStyles.textInput}
+            placeholder="Email/Phone"
             keyboardType="default"
             onChangeText={text => {
               setemail(text);
@@ -99,27 +76,12 @@ export default function Login() {
           />
         </View>
 
-        <View
-          style={{
-            marginHorizontal: 70,
-            flex: 1,
-            justifyContent: 'flex-start',
-            flexDirection: 'row',
-            marginTop: 20,
-          }}>
-          <View style={{marginTop: 10}}>
-            <Icon name="mobile1" size={20} color="black" />
-          </View>
+        <View style={AuthStyles.authFieldRow}>
+          <Icon name="key" size={20} color="black" />
           <TextInput
-            style={{
-              borderBottomWidth: 1,
-              borderRadius: 5,
-              marginLeft: 10,
-              flex: 1,
-              height: 40,
-              color: 'black',
-            }}
-            placeholder="Please Enter Password."
+            style={AuthStyles.textInput}
+            secureTextEntry
+            placeholder="Password"
             keyboardType="default"
             onChangeText={text => {
               setpassword(text);
@@ -134,17 +96,11 @@ export default function Login() {
             alignItems: 'center',
             marginTop: 30,
           }}>
-          <TouchableOpacity
-            style={{
-              backgroundColor: Color.primary,
-              borderRadius: 5,
-              height: 40,
-            }}
-            onPress={submithandler}>
-            <Text style={{fontSize: 20, color: 'white', padding: 10}}>
-              Submit
-            </Text>
-          </TouchableOpacity>
+          <Button
+            title={'Login'}
+            onPress={submithandler}
+            color={Color.primary}
+          />
         </View>
       </View>
 

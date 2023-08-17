@@ -3,13 +3,13 @@ import React from 'react';
 import Color from '../asset/Color';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Entypo';
-import IonIcon from 'react-native-vector-icons/Ionicons';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux/Store';
+import {AppPages} from '../appPages';
 
 export default function Doctorcard({data}: any) {
   const navigation = useNavigation();
-  const Appdata = useSelector((state: RootState) => state);
+  const userId = useSelector((state: RootState) => state.Appdata.userid);
   return (
     <View
       style={{
@@ -50,17 +50,17 @@ export default function Doctorcard({data}: any) {
           onPress={() => {
             navigation.navigate('DoctorProfile', {
               id: data.id,
-              clinic_id: Appdata.Appdata.userid,
+              clinic_id: userId,
             });
           }}
         />
-        <IonIcon
-          name="exit-outline"
+        <Icon
+          name="book"
           style={{color: Color.primary, fontSize: 24}}
           onPress={() => {
-            navigation.navigate('Leave', {
+            navigation.navigate(AppPages.Appointments, {
               id: data.id,
-              clinic_id: Appdata.Appdata.userid,
+              clinic_id: userId,
             });
           }}
         />

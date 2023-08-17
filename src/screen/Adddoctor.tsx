@@ -42,7 +42,7 @@ interface DoctorAddForm {
 }
 export default function Adddoctor() {
   const navigation = useNavigation();
-  const Appdata = useSelector((state: RootState) => state);
+  const userId = useSelector((state: RootState) => state.Appdata.userid);
   const {mutate: addDoctor} = useAddDoctor({
     onSuccess: () => {
       navigation.goBack();
@@ -68,7 +68,7 @@ export default function Adddoctor() {
         email: email,
         name: name,
         password: password,
-        clinic_id: Appdata.Appdata.userid ?? '',
+        clinic_id: userId ?? '',
         degree: '',
         active: true,
         profile_image_key: '',
@@ -83,7 +83,7 @@ export default function Adddoctor() {
   }
   const linkDoctor = () => {
     linkDoctorMutate({
-      clinic_id: Appdata.Appdata.userid,
+      clinic_id: userId,
       doctor_id: existingDoctors?.[0].id ?? '',
     });
   };
@@ -91,7 +91,6 @@ export default function Adddoctor() {
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <View style={{flex: 1}}></View>
-      <View style={{flex: 3, justifyContent: 'center'}}></View>
       <View style={{flex: 0.7, marginLeft: 50}}>
         <Text style={{color: Color.black, fontSize: 22, fontWeight: 'bold'}}>
           Fill Doctor Details
@@ -229,13 +228,11 @@ export default function Adddoctor() {
                 alignItems: 'center',
                 marginTop: 10,
               }}>
-              <TouchableOpacity
-                style={{backgroundColor: Color.primary, borderRadius: 5}}
-                onPress={submithandler}>
-                <Text style={{fontSize: 20, color: 'white', padding: 10}}>
-                  Submit
-                </Text>
-              </TouchableOpacity>
+              <Button
+                title="Submit"
+                onPress={submithandler}
+                color={Color.primary}
+              />
             </View>
           </>
         ) : (

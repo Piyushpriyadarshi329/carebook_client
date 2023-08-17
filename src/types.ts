@@ -39,6 +39,7 @@ export interface LinkDoctorRequest {
 }
 
 export type UpdateDoctorReqParams = {id: string};
+
 export type UpdateDoctorRequest = {
   name?: string;
   active?: boolean;
@@ -47,6 +48,17 @@ export type UpdateDoctorRequest = {
   degree?: string;
   appointment_time?: number;
   fees?: number;
+  about?: string;
+};
+
+export type UpdateClinicReqParams = {id: string};
+export type UpdateClinicRequest = {
+  name?: string;
+  active?: boolean;
+  mobile?: string;
+  email?: string;
+  profile_image_key?: string;
+  address_id?: string;
   about?: string;
 };
 
@@ -88,8 +100,12 @@ export interface ClinicDto {
   profile_image_key: string;
   active: boolean;
   address_id: string;
+  about: string;
 }
-export type GetClinicsResponse = DataResponse<ClinicDto[]>;
+interface ClinicWithAddress extends ClinicDto {
+  address: AddressDto;
+}
+export type GetClinicsResponse = DataResponse<ClinicWithAddress[]>;
 
 /** UserController */
 export interface LoginRequest {
@@ -137,6 +153,7 @@ export interface BookingDto {
   payment_order_id: string;
   agent_id?: string;
   appointment_date: number;
+  existing_booking_id?: string;
 }
 export type BookSlotRequest = Omit<
   BookingDto,
@@ -225,7 +242,18 @@ export interface Appointmentdto extends BookingDto {
   clinic_address?: string;
 }
 
+export interface AddressDto {
+  id: string;
+  address_line1: string;
+  address_line2: string;
+  city: string;
+  state: string;
+  pincode: string;
+  lat?: number;
+  lan?: number;
+}
 export interface AddAdressRequest {
+  id?: string;
   user_id?: string;
   address_line1?: string;
   address_line2?: string;
@@ -234,6 +262,7 @@ export interface AddAdressRequest {
   pincode?: number;
   lat?: number;
   lan?: number;
+  type: 'Clinic' | 'Doctor' | 'Customer';
 }
 export interface GetAdressRequest {
   user_id?: string;
