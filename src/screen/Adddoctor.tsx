@@ -13,6 +13,7 @@ import {
   useGetDoctorsList,
   useLinkDoctorMutation,
 } from './useDoctorQuery';
+import Btn from '../components/Btn';
 
 const specialitylist = [
   {
@@ -99,7 +100,7 @@ export default function Adddoctor() {
           <TextInput
             placeholderTextColor={'black'}
             style={styles.textInput}
-            placeholder="Mobile No."
+            placeholder="Mobile No"
             keyboardType="numeric"
             onChangeText={text => {
               setmobile(text.trim());
@@ -113,7 +114,7 @@ export default function Adddoctor() {
               <TextInput
                 placeholderTextColor={'black'}
                 style={styles.textInput}
-                placeholder="Full Name."
+                placeholder="Full Name"
                 onChangeText={text => {
                   setname(text);
                 }}
@@ -169,11 +170,7 @@ export default function Adddoctor() {
                 alignItems: 'center',
                 marginTop: 10,
               }}>
-              <Button
-                title="Submit"
-                onPress={submithandler}
-                color={Color.primary}
-              />
+              <Btn onPress={submithandler} title={'Submit'} />
             </View>
           </>
         ) : (

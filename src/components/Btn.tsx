@@ -12,7 +12,7 @@ const Btn = (props: {title: string; onPress: () => void}) => {
           borderRadius: 50,
           backgroundColor: Color.primary,
         }}>
-        <Text style={{fontWeight: '500', color: 'black', textAlign: 'center'}}>
+        <Text style={{fontWeight: '600', color: 'black', textAlign: 'center'}}>
           {props.title}
         </Text>
       </View>
