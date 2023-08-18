@@ -1,32 +1,25 @@
-import {
-  View,
-  Text,
-  Image,
-  Pressable,
-  TouchableOpacity,
-  Modal,
-  TextInput,
-  Button,
-} from 'react-native';
-import React, {useState, useCallback, useEffect} from 'react';
-import Icon from 'react-native-vector-icons/Entypo';
-import Color from '../../../asset/Color';
-import {useSelector, useDispatch} from 'react-redux';
-import {updateappstate} from '../../../redux/reducer/Authreducer';
-import {useGetaddress} from '../../../customhook/useGetaddress';
-import {RootState} from '../../../redux/Store';
-import {useClinicsList} from './useGetcliniclist';
-import {useNavigation} from '@react-navigation/native';
-import {useAddaddressMutation} from './useAddaddress';
-import {AddressModal} from '../../../components/Address/AddressModal';
-import {AddressDto} from '../../../types';
-import {useUpdateClinic} from './useClinicQuery';
 import {useQueryClient} from '@tanstack/react-query';
+import React, {useCallback, useState} from 'react';
+import {Button, Image, Text, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import Color from '../../../asset/Color';
+import {AddressModal} from '../../../components/Address/AddressModal';
 import EditButton from '../../../components/EditButton';
 import {Clinicprofilemodel} from '../../../components/Clinicprofilemodel';
+import {RootState} from '../../../redux/Store';
+import {updateappstate} from '../../../redux/reducer/Authreducer';
+import {AddressDto} from '../../../types';
+import {useAddaddressMutation} from './useAddaddress';
+import {useClinicsList} from './useGetcliniclist';
 
 export default function Clinicprofile() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); // mutateAddress({
+  //   id: profile?.address.id,
+  //   user_id: userId,
+  //   name: formValues.name,
+  //   about: formValues.about,
+
+  // });
   const userId = useSelector((state: RootState) => state.Appdata.userid);
   const [textShown, setTextShown] = useState(false); //To show ur remaining Text
   const [lengthMore, setLengthMore] = useState(false); //to show the "Read more & Less Line"
@@ -97,6 +90,7 @@ export default function Clinicprofile() {
                   width: '100%',
                   display: 'flex',
                   flexDirection: 'row',
+                  alignItems: 'center',
                 }}>
                 <Text style={{color: 'black'}}>Address: </Text>
                 <EditButton
@@ -110,14 +104,23 @@ export default function Clinicprofile() {
                   <>
                     <View style={{width: '100%'}}>
                       <Text
-                        style={{color: 'black', marginTop: 5, width: '100%'}}>
+                        style={{
+                          color: 'black',
+                          marginTop: 5,
+                          fontSize: 18,
+                          width: '100%',
+                        }}>
                         {profile?.address?.address_line1}
+                      </Text>
+                      <Text
+                        style={{color: 'black', marginTop: 5, width: '100%'}}>
                         {profile?.address?.address_line2}
                       </Text>
                     </View>
                     <View style={{flexDirection: 'row', marginTop: 5}}>
                       <Text style={{color: 'black'}}>
-                        {profile?.address?.city} {profile?.address?.state}
+                        {profile?.address?.city}, {profile?.address?.state}
+                        &nbsp;- &nbsp;
                         {profile?.address?.pincode}
                       </Text>
                     </View>

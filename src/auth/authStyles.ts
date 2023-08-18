@@ -1,10 +1,9 @@
 import {StyleSheet} from 'react-native';
 export const AuthStyles = StyleSheet.create({
-  loginContainer: {flex: 4, justifyContent: 'center'},
+  loginContainer: {justifyContent: 'center'},
   authFieldRow: {
     marginHorizontal: 30,
-    flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -12,7 +11,7 @@ export const AuthStyles = StyleSheet.create({
     borderBottomWidth: 1,
     borderRadius: 5,
     marginLeft: 10,
-    flex: 1,
+    width: '80%',
     color: 'black',
   },
 });

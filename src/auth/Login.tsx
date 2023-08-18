@@ -7,11 +7,12 @@ import Color from '../asset/Color';
 import {useLogin} from '../customhook/useLogin';
 import {updateappstate} from './../redux/reducer/Authreducer';
 import {AuthStyles} from './authStyles';
+import {useAlert} from '../utils/useShowAlert';
 
 export default function Login() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-
+  const {errorAlert} = useAlert();
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
 
@@ -36,10 +37,8 @@ export default function Login() {
           }),
         );
       } else {
-        alert(data.Message);
+        errorAlert(data.Message);
       }
-
-      console.log('data', data);
     } catch (error) {
       console.log(error);
     }
@@ -47,7 +46,13 @@ export default function Login() {
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
-      <View style={{flex: 2, justifyContent: 'center', alignItems: 'center'}}>
+      <View
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingVertical: 60,
+          marginVertical: 60,
+        }}>
         <Text
           style={{
             textAlign: 'center',
@@ -65,7 +70,7 @@ export default function Login() {
 
       <View style={AuthStyles.loginContainer}>
         <View style={AuthStyles.authFieldRow}>
-          <Icon name="mobile1" size={20} color="black" />
+          <Icon name="user" size={20} color="black" />
           <TextInput
             style={AuthStyles.textInput}
             placeholder="Email/Phone"
@@ -73,6 +78,7 @@ export default function Login() {
             onChangeText={text => {
               setemail(text);
             }}
+            placeholderTextColor={'black'}
           />
         </View>
 
@@ -86,12 +92,12 @@ export default function Login() {
             onChangeText={text => {
               setpassword(text);
             }}
+            placeholderTextColor={'black'}
           />
         </View>
 
         <View
           style={{
-            flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
             marginTop: 30,
@@ -103,8 +109,6 @@ export default function Login() {
           />
         </View>
       </View>
-
-      <View style={{flex: 2}}></View>
     </View>
   );
 }
