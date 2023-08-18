@@ -36,7 +36,7 @@ export default function LoggedInDoctorProfile() {
       <View style={{flex: 0.1, alignItems: 'center', marginTop: 10}}>
         <Button
           title="Log out"
-          color={Color.primary}
+          color={Color.red}
           onPress={() =>
             dispatch(
               updateappstate({
