@@ -19,7 +19,8 @@ export const RHFTextInput = (props: {
           placeholder={props.placeHolder}
           onChangeText={value => onChange(value)}
           value={value}
-          multiline={props.multiline ? props.multiline : false}
+          multiline={props.multiline}
+          placeholderTextColor={'black'}
         />
       )}
       name={props.name}

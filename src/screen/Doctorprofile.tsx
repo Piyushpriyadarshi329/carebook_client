@@ -15,6 +15,7 @@ import {useGetDoctor, useMutateDoctorProfile} from './useDoctorQuery';
 import {AppPages} from '../appPages';
 import {usegetBookingsSummary} from '../customhook/usegetBookingsSummary';
 import {Doctorprofilemodel} from '../components/Doctorprofilemodel';
+import AvailabilityCard from '../components/AvailabilityCard';
 
 interface ProfileForm {
   username: string;
@@ -223,39 +224,8 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
 
           <ScrollView>
             <View style={{flex: 10}}>
-              {Availability?.map((i: any) => {
-                return (
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      marginTop: 10,
-                      backgroundColor: Color.primary,
-                      borderRadius: 5,
-                    }}>
-                    <View style={{flex: 1, alignItems: 'flex-start'}}>
-                      <Text
-                        style={{textAlign: 'left', padding: 5, color: 'black'}}>
-                        {i.clinic_name}
-                      </Text>
-                      <Text style={{padding: 5, color: 'black'}}>
-                        Slots: {i.no_of_slot}
-                      </Text>
-                    </View>
-                    <View style={{flex: 2, alignItems: 'center'}}>
-                      <Text style={{padding: 5, color: 'black'}}>
-                        {i.week_day}
-                      </Text>
-                    </View>
-                    <View style={{flex: 1, alignItems: 'center'}}>
-                      <Text style={{padding: 5, color: 'black'}}>
-                        {i.from_time}
-                      </Text>
-                      <Text style={{padding: 5, color: 'black'}}>
-                        {i.to_time}
-                      </Text>
-                    </View>
-                  </View>
-                );
+              {Availability?.map(a => {
+                return <AvailabilityCard availability={a} />;
               })}
             </View>
           </ScrollView>

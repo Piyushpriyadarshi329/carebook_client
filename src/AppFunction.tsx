@@ -1,4 +1,5 @@
-export function showtime(timestamp: number) {
+export function showtime(timestamp?: number) {
+  if (!timestamp) return '';
   let date = new Date(timestamp);
 
   let hour = date.getHours();
@@ -11,17 +12,16 @@ export function showtime(timestamp: number) {
 
   let min = date.getMinutes();
 
-  return ("0"+hour).slice(-2) + ':' + ("0"+min).slice(-2) + ' ' + am_pm;
+  return ('0' + hour).slice(-2) + ':' + ('0' + min).slice(-2) + ' ' + am_pm;
 }
 
-export function sendtime(timestamp: number) {
-    let date = new Date(timestamp);
-  
-    let hour = date.getHours();
-  
-    
-  
-    let min = date.getMinutes();
-  
-    return ("0"+hour).slice(-2) + ('0' + min).slice(-2)
-  }
+export function sendtime(timestamp?: number) {
+  if (!timestamp) return '';
+  let date = new Date(timestamp);
+
+  let hour = date.getHours();
+
+  let min = date.getMinutes();
+
+  return ('0' + hour).slice(-2) + ('0' + min).slice(-2);
+}

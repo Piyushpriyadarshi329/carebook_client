@@ -24,7 +24,7 @@ export const Clinicprofilemodel = ({
 }: {
   editMode: boolean;
   setEditMode: any;
-  onSubmit?: (p: AddressDto) => void;
+  onSubmit: (p: AddressDto) => void;
   defaultValues?: AddressDto | undefined;
 }) => {
   const formMethods = useForm<AddressDto>({
