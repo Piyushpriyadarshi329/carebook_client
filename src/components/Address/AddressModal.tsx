@@ -30,9 +30,14 @@ export const AddressModal = ({
     defaultValues: defaultValues,
     mode: 'onSubmit',
   });
+
+  useEffect(() => {
+    formMethods.reset(defaultValues);
+  }, [defaultValues]);
+
   useEffect(() => {
     if (!modalVisible) {
-      formMethods.reset();
+      formMethods.reset(defaultValues);
     }
   }, [modalVisible]);
   return (

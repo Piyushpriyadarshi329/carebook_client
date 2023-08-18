@@ -11,14 +11,18 @@ import {
 import {Calendar} from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {useSelector} from 'react-redux';
-import Color from '../asset/Color';
-import {UpcomingDateTile} from '../components/DateTile';
-import Navbar from '../components/Navbar';
-import {useUpdateSlotStatus} from '../customhook/useUpdateSlotStatus';
-import {usegetAppointments} from '../customhook/usegetAppointments';
-import {RootState} from '../redux/Store';
-import {useAlert} from '../utils/useShowAlert';
-import {daylist, monthlist} from './../Appconstant';
+import Color from '../../asset/Color';
+import {UpcomingDateTile} from '../../components/DateTile';
+import Navbar from '../../components/Navbar';
+import {useUpdateSlotStatus} from '../../customhook/useUpdateSlotStatus';
+import {usegetAppointments} from '../../customhook/usegetAppointments';
+import {RootState} from '../../redux/Store';
+import {useAlert} from '../../utils/useShowAlert';
+import {daylist, monthlist} from '../../Appconstant';
+import IconButton from '../../components/IconButton';
+import Status from './Status';
+import _ from 'lodash';
+import {getTimeStringFromDBTime} from '../../utils/dateMethods';
 
 export const LoggedInUserAppointments = () => {
   const userId = useSelector((state: RootState) => state.Appdata.userid);
@@ -81,7 +85,7 @@ function Appointments({doctorId}: {doctorId: string}) {
 
     return localdate;
   }, [centerdate]);
-  const {data: appointmentdata} = usegetAppointments({
+  const {data: appointments} = usegetAppointments({
     doctorId: doctorId,
     appointment_date: selecteddate,
   });
@@ -140,10 +144,9 @@ function Appointments({doctorId}: {doctorId: string}) {
 
       <View
         style={{
-          flex: 3,
+          flex: 2,
           flexDirection: 'row',
-          marginLeft: 10,
-          marginRight: 10,
+          marginHorizontal: 10,
           marginTop: 5,
         }}>
         <View style={{flex: 6}}>
@@ -165,7 +168,7 @@ function Appointments({doctorId}: {doctorId: string}) {
 
       <View style={{flex: 10, marginHorizontal: 30}}>
         <ScrollView>
-          {appointmentdata?.length == 0 ? (
+          {appointments?.length == 0 ? (
             <>
               <View
                 style={{
@@ -173,103 +176,93 @@ function Appointments({doctorId}: {doctorId: string}) {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                <Text style={{color: Color.black}}>No Appointment found.</Text>
+                <Text style={{color: Color.black}}>
+                  No Appointments for the date.
+                </Text>
               </View>
             </>
           ) : (
             <>
-              {appointmentdata?.map(appointment => {
-                return (
+              {Object.values(_.groupBy(appointments, 'workingtime_id'))?.map(
+                app => (
                   <View
                     style={{
-                      flexDirection: 'column',
-                      flex: 1,
-                      marginTop: 10,
+                      backgroundColor: Color.tertiary,
+                      padding: 5,
+                      borderRadius: 10,
+                      marginVertical: 2,
                     }}>
-                    <View style={{flexDirection: 'row', flex: 1}}>
-                      <View>
-                        <Text>________ AM</Text>
-                      </View>
-                      <View
-                        style={{
-                          height: 0.2,
-                          borderWidth: 0.4,
-                          flex: 1,
-                          marginTop: 5,
-                          marginHorizontal: 20,
-                        }}></View>
-                      <View>
-                        <Text>...</Text>
-                      </View>
+                    <View>
+                      <Text style={{color: 'black'}}>
+                        {getTimeStringFromDBTime(app[0].from_working_time)}
+                        &nbsp; {`------------------>`}
+                      </Text>
                     </View>
-
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        backgroundColor: Color.secondary,
-                        borderRadius: 5,
-                        marginTop: 5,
-                      }}>
-                      <View style={{flex: 1}}>
-                        <Image
-                          style={{
-                            width: 75,
-                            height: 75,
-                            borderRadius: 50,
-                            marginTop: 5,
-                            marginLeft: 10,
-                          }}
-                          source={require('./../asset/image/profile.png')}
-                        />
-                      </View>
-
-                      <View style={{flex: 2}}>
-                        <Text style={{color: 'black'}}>customer name</Text>
-                        <Text style={{color: 'black'}}>
-                          Slot {appointment.slot_index}
-                        </Text>
-
-                        <View
-                          style={{
-                            paddingTop: 10,
-                            marginHorizontal: 10,
-                            flexDirection: 'row',
-                          }}>
-                          {appointment.status == 'BOOKED' ? (
-                            <>
-                              <Button
-                                color={Color.primary}
-                                title="Start"
-                                onPress={() => {
-                                  updateslot(appointment.id, 'STARTED');
-                                }}></Button>
-                            </>
-                          ) : null}
-
-                          {appointment.status == 'STARTED' ? (
-                            <>
-                              <Button
-                                color={Color.primary}
-                                title="Complete"
-                                onPress={() => {
-                                  updateslot(appointment.id, 'COMPLETED');
-                                }}></Button>
-                            </>
-                          ) : null}
-
-                          {appointment.status == 'COMPLETED' ? (
-                            <>
-                              <View>
-                                <Text style={{color: 'green'}}>Completed</Text>
+                    {app
+                      ?.sort((a, b) => a.slot_index - b.slot_index)
+                      ?.map(appointment => {
+                        return (
+                          <View
+                            style={{
+                              flexDirection: 'column',
+                              flex: 1,
+                              marginTop: 10,
+                            }}>
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                backgroundColor: Color.secondary,
+                                borderRadius: 5,
+                                marginTop: 5,
+                                paddingVertical: 5,
+                              }}>
+                              <View style={{flex: 1}}>
+                                <Image
+                                  style={{
+                                    width: 75,
+                                    height: 75,
+                                    borderRadius: 50,
+                                    marginLeft: 10,
+                                  }}
+                                  source={require('../../asset/image/profile.png')}
+                                />
                               </View>
-                            </>
-                          ) : null}
-                        </View>
-                      </View>
-                    </View>
+
+                              <View style={{flex: 2, paddingVertical: 18}}>
+                                <Text
+                                  style={{
+                                    color: 'black',
+                                    fontWeight: '500',
+                                    fontSize: 20,
+                                  }}>
+                                  {appointment.customerName}
+                                </Text>
+                                <Text style={{color: 'black'}}>
+                                  Slot: &nbsp;
+                                  <Text
+                                    style={{fontWeight: '600', fontSize: 20}}>
+                                    {appointment.slot_index}
+                                  </Text>
+                                </Text>
+                              </View>
+                              <View
+                                style={{
+                                  flex: 1,
+                                  justifyContent: 'center',
+                                }}>
+                                <Status
+                                  status={appointment.status}
+                                  id={appointment.id}
+                                  updateslot={updateslot}
+                                />
+                              </View>
+                            </View>
+                          </View>
+                        );
+                      })}
                   </View>
-                );
-              })}
+                ),
+              )}
             </>
           )}
         </ScrollView>

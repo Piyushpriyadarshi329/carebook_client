@@ -245,6 +245,7 @@ export interface Appointmentdto extends BookingDto {
   doctorSpeciality?: string;
   clinic_name?: string;
   clinic_address?: string;
+  from_working_time?: string;
 }
 
 export interface AddressDto {
