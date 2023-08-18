@@ -8,6 +8,7 @@ import {useLogin} from '../customhook/useLogin';
 import {updateappstate} from './../redux/reducer/Authreducer';
 import {AuthStyles} from './authStyles';
 import {useAlert} from '../utils/useShowAlert';
+import {Image} from 'react-native';
 import Btn from '../components/Btn';
 
 export default function Login() {
@@ -51,8 +52,23 @@ export default function Login() {
         style={{
           justifyContent: 'center',
           alignItems: 'center',
-          paddingVertical: 60,
-          marginVertical: 60,
+          marginTop: 100,
+        }}>
+        <Image
+          style={{height: 200, width: 300, resizeMode: 'contain'}}
+          source={require('./../asset/image/CAREBOOK.jpg.png')}
+        />
+
+        <View style={AuthStyles.authFieldRow}>
+          <Text style={AuthStyles.text}>Login</Text>
+        </View>
+      </View>
+      {/* <View
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingVertical: 40,
+          marginVertical: 40,
         }}>
         <Text
           style={{
@@ -67,7 +83,7 @@ export default function Login() {
         <Text style={{color: 'gray', fontSize: 18, fontWeight: '500'}}>
           Signin to Continue
         </Text>
-      </View>
+      </View> */}
 
       <View style={AuthStyles.loginContainer}>
         <View style={AuthStyles.authFieldRow}>

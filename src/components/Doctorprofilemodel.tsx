@@ -25,12 +25,13 @@ export const Doctorprofilemodel = ({
   editMode: boolean;
   setEditMode: any;
   onSubmit?: (p: AddressDto) => void;
-  defaultValues?: AddressDto | undefined;
+  defaultValues?: any | undefined;
 }) => {
   const formMethods = useForm<AddressDto>({
     defaultValues: defaultValues,
   });
   console.log('defaultValues: ', defaultValues);
+
   return (
     <Modal
       animationType="slide"
@@ -85,7 +86,7 @@ export const Doctorprofilemodel = ({
                 styles={AddressStyles.textInput}
               />
               <RHFTextInput
-                name="borderRadius"
+                name="appointment_time"
                 placeHolder={'Consultation Time'}
                 styles={AddressStyles.textInput}
               />
