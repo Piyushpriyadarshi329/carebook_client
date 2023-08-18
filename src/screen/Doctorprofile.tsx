@@ -74,6 +74,7 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
       username: doctorDetails?.[0]?.name ?? '',
     },
   });
+
   const {mutate: updateDoctor} = useMutateDoctorProfile(props.id, () => {
     setEditMode(false);
   });
@@ -93,7 +94,7 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
   }, []);
 
   const updateProfileHandler = (formValues: ProfileForm) => {
-    console.log(formValues);
+    console.log('formValues', formValues);
     updateDoctor({
       name: formValues.username,
       appointment_time: Number(formValues.consultationTime),
@@ -104,7 +105,12 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
-      <Doctorprofilemodel editMode={editMode} setEditMode={setEditMode} />
+      <Doctorprofilemodel
+        editMode={editMode}
+        setEditMode={setEditMode}
+        defaultValues={doctorDetails ? doctorDetails[0] : null}
+        onSubmit={updateProfileHandler}
+      />
       <Navbar title="" />
       <FormProvider {...formMethods}>
         <View style={{flex: 2, flexDirection: 'row', marginHorizontal: 20}}>

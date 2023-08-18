@@ -28,22 +28,45 @@ export function usegetBookingsSummary(payload: GetBookingsSummaryRequest) {
         let count: number[] = [];
         let datelabel: string[] = [];
 
-        data?.data?.data.map((i: any) => {
-          count.push(i.count);
+        // data?.data?.data.map((i: any) => {
 
-          console.log('i.appointment_date', i.appointment_date);
+        for (let i = -7; i < 0; i++) {
+          let curdate = new Date();
 
-          let date = new Date(Number(i.appointment_date));
+          curdate.setDate(curdate.getDate() + i);
 
-          console.log('date', date);
+          console.log('curdate', curdate);
 
-          let month = date.getMonth();
+          let updatedate = new Date(
+            curdate.toISOString().split('T')[0] + 'T00:00:00.000Z',
+          );
 
-          let d1 = date.getDate();
+          let timestamp = updatedate.getTime();
+          console.log('timestamp', timestamp);
+
+          let filterdata = data.data.data.filter(
+            i => i.appointment_date == timestamp,
+          );
+
+          console.log('filterdata', filterdata);
+
+          if (filterdata.length > 0) {
+            // count.push(filterdata[0].count);
+
+            count.push(filterdata.reduce((acc, cur) => acc + cur.count, 0));
+          } else {
+            count.push(0);
+          }
+
+          console.log('updatedate', updatedate);
+
+          let month = updatedate.getMonth();
+
+          let d1 = updatedate.getDate();
 
           let s1: string = d1 + ' ' + monthlist[month];
           datelabel.push(s1);
-        });
+        }
 
         return {count, datelabel};
       },
