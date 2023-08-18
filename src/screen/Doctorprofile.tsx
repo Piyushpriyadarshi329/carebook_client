@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import {Button, Image, Pressable, ScrollView, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -19,7 +19,7 @@ import AvailabilityCard from '../components/AvailabilityCard';
 import EditButton from '../components/EditButton';
 import DoctorProfileEntry from './DoctorProfileEntry';
 
-interface ProfileForm {
+export interface ProfileForm {
   username: string;
   about: string;
   consultationTime: string;
@@ -61,25 +61,9 @@ export const DoctorProfile = (props: any) => {
 function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
   const navigation = useNavigation();
   const [editMode, setEditMode] = useState(false);
-  const {data: doctorDetails} = useGetDoctor(props.id, data => {
-    formMethods.setValue('about', data?.[0]?.about ?? '');
-    formMethods.setValue(
-      'consultationTime',
-      data?.[0]?.appointment_time?.toString() ?? '',
-    );
-    formMethods.setValue('fees', data?.[0]?.fees?.toString() ?? '');
-  });
+  const {data: doctorDetails} = useGetDoctor(props.id);
 
   console.log('doctorDetails1111==>', doctorDetails);
-
-  const formMethods = useForm<ProfileForm>({
-    defaultValues: {
-      about: doctorDetails?.[0]?.about,
-      consultationTime: doctorDetails?.[0]?.appointment_time?.toString(),
-      fees: doctorDetails?.[0]?.fees?.toString(),
-      username: doctorDetails?.[0]?.name ?? '',
-    },
-  });
 
   const {mutate: updateDoctor} = useMutateDoctorProfile(props.id, () => {
     setEditMode(false);
@@ -114,11 +98,9 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
       <Doctorprofilemodel
         editMode={editMode}
         setEditMode={setEditMode}
-        defaultValues={doctorDetails ? doctorDetails[0] : null}
+        doctorDetails={doctorDetails?.length ? doctorDetails[0] : undefined}
         onSubmit={updateProfileHandler}
       />
-      <Navbar title="" />
-      <Doctorprofilemodel editMode={editMode} setEditMode={setEditMode} />
       <Navbar title="Profile" />
       <View style={{flex: 4}}>
         <View style={{flex: 2, flexDirection: 'row', marginHorizontal: 20}}>

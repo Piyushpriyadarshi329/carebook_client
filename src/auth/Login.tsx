@@ -60,7 +60,13 @@ export default function Login() {
         />
 
         <View style={AuthStyles.authFieldRow}>
-          <Text style={AuthStyles.text}>Login</Text>
+          <Text
+            style={[
+              AuthStyles.text,
+              {fontSize: 20, fontWeight: '600', color: Color.primary},
+            ]}>
+            Login
+          </Text>
         </View>
       </View>
       {/* <View

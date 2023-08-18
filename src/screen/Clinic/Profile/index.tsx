@@ -5,12 +5,16 @@ import {useDispatch, useSelector} from 'react-redux';
 import Color from '../../../asset/Color';
 import {AddressModal} from '../../../components/Address/AddressModal';
 import EditButton from '../../../components/EditButton';
-import {Clinicprofilemodel} from '../../../components/Clinicprofilemodel';
+import {
+  ClinicProfile,
+  Clinicprofilemodel,
+} from '../../../components/Clinicprofilemodel';
 import {RootState} from '../../../redux/Store';
 import {updateappstate} from '../../../redux/reducer/Authreducer';
 import {AddressDto} from '../../../types';
 import {useAddaddressMutation} from './useAddaddress';
 import {useClinicsList} from './useGetcliniclist';
+import {useUpdateClinic} from './useClinicQuery';
 
 export default function Clinicprofile() {
   const dispatch = useDispatch();
@@ -18,11 +22,14 @@ export default function Clinicprofile() {
   const [textShown, setTextShown] = useState(false); //To show ur remaining Text
   const [lengthMore, setLengthMore] = useState(false); //to show the "Read more & Less Line"
   const [modalVisible, setModalVisible] = useState(false);
-  const [editMode, setEditMode] = useState(false);
+  const [clinicModalVisible, setClinicModalVisible] = useState(false);
 
   const {data: profiles, isLoading} = useClinicsList({clinic_id: userId});
   const profile = profiles?.[0];
   const qc = useQueryClient();
+  const {mutate: updateClinic} = useUpdateClinic(profile?.id ?? '', () => {
+    setClinicModalVisible(false);
+  });
   const {mutate: mutateAddress} = useAddaddressMutation({
     onSuccess: data => {
       console.log('updated.', data.data);
@@ -48,13 +55,11 @@ export default function Clinicprofile() {
     });
   }
 
-  function profilehandler(formValues: any) {
-    // mutateAddress({
-    //   id: profile?.address.id,
-    //   user_id: userId,
-    //   name: formValues.name,
-    //   about: formValues.about,
-    // });
+  function profilehandler(formValues: ClinicProfile) {
+    updateClinic({
+      name: formValues.name,
+      about: formValues.about,
+    });
   }
 
   const toggleNumberOfLines = () => {
@@ -85,7 +90,7 @@ export default function Clinicprofile() {
               </Text>
               <EditButton
                 onPress={() => {
-                  setEditMode(true);
+                  setClinicModalVisible(true);
                 }}
               />
             </View>
@@ -206,9 +211,10 @@ export default function Clinicprofile() {
         defaultValues={profile?.address}
       />
       <Clinicprofilemodel
-        editMode={editMode}
-        setEditMode={setEditMode}
+        editMode={clinicModalVisible}
+        setEditMode={setClinicModalVisible}
         onSubmit={profilehandler}
+        profile={profile}
       />
     </View>
   );
