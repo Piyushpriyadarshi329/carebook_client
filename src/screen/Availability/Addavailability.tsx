@@ -117,15 +117,13 @@ export function DoctorAvailabilityWithId(props: {
       all_weeks: allweeks,
     };
 
-    console.log('payload', payload);
-
     addAvailability(payload);
   }
 
   return (
     <>
       <Navbar title="Add Availability" />
-      <View style={{marginHorizontal: 20, gap: 10}}>
+      <View style={{gap: 10, marginHorizontal: 20}}>
         {!props.clinic_id && (
           <View style={{zIndex: 2000}}>
             <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
@@ -143,20 +141,18 @@ export function DoctorAvailabilityWithId(props: {
             />
           </View>
         )}
-        <View style={{flex: 1, flexDirection: 'row', marginHorizontal: 20}}>
-          <View>
-            <CheckBox
-              style={{flex: 1, padding: 10}}
-              checkBoxColor={Color.primary}
-              onClick={() => {
-                setallweeks(!allweeks);
-              }}
-              isChecked={allweeks}
-              leftText={''}
-            />
-          </View>
+        <View style={commonStyles.flexRowAlignCenter}>
+          <CheckBox
+            style={{padding: 10}}
+            checkBoxColor={Color.primary}
+            onClick={() => {
+              setallweeks(!allweeks);
+            }}
+            isChecked={allweeks}
+            leftText={''}
+          />
 
-          <View style={{marginTop: 10, marginLeft: 10}}>
+          <View style={{marginLeft: 10}}>
             <Text style={{color: 'black'}}>All Weeks</Text>
           </View>
         </View>

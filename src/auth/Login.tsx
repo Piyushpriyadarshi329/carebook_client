@@ -8,6 +8,7 @@ import {useLogin} from '../customhook/useLogin';
 import {updateappstate} from './../redux/reducer/Authreducer';
 import {AuthStyles} from './authStyles';
 import {useAlert} from '../utils/useShowAlert';
+import Btn from '../components/Btn';
 
 export default function Login() {
   const navigation = useNavigation();
@@ -98,15 +99,10 @@ export default function Login() {
 
         <View
           style={{
-            justifyContent: 'center',
             alignItems: 'center',
             marginTop: 30,
           }}>
-          <Button
-            title={'Login'}
-            onPress={submithandler}
-            color={Color.primary}
-          />
+          <Btn title={'Login'} onPress={submithandler} />
         </View>
       </View>
     </View>

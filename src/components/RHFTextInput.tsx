@@ -1,5 +1,8 @@
 import {useFormContext, Controller} from 'react-hook-form';
 import {StyleSheet, TextInput} from 'react-native';
+import {ValidationErrors} from '../asset/constants';
+import {Input} from 'react-native-elements';
+import {Text} from 'react-native';
 
 export const RHFTextInput = (props: {
   name: string;
@@ -7,24 +10,24 @@ export const RHFTextInput = (props: {
   required?: boolean;
   styles?: any;
   multiline?: boolean;
+  rules?: any;
 }) => {
   const {control} = useFormContext();
   return (
     <Controller
       control={control}
-      render={({field: {onChange, onBlur, value}}) => (
-        <TextInput
-          style={{...styles.input, ...props.styles}}
-          onBlur={onBlur}
-          placeholder={props.placeHolder}
-          onChangeText={value => onChange(value)}
-          value={value}
+      render={({field, formState: {errors}}) => (
+        <Input
+          errorMessage={errors[props.name]?.message?.toString()}
+          {...field}
+          onChangeText={t => field.onChange(t)}
+          style={{...props.styles}}
           multiline={props.multiline}
-          placeholderTextColor={'black'}
+          placeholder={props.placeHolder}
         />
       )}
       name={props.name}
-      rules={{required: props.required}}
+      rules={{required: props.required ? ValidationErrors.Required : undefined}}
     />
   );
 };

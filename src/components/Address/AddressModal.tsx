@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import {
   Modal,
@@ -28,8 +28,13 @@ export const AddressModal = ({
 }) => {
   const formMethods = useForm<AddressDto>({
     defaultValues: defaultValues,
+    mode: 'onSubmit',
   });
-
+  useEffect(() => {
+    if (!modalVisible) {
+      formMethods.reset();
+    }
+  }, [modalVisible]);
   return (
     <Modal
       animationType="slide"
@@ -84,6 +89,7 @@ export const AddressModal = ({
                 name="address_line1"
                 placeHolder={'Address line1'}
                 styles={AddressStyles.textInput}
+                required={true}
               />
               <RHFTextInput
                 name="address_line2"
@@ -94,30 +100,33 @@ export const AddressModal = ({
                 name="city"
                 placeHolder={'City'}
                 styles={AddressStyles.textInput}
+                required={true}
               />
               <RHFTextInput
                 name="state"
                 placeHolder={'State'}
                 styles={AddressStyles.textInput}
+                required={true}
               />
               <RHFTextInput
                 name="pincode"
                 placeHolder={'Pincode'}
                 styles={AddressStyles.textInput}
+                required={true}
+              />
+            </View>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Btn
+                title={'Submit'}
+                onPress={formMethods.handleSubmit(onSubmit)}
               />
             </View>
           </ScrollView>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Btn
-              title={'Submit'}
-              onPress={formMethods.handleSubmit(onSubmit)}
-            />
-          </View>
         </View>
       </FormProvider>
     </Modal>
