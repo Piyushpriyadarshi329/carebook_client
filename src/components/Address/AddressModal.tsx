@@ -1,20 +1,19 @@
 import React from 'react';
+import {FormProvider, useForm} from 'react-hook-form';
 import {
   Modal,
+  ScrollView,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  Button,
-  ScrollView,
-  KeyboardAvoidingView,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/AntDesign';
 import Color from '../../asset/Color';
-import {FormProvider, useForm} from 'react-hook-form';
+import {AddressDto} from '../../types';
+import Btn from '../Btn';
 import {RHFTextInput} from '../RHFTextInput';
 import {AddressStyles} from './styles';
-import Icon from 'react-native-vector-icons/AntDesign';
-import Btn from '../Btn';
-import {AddressDto} from '../../types';
 
 export const AddressModal = ({
   modalVisible,
@@ -30,7 +29,7 @@ export const AddressModal = ({
   const formMethods = useForm<AddressDto>({
     defaultValues: defaultValues,
   });
-  console.log('defaultValues: ', defaultValues);
+
   return (
     <Modal
       animationType="slide"
@@ -39,13 +38,15 @@ export const AddressModal = ({
       onRequestClose={() => setModalVisible(false)}>
       <FormProvider {...formMethods}>
         <View
-          style={{
-            flex: 1,
-            backgroundColor: Color.tertiary,
-            marginTop: 200,
-            borderTopEndRadius: 30,
-            borderTopStartRadius: 30,
-          }}>
+          style={[
+            {
+              flex: 1,
+              backgroundColor: Color.tertiary,
+              marginTop: 200,
+              borderTopEndRadius: 30,
+              borderTopStartRadius: 30,
+            },
+          ]}>
           <View
             style={{
               marginTop: 10,
@@ -107,7 +108,11 @@ export const AddressModal = ({
             </View>
           </ScrollView>
           <View
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             <Btn
               title={'Submit'}
               onPress={formMethods.handleSubmit(onSubmit)}
@@ -118,3 +123,10 @@ export const AddressModal = ({
     </Modal>
   );
 };
+
+const styles = StyleSheet.create({
+  avoidSoftInputView: {
+    alignItems: 'center',
+    alignSelf: 'stretch',
+  },
+});
