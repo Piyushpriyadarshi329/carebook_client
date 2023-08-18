@@ -6,6 +6,7 @@ export const RHFTextInput = (props: {
   placeHolder?: string;
   required?: boolean;
   styles?: any;
+  multiline?: boolean;
 }) => {
   const {control} = useFormContext();
   return (
@@ -18,6 +19,7 @@ export const RHFTextInput = (props: {
           placeholder={props.placeHolder}
           onChangeText={value => onChange(value)}
           value={value}
+          multiline={props.multiline ? props.multiline : false}
         />
       )}
       name={props.name}

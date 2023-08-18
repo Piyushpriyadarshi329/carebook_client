@@ -13,6 +13,8 @@ import type {RootState} from '../redux/Store';
 import {updateappstate} from '../redux/reducer/Authreducer';
 import {useGetDoctor, useMutateDoctorProfile} from './useDoctorQuery';
 import {AppPages} from '../appPages';
+import {usegetBookingsSummary} from '../customhook/usegetBookingsSummary';
+import {Doctorprofilemodel} from '../components/Doctorprofilemodel';
 
 interface ProfileForm {
   username: string;
@@ -102,25 +104,15 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
+      <Doctorprofilemodel editMode={editMode} setEditMode={setEditMode} />
       <Navbar title="" />
       <FormProvider {...formMethods}>
         <View style={{flex: 2, flexDirection: 'row', marginHorizontal: 20}}>
           <View style={{flex: 2, marginTop: 30}}>
             <View>
-              {editMode ? (
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={{color: 'black'}}>Name: </Text>
-                  <RHFTextInput
-                    name="username"
-                    placeHolder="Name"
-                    styles={{width: '60%'}}
-                  />
-                </View>
-              ) : (
-                <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
-                  Dr. {doctorDetails?.[0]?.name}
-                </Text>
-              )}
+              <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+                Dr. {doctorDetails?.[0]?.name}
+              </Text>
             </View>
             <View
               style={{
@@ -129,16 +121,10 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
                 alignItems: 'center',
               }}>
               <Text style={{color: 'black'}}>consultation Time:</Text>
-              {editMode ? (
-                <RHFTextInput
-                  name="consultationTime"
-                  styles={{width: '50%', marginLeft: 10}}
-                />
-              ) : (
-                <Text style={{color: 'black', marginLeft: 10}}>
-                  {doctorDetails?.[0]?.appointment_time?.toString()}
-                </Text>
-              )}
+
+              <Text style={{color: 'black', marginLeft: 10}}>
+                {doctorDetails?.[0]?.appointment_time?.toString()}
+              </Text>
             </View>
             <View
               style={{
@@ -147,16 +133,10 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
                 alignItems: 'center',
               }}>
               <Text style={{color: 'black'}}>consultation Fees:</Text>
-              {editMode ? (
-                <RHFTextInput
-                  name="fees"
-                  styles={{width: '50%', marginLeft: 10}}
-                />
-              ) : (
-                <Text style={{color: 'black', marginLeft: 10}}>
-                  {doctorDetails?.[0]?.fees?.toString()}
-                </Text>
-              )}
+
+              <Text style={{color: 'black', marginLeft: 10}}>
+                {doctorDetails?.[0]?.fees?.toString()}
+              </Text>
             </View>
           </View>
           <View style={{flex: 1, marginTop: 10}}>
@@ -166,32 +146,13 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
                 justifyContent: 'flex-end',
                 alignItems: 'flex-end',
               }}>
-              {editMode ? (
-                <View style={{flex: 1, flexDirection: 'row', gap: 10}}>
-                  <Icon
-                    name={'cross'}
-                    style={{color: Color.primary, fontSize: 20}}
-                    onPress={() => {
-                      setEditMode(false);
-                    }}
-                  />
-                  <Icon
-                    name={'check'}
-                    style={{color: Color.primary, fontSize: 20}}
-                    onPress={() => {
-                      formMethods.handleSubmit(updateProfileHandler)();
-                    }}
-                  />
-                </View>
-              ) : (
-                <Icon
-                  name="edit"
-                  style={{color: Color.primary, fontSize: 20}}
-                  onPress={() => {
-                    setEditMode(true);
-                  }}
-                />
-              )}
+              <Icon
+                name="edit"
+                style={{color: Color.primary, fontSize: 20}}
+                onPress={() => {
+                  setEditMode(true);
+                }}
+              />
             </View>
             <View style={{justifyContent: 'center', flex: 1}}>
               <Image
@@ -217,31 +178,28 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
               About
             </Text>
           </View>
-          {editMode ? (
-            <RHFTextInput name="about" />
-          ) : (
-            <View>
-              <Text
-                onTextLayout={onTextLayout}
-                numberOfLines={textShown ? undefined : 2}
-                style={{lineHeight: 21, color: 'black'}}>
-                {doctorDetails?.[0]?.about}
-              </Text>
 
-              {lengthMore ? (
-                <Text
-                  onPress={toggleNumberOfLines}
-                  style={{
-                    lineHeight: 21,
-                    marginTop: 4,
-                    color: 'black',
-                    fontWeight: '700',
-                  }}>
-                  {textShown ? 'Read less...' : 'Read more...'}
-                </Text>
-              ) : null}
-            </View>
-          )}
+          <View>
+            <Text
+              onTextLayout={onTextLayout}
+              numberOfLines={textShown ? undefined : 2}
+              style={{lineHeight: 21, color: 'black'}}>
+              {doctorDetails?.[0]?.about}
+            </Text>
+
+            {lengthMore ? (
+              <Text
+                onPress={toggleNumberOfLines}
+                style={{
+                  lineHeight: 21,
+                  marginTop: 4,
+                  color: 'black',
+                  fontWeight: '700',
+                }}>
+                {textShown ? 'Read less...' : 'Read more...'}
+              </Text>
+            ) : null}
+          </View>
         </View>
       </FormProvider>
 
@@ -263,42 +221,44 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
             </Pressable>
           </View>
 
-          <View style={{flex: 10}}>
-            {Availability?.map((i: any) => {
-              return (
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    marginTop: 10,
-                    backgroundColor: Color.primary,
-                    borderRadius: 5,
-                  }}>
-                  <View style={{flex: 1, alignItems: 'flex-start'}}>
-                    <Text
-                      style={{textAlign: 'left', padding: 5, color: 'black'}}>
-                      {i.clinic_name}
-                    </Text>
-                    <Text style={{padding: 5, color: 'black'}}>
-                      Slots: {i.no_of_slot}
-                    </Text>
+          <ScrollView>
+            <View style={{flex: 10}}>
+              {Availability?.map((i: any) => {
+                return (
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      marginTop: 10,
+                      backgroundColor: Color.primary,
+                      borderRadius: 5,
+                    }}>
+                    <View style={{flex: 1, alignItems: 'flex-start'}}>
+                      <Text
+                        style={{textAlign: 'left', padding: 5, color: 'black'}}>
+                        {i.clinic_name}
+                      </Text>
+                      <Text style={{padding: 5, color: 'black'}}>
+                        Slots: {i.no_of_slot}
+                      </Text>
+                    </View>
+                    <View style={{flex: 2, alignItems: 'center'}}>
+                      <Text style={{padding: 5, color: 'black'}}>
+                        {i.week_day}
+                      </Text>
+                    </View>
+                    <View style={{flex: 1, alignItems: 'center'}}>
+                      <Text style={{padding: 5, color: 'black'}}>
+                        {i.from_time}
+                      </Text>
+                      <Text style={{padding: 5, color: 'black'}}>
+                        {i.to_time}
+                      </Text>
+                    </View>
                   </View>
-                  <View style={{flex: 2, alignItems: 'center'}}>
-                    <Text style={{padding: 5, color: 'black'}}>
-                      {i.week_day}
-                    </Text>
-                  </View>
-                  <View style={{flex: 1, alignItems: 'center'}}>
-                    <Text style={{padding: 5, color: 'black'}}>
-                      {i.from_time}
-                    </Text>
-                    <Text style={{padding: 5, color: 'black'}}>
-                      {i.to_time}
-                    </Text>
-                  </View>
-                </View>
-              );
-            })}
-          </View>
+                );
+              })}
+            </View>
+          </ScrollView>
         </View>
 
         <View style={{flex: 3, marginHorizontal: 20}}>

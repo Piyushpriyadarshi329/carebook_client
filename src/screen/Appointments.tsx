@@ -96,16 +96,30 @@ function Appointments({doctorId}: {doctorId: string}) {
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <Navbar title="Appointments" />
-      <Modal animationType="slide" transparent={true} visible={modalVisible}>
-        <View style={{flex: 1, backgroundColor: 'white'}}>
-          <View>
+      <Modal
+        animationType="slide"
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+        transparent={true}
+        visible={modalVisible}>
+        <View style={{flex: 1}}>
+          <View
+            style={{
+              height: 400,
+              marginTop: 200,
+              marginHorizontal: 50,
+              borderRadius: 5,
+            }}>
             <Calendar
               onDayPress={day => {
                 setcenterdate(day.dateString);
+                setModalVisible(!modalVisible);
               }}
+              style={{borderRadius: 5}}
               theme={{
-                backgroundColor: '#ffffff',
-                calendarBackground: '#ffffff',
+                backgroundColor: '#bbbbbb',
+                calendarBackground: '#eeeeee',
                 textSectionTitleColor: '#b6c1cd',
                 selectedDayBackgroundColor: Color.primary,
                 selectedDayTextColor: '#ffffff',
@@ -120,18 +134,6 @@ function Appointments({doctorId}: {doctorId: string}) {
                 },
               }}
             />
-          </View>
-
-          <View style={{flex: 1, alignItems: 'center', marginTop: 20}}>
-            <TouchableOpacity
-              style={{backgroundColor: Color.primary, borderRadius: 5}}
-              onPress={() => {
-                setModalVisible(!modalVisible);
-              }}>
-              <Text style={{fontSize: 16, color: 'black', padding: 10}}>
-                Confirm
-              </Text>
-            </TouchableOpacity>
           </View>
         </View>
       </Modal>

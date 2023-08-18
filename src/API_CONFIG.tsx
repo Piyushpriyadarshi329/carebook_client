@@ -18,3 +18,4 @@ export const UPDATE_DOCTOR = BASE_URL + '/updateDoctor';
 export const GETLEAVE_URL = BASE_URL + '/getLeaves';
 export const UPDATESLOTSSTATUS_URL = BASE_URL + '/updateSlotsStatus';
 export const updateClinicUrl = BASE_URL + '/updateClinic';
+export const GETBOOKINGSUMMARY_Url = BASE_URL + '/getBookingsSummary';
