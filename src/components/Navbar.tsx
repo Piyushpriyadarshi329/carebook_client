@@ -12,6 +12,7 @@ const Navbar = (props: {title: string}) => {
         flexDirection: 'row',
         padding: 10,
         marginBottom: 10,
+        alignItems: 'center',
       }}>
       <View style={{marginRight: 20}} onTouchEnd={() => navigation.goBack()}>
         <Icon
