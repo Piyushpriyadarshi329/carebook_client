@@ -26,6 +26,7 @@ import {useNavigation} from '@react-navigation/native';
 import Btn from '../components/Btn';
 import {commonStyles} from '../asset/styles';
 import AvailabilityCard from '../components/AvailabilityCard';
+import {useAlert} from '../utils/useShowAlert';
 
 export function LoggedInUserLeave() {
   const userId = useSelector((state: RootState) => state.Appdata.userid);
@@ -34,6 +35,8 @@ export function LoggedInUserLeave() {
 export const Leave = (props: any) => {
   return <LeaveById id={props.route.params.id} />;
 };
+
+const {errorAlert, successAlert} = useAlert();
 
 function LeaveById(props: {id: string}) {
   const userId = useSelector((state: RootState) => state.Appdata.userid);
@@ -63,6 +66,21 @@ function LeaveById(props: {id: string}) {
     );
     // return;
     try {
+      if (!fromdate) {
+        errorAlert('please Select From Date');
+        return;
+      }
+
+      if (multipledate && !todate) {
+        errorAlert('please Select To Date');
+        return;
+      }
+
+      if (!fullday && !selectedAvailability) {
+        errorAlert('please Select Slot');
+        return;
+      }
+
       let payload: AddLeaveRequest = {
         doctor_id: userId,
         fromdate: new Date(fromdate + 'T00:00:00Z').getTime(),

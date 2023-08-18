@@ -195,23 +195,22 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
 
       <View style={{flexDirection: 'column', flex: 8}}>
         <View style={{flex: textShown ? 5 : 6, marginHorizontal: 20, flex: 3}}>
-          <View style={{flexDirection: 'row', flex: 1}}>
-            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
-              Availablity
-            </Text>
-            <Pressable
-              onPress={() => {
-                navigation.navigate('Addavailability', {
-                  id: props.id,
-                  clinic_id: props.clinic_id,
-                });
-              }}
-              style={{flex: 1, alignItems: 'flex-end', marginRight: 30}}>
-              <Icon name="plus" size={24} color={Color.primary} />
-            </Pressable>
-          </View>
-
           <ScrollView>
+            <View style={{flexDirection: 'row', flex: 1}}>
+              <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+                Availablity
+              </Text>
+              <Pressable
+                onPress={() => {
+                  navigation.navigate('Addavailability', {
+                    id: props.id,
+                    clinic_id: props.clinic_id,
+                  });
+                }}
+                style={{flex: 1, alignItems: 'flex-end', marginRight: 30}}>
+                <Icon name="plus" size={24} color={Color.primary} />
+              </Pressable>
+            </View>
             <View style={{flex: 10}}>
               {Availability?.map(a => {
                 return <AvailabilityCard availability={a} />;

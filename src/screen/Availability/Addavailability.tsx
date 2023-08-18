@@ -24,10 +24,12 @@ import useKeyboardAvoidHook from '../../utils/KeyboardAvoidHook';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {commonStyles} from '../../asset/styles';
 import CheckBox from 'react-native-check-box';
+import {useAlert} from '../../utils/useShowAlert';
 
 export default function LoggedInDoctorAvailability() {
   const userId = useSelector((state: RootState) => state.Appdata.userid);
   useKeyboardAvoidHook();
+
   return (
     <SafeAreaView
       edges={['bottom', 'left', 'right']}
@@ -76,6 +78,7 @@ export function DoctorAvailabilityWithId(props: {
     const currentDate = selectedDate;
     setDatefrom(currentDate);
   };
+  const {errorAlert, successAlert} = useAlert();
 
   const onChangeto = (event: any, selectedDate: any) => {
     const currentDate = selectedDate;
@@ -105,6 +108,23 @@ export function DoctorAvailabilityWithId(props: {
     onSuccess: () => navigation.navigate('Profile'),
   });
   async function submithandler() {
+    if (!selectedclinic) {
+      errorAlert('Please Select Clinic', '');
+      return;
+    }
+    if (selectedday.length == 0) {
+      errorAlert('Please Select day', '');
+      return;
+    }
+    if (!noofslot) {
+      errorAlert('Please Enter No. of Day', '');
+      return;
+    }
+    if (!allweeks && selectedweek.length == 0) {
+      errorAlert('Please select week', '');
+      return;
+    }
+
     let payload = {
       entry_id: uuid.v4().toString(),
       doctor_id: props.id,
