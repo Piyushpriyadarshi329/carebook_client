@@ -16,6 +16,7 @@ import {
   LinkDoctorRequest,
   UpdateDoctorRequest,
 } from '../types';
+import {useAlert} from '../utils/useShowAlert';
 
 export const useGetDoctorsList = (
   payload: GetDotcorsListRequest,
@@ -46,6 +47,7 @@ export const useGetDoctor = (
 };
 
 export const useMutateDoctorProfile = (doctor_id: string, onSuccess?: any) => {
+  const {errorAlert} = useAlert();
   const qc = useQueryClient();
   return useMutation(
     (payload: UpdateDoctorRequest) =>
@@ -54,6 +56,10 @@ export const useMutateDoctorProfile = (doctor_id: string, onSuccess?: any) => {
       onSuccess: () => {
         qc.invalidateQueries(['DOCTOR', doctor_id]);
         onSuccess?.();
+      },
+      onError: (e, v, c) => {
+        console.error(v);
+        errorAlert('Could not update Profile');
       },
     },
   );

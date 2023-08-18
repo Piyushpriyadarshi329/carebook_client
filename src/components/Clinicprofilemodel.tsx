@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   Modal,
   Text,
@@ -13,24 +13,35 @@ import {FormProvider, useForm} from 'react-hook-form';
 import {RHFTextInput} from './RHFTextInput';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Btn from './Btn';
-import {AddressDto} from './../types';
+import {AddressDto, ClinicWithAddress} from './../types';
 import {AddressStyles} from './Address/styles';
 
+export interface ClinicProfile {
+  name: string;
+  about: string;
+}
 export const Clinicprofilemodel = ({
   editMode,
   setEditMode,
   onSubmit,
-  defaultValues,
+  profile,
 }: {
   editMode: boolean;
   setEditMode: any;
-  onSubmit: (p: AddressDto) => void;
-  defaultValues?: AddressDto | undefined;
+  onSubmit: (p: ClinicProfile) => void;
+  profile: ClinicWithAddress | undefined;
 }) => {
-  const formMethods = useForm<AddressDto>({
-    defaultValues: defaultValues,
+  const formMethods = useForm<ClinicProfile>({
+    defaultValues: profile,
   });
-  console.log('defaultValues: ', defaultValues);
+  useEffect(() => {
+    if (profile) formMethods.reset(profile);
+  }, [profile]);
+  useEffect(() => {
+    if (!editMode) {
+      formMethods.reset(profile);
+    }
+  }, [editMode]);
   return (
     <Modal
       animationType="slide"

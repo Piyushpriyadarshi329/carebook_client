@@ -13,27 +13,39 @@ import {FormProvider, useForm} from 'react-hook-form';
 import {RHFTextInput} from './RHFTextInput';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Btn from './Btn';
-import {AddressDto} from './../types';
+import {AddressDto, DoctorDto} from './../types';
 import {AddressStyles} from './Address/styles';
+import {ProfileForm} from '../screen/Doctorprofile';
 
 export const Doctorprofilemodel = ({
   editMode,
   setEditMode,
   onSubmit,
-  defaultValues,
+  doctorDetails,
 }: {
   editMode: boolean;
   setEditMode: any;
-  onSubmit?: (p: AddressDto) => void;
-  defaultValues?: any | undefined;
+  onSubmit: (p: ProfileForm) => void;
+  doctorDetails?: DoctorDto;
 }) => {
-  const formMethods = useForm<AddressDto>({});
-  console.log('defaultValues===>: ', defaultValues);
+  const formMethods = useForm<ProfileForm>({
+    defaultValues: {
+      about: doctorDetails?.about,
+      consultationTime: doctorDetails?.appointment_time?.toString(),
+      fees: doctorDetails?.fees?.toString(),
+      username: doctorDetails?.name ?? '',
+    },
+  });
   useEffect(() => {
-    if (!editMode) {
-      formMethods.reset(defaultValues);
+    if (doctorDetails) {
+      formMethods.reset({
+        about: doctorDetails?.about,
+        consultationTime: doctorDetails?.appointment_time?.toString(),
+        fees: doctorDetails?.fees?.toString(),
+        username: doctorDetails?.name ?? '',
+      });
     }
-  }, []);
+  }, [doctorDetails]);
   return (
     <Modal
       animationType="slide"
@@ -83,13 +95,13 @@ export const Doctorprofilemodel = ({
                 gap: 20,
               }}>
               <RHFTextInput
-                name="name"
+                name="username"
                 placeHolder={'Name'}
                 styles={AddressStyles.textInput}
               />
               <RHFTextInput
-                name="appointment_time"
-                placeHolder={'Consultation Time'}
+                name="consultationTime"
+                placeHolder={'Consultation Time (in minutes)'}
                 styles={AddressStyles.textInput}
               />
               <RHFTextInput
@@ -108,14 +120,14 @@ export const Doctorprofilemodel = ({
                 multiline={true}
               />
             </View>
+            <View
+              style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+              <Btn
+                title={'Submit'}
+                onPress={formMethods.handleSubmit(onSubmit)}
+              />
+            </View>
           </ScrollView>
-          <View
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <Btn
-              title={'Submit'}
-              onPress={formMethods.handleSubmit(onSubmit)}
-            />
-          </View>
         </View>
       </FormProvider>
     </Modal>

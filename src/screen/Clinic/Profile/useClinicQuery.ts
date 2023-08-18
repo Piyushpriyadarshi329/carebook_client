@@ -4,7 +4,7 @@ import {updateClinicUrl} from '../../../API_CONFIG';
 import {UpdateClinicRequest} from '../../../types';
 import {useAlert} from '../../../utils/useShowAlert';
 
-export const useUpdateClinic = (id: string) => {
+export const useUpdateClinic = (id: string, onSuccess?: () => void) => {
   const {errorAlert} = useAlert();
   const qc = useQueryClient();
   return useMutation(
@@ -17,6 +17,7 @@ export const useUpdateClinic = (id: string) => {
       },
       onSuccess: () => {
         qc.invalidateQueries(['CLINICS', {clinic_id: id}]);
+        onSuccess?.();
       },
     },
   );

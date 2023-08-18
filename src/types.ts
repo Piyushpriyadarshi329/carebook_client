@@ -102,7 +102,7 @@ export interface ClinicDto {
   address_id: string;
   about: string;
 }
-interface ClinicWithAddress extends ClinicDto {
+export interface ClinicWithAddress extends ClinicDto {
   address: AddressDto;
 }
 export type GetClinicsResponse = DataResponse<ClinicWithAddress[]>;
