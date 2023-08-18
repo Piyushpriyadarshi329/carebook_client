@@ -6,7 +6,7 @@ import Doctorlist from '../../../screen/Doctorlist';
 import {DoctorProfile} from '../../../screen/Doctorprofile';
 import {Leave} from '../../../screen/Leave';
 import {AppPages} from '../../../appPages';
-import {AppointmentForDoctor} from '../../../screen/Appointments';
+import {AppointmentForDoctor} from '../../../screen/Appointment/Appointments';
 
 export default function Clinicdoctorliststack() {
   const Stack = createNativeStackNavigator();
