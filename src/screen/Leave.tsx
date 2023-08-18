@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  StyleSheet,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import Navbar from '../components/Navbar';
@@ -16,9 +17,15 @@ import {AddLeaveRequest} from '../types';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux/Store';
 import {useAddleave} from '../customhook/useAddleave';
-import {useGetavailability} from '../customhook/useGetavailability';
+import {
+  Availability,
+  useGetavailability,
+} from '../customhook/useGetavailability';
 import {showtime} from '../AppFunction';
 import {useNavigation} from '@react-navigation/native';
+import Btn from '../components/Btn';
+import {commonStyles} from '../asset/styles';
+import AvailabilityCard from '../components/AvailabilityCard';
 
 export function LoggedInUserLeave() {
   const userId = useSelector((state: RootState) => state.Appdata.userid);
@@ -41,11 +48,11 @@ function LeaveById(props: {id: string}) {
   const [modalVisiblework_time, setModalVisiblework_time] = useState(false);
   const [modalVisibleto, setModalVisibleto] = useState(false);
 
-  const [worktime_id, setworktime_id] = useState<any>(null);
-  const {data: Availability} = useGetavailability({doctor_id: props.id});
+  const [selectedAvailability, setSelectedAvailability] =
+    useState<Availability | null>(null);
+  const {data: availabilityList} = useGetavailability({doctor_id: props.id});
 
   const {mutate: addleave} = useAddleave(() => {
-    alert('Mark Unavailable add Successfully');
     navigation.goBack();
   });
   async function markunavailablefun() {
@@ -62,7 +69,7 @@ function LeaveById(props: {id: string}) {
         todate: multipledate
           ? new Date(todate + 'T00:00:00Z').getTime()
           : new Date(fromdate + 'T00:00:00Z').getTime(),
-        worktime_id: fullday ? '' : worktime_id.id,
+        worktime_id: fullday ? '' : selectedAvailability?.id ?? '',
         fullday: fullday,
         reason: reason,
       };
@@ -76,9 +83,9 @@ function LeaveById(props: {id: string}) {
   }
 
   return (
-    <View style={{flex: 1, flexDirection: 'column'}}>
+    <>
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
-        <View style={{flex: 1, backgroundColor: 'white'}}>
+        <View style={{backgroundColor: 'white'}}>
           <View>
             <Calendar
               onDayPress={day => {
@@ -105,7 +112,7 @@ function LeaveById(props: {id: string}) {
             />
           </View>
 
-          <View style={{flex: 1, alignItems: 'center', marginTop: 20}}>
+          <View style={{alignItems: 'center', marginTop: 20}}>
             <TouchableOpacity
               style={{backgroundColor: Color.primary, borderRadius: 5}}
               onPress={() => {
@@ -120,7 +127,7 @@ function LeaveById(props: {id: string}) {
       </Modal>
 
       <Modal animationType="slide" transparent={true} visible={modalVisibleto}>
-        <View style={{flex: 1, backgroundColor: 'white'}}>
+        <View style={{backgroundColor: 'white'}}>
           <View>
             <Calendar
               onDayPress={day => {
@@ -148,7 +155,7 @@ function LeaveById(props: {id: string}) {
             />
           </View>
 
-          <View style={{flex: 1, alignItems: 'center', marginTop: 20}}>
+          <View style={{alignItems: 'center', marginTop: 20}}>
             <TouchableOpacity
               style={{backgroundColor: Color.primary, borderRadius: 5}}
               onPress={() => {
@@ -166,49 +173,49 @@ function LeaveById(props: {id: string}) {
         animationType="slide"
         transparent={true}
         visible={modalVisiblework_time}>
-        <View style={{flex: 1, backgroundColor: 'white'}}>
+        <View style={{backgroundColor: 'white'}}>
           <ScrollView>
-            <View style={{flex: 7, marginTop: 50, marginHorizontal: 20}}>
-              {Availability?.map((i: any) => {
+            <View style={{flex: 7, marginTop: 50}}>
+              {availabilityList?.map(availability => {
                 return (
                   <TouchableOpacity
                     onPress={() => {
-                      setworktime_id(i);
+                      setSelectedAvailability(availability);
                     }}>
                     <View
                       style={{
                         flexDirection: 'row',
                         marginTop: 10,
                         backgroundColor:
-                          worktime_id?.id == i.id
+                          selectedAvailability?.id == availability.id
                             ? Color.secondary
                             : Color.primary,
                         borderRadius: 5,
                       }}>
-                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                      <View style={{alignItems: 'flex-start'}}>
                         <Text
                           style={{
                             textAlign: 'left',
                             padding: 5,
                             color: 'black',
                           }}>
-                          {i.clinic_name}
+                          {availability.clinic_name}
                         </Text>
                         <Text style={{padding: 5, color: 'black'}}>
-                          Slots: {i.no_of_slot}
+                          Slots: {availability.no_of_slot}
                         </Text>
                       </View>
                       <View style={{flex: 2, alignItems: 'center'}}>
                         <Text style={{padding: 5, color: 'black'}}>
-                          {i.week_day}
+                          {availability.week_day}
                         </Text>
                       </View>
-                      <View style={{flex: 1, alignItems: 'center'}}>
+                      <View style={{alignItems: 'center'}}>
                         <Text style={{padding: 5, color: 'black'}}>
-                          {showtime(i.from_time)}
+                          {showtime(Number(availability?.from_time))}
                         </Text>
                         <Text style={{padding: 5, color: 'black'}}>
-                          {showtime(i.to_time)}
+                          {showtime(Number(availability?.to_time))}
                         </Text>
                       </View>
                     </View>
@@ -218,7 +225,7 @@ function LeaveById(props: {id: string}) {
             </View>
           </ScrollView>
 
-          <View style={{flex: 1, alignItems: 'center', marginTop: 20}}>
+          <View style={{alignItems: 'center', marginTop: 20}}>
             <TouchableOpacity
               style={{backgroundColor: Color.primary, borderRadius: 5}}
               onPress={() => {
@@ -232,14 +239,11 @@ function LeaveById(props: {id: string}) {
         </View>
       </Modal>
 
-      <View style={{flex: 1}}>
-        <Navbar title="Leave" />
-      </View>
-
-      <View style={{flex: 1, flexDirection: 'row', marginHorizontal: 20}}>
-        <View>
+      <Navbar title="Leave" />
+      <View style={styles.formContainer}>
+        <View style={commonStyles.flexRowAlignCenter}>
           <CheckBox
-            style={{flex: 1, padding: 10}}
+            style={{padding: 10}}
             checkBoxColor={Color.primary}
             onClick={() => {
               setmultipledate(!multipledate);
@@ -247,37 +251,27 @@ function LeaveById(props: {id: string}) {
             isChecked={multipledate}
             leftText={''}
           />
-        </View>
-
-        <View style={{marginTop: 10, marginLeft: 10}}>
           <Text style={{color: 'black'}}>Multiples Dates</Text>
         </View>
-      </View>
 
-      <View style={{marginLeft: 20}}>
-        <View style={{flexDirection: 'row'}}>
+        <View style={commonStyles.flexRowAlignCenter}>
           <Text style={{color: 'black'}}>
-            {' '}
-            {multipledate ? 'From Date:' : 'For Date:'}{' '}
+            {multipledate ? 'From Date:' : 'For Date:'}
           </Text>
 
-          <View style={{marginLeft: 20}}>
-            <TouchableOpacity
-              style={{}}
-              onPress={() => {
-                setModalVisible(!modalVisible);
-              }}>
-              <Text style={{color: 'black'}}>
-                {fromdate ? fromdate : 'Select Date'}
-              </Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            style={{marginLeft: 10}}
+            onPress={() => {
+              setModalVisible(!modalVisible);
+            }}>
+            <Text style={{color: 'black'}}>
+              {fromdate ? fromdate : 'Select Date'}
+            </Text>
+          </TouchableOpacity>
         </View>
-      </View>
 
-      {multipledate ? (
-        <View style={{marginLeft: 20, marginTop: 10}}>
-          <View style={{flexDirection: 'row'}}>
+        {multipledate ? (
+          <View style={commonStyles.flexRowAlignCenter}>
             <Text style={{color: 'black'}}>To Date:</Text>
 
             <View style={{marginLeft: 20}}>
@@ -291,123 +285,76 @@ function LeaveById(props: {id: string}) {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
-      ) : null}
+        ) : null}
 
-      <View style={{flex: 1, marginTop: 20}}>
-        <View style={{flex: 1, flexDirection: 'row', marginHorizontal: 20}}>
+        <View style={commonStyles.flexRowAlignCenter}>
+          <CheckBox
+            style={{padding: 10}}
+            checkBoxColor={Color.primary}
+            onClick={() => {
+              setfullday(!fullday);
+            }}
+            isChecked={fullday}
+            leftText={''}
+          />
+          <Text style={{color: 'black'}}>Full Days</Text>
+        </View>
+
+        {!fullday ? (
           <View>
-            <CheckBox
-              style={{flex: 1, padding: 10}}
-              checkBoxColor={Color.primary}
-              onClick={() => {
-                setfullday(!fullday);
-              }}
-              isChecked={fullday}
-              leftText={''}
-            />
+            <TouchableOpacity
+              onPress={() => {
+                setModalVisiblework_time(!modalVisiblework_time);
+              }}>
+              <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+                Select Slot
+              </Text>
+            </TouchableOpacity>
+
+            <View>
+              {selectedAvailability && (
+                <AvailabilityCard availability={selectedAvailability} />
+              )}
+            </View>
           </View>
+        ) : (
+          <></>
+        )}
 
-          <View style={{marginTop: 10, marginLeft: 10}}>
-            <Text style={{color: 'black'}}>Full Days</Text>
-          </View>
-        </View>
-      </View>
+        <View>
+          <Text style={{color: 'black'}}>Reason</Text>
 
-      {!fullday ? (
-        <View style={{flex: 1.5, marginHorizontal: 20}}>
-          <TouchableOpacity
-            style={{flex: 1}}
-            onPress={() => {
-              setModalVisiblework_time(!modalVisiblework_time);
-            }}>
-            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
-              click to Select Slot :
-            </Text>
-          </TouchableOpacity>
-
-          <View style={{marginTop: 1}}>
-            {worktime_id ? (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  marginTop: 10,
-                  backgroundColor: Color.primary,
-                  borderRadius: 5,
-                }}>
-                <View style={{flex: 1, alignItems: 'flex-start'}}>
-                  <Text
-                    style={{
-                      textAlign: 'left',
-                      padding: 5,
-                      color: 'black',
-                    }}>
-                    {worktime_id.clinic_name}
-                  </Text>
-                  <Text style={{padding: 5, color: 'black'}}>
-                    Slots: {worktime_id.no_of_slot}
-                  </Text>
-                </View>
-                <View style={{flex: 2, alignItems: 'center'}}>
-                  <Text style={{padding: 5, color: 'black'}}>
-                    {worktime_id.week_day}
-                  </Text>
-                </View>
-                <View style={{flex: 1, alignItems: 'center'}}>
-                  <Text style={{padding: 5, color: 'black'}}>
-                    {showtime(worktime_id.from_time)}
-                  </Text>
-                  <Text style={{padding: 5, color: 'black'}}>
-                    {showtime(worktime_id.to_time)}
-                  </Text>
-                </View>
-              </View>
-            ) : null}
-          </View>
-        </View>
-      ) : (
-        <View style={{flex: 1.5, marginHorizontal: 20}}></View>
-      )}
-
-      <View style={{flex: 2.5, marginHorizontal: 20}}>
-        <Text style={{color: 'black'}}>Reason</Text>
-
-        <TextInput
-          multiline
-          style={{
-            borderWidth: 1,
-            marginTop: 10,
-            borderRadius: 5,
-            color: 'black',
-          }}
-          onChangeText={text => {
-            setreason(text);
-          }}></TextInput>
-      </View>
-
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginTop: 20,
-        }}>
-        <TouchableOpacity
-          onPress={markunavailablefun}
-          style={{backgroundColor: Color.primary, borderRadius: 5}}>
-          <Text
+          <TextInput
+            multiline
             style={{
+              borderWidth: 1,
+              marginTop: 10,
+              borderRadius: 5,
               color: 'black',
-              padding: 5,
-              fontSize: 16,
-              fontWeight: '700',
-            }}>
-            Mark Unavailable
-          </Text>
-        </TouchableOpacity>
-      </View>
+            }}
+            onChangeText={text => {
+              setreason(text);
+            }}></TextInput>
+        </View>
 
-      <View style={{flex: 2}}></View>
-    </View>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: 100,
+          }}>
+          <Btn title="Mark Unavailable" onPress={markunavailablefun} />
+        </View>
+      </View>
+    </>
   );
 }
+
+const styles = StyleSheet.create({
+  formContainer: {
+    flex: 1,
+    gap: 20,
+    color: 'black',
+    marginHorizontal: 20,
+  },
+});

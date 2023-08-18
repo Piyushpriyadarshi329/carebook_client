@@ -15,6 +15,9 @@ import {useGetDoctor, useMutateDoctorProfile} from './useDoctorQuery';
 import {AppPages} from '../appPages';
 import {usegetBookingsSummary} from '../customhook/usegetBookingsSummary';
 import {Doctorprofilemodel} from '../components/Doctorprofilemodel';
+import AvailabilityCard from '../components/AvailabilityCard';
+import EditButton from '../components/EditButton';
+import DoctorProfileEntry from './DoctorProfileEntry';
 
 interface ProfileForm {
   username: string;
@@ -112,54 +115,32 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
         onSubmit={updateProfileHandler}
       />
       <Navbar title="" />
-      <FormProvider {...formMethods}>
+      <Doctorprofilemodel editMode={editMode} setEditMode={setEditMode} />
+      <Navbar title="Profile" />
+      <View style={{flex: 4}}>
         <View style={{flex: 2, flexDirection: 'row', marginHorizontal: 20}}>
-          <View style={{flex: 2, marginTop: 30}}>
-            <View>
+          <View style={{flex: 2, marginTop: 10}}>
+            <View
+              style={{justifyContent: 'space-between', flexDirection: 'row'}}>
               <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
-                Dr. {doctorDetails?.[0]?.name}
+                Dr. {doctorDetails?.[0]?.name ?? 'Name - -'}
               </Text>
+              <EditButton onPress={() => setEditMode(true)} />
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                marginTop: 5,
-                alignItems: 'center',
-              }}>
-              <Text style={{color: 'black'}}>consultation Time:</Text>
-
-              <Text style={{color: 'black', marginLeft: 10}}>
-                {doctorDetails?.[0]?.appointment_time?.toString()}
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                marginTop: 5,
-                alignItems: 'center',
-              }}>
-              <Text style={{color: 'black'}}>consultation Fees:</Text>
-
-              <Text style={{color: 'black', marginLeft: 10}}>
-                {doctorDetails?.[0]?.fees?.toString()}
-              </Text>
-            </View>
+            <DoctorProfileEntry
+              label="Consultation Time"
+              value={doctorDetails?.[0]?.appointment_time?.toString()}
+            />
+            <DoctorProfileEntry
+              label="Consultation Fees"
+              value={doctorDetails?.[0]?.fees?.toString()}
+            />
+            <DoctorProfileEntry
+              label="Speciality"
+              value={doctorDetails?.[0]?.speciality?.toString()}
+            />
           </View>
           <View style={{flex: 1, marginTop: 10}}>
-            <View
-              style={{
-                flex: 0.2,
-                justifyContent: 'flex-end',
-                alignItems: 'flex-end',
-              }}>
-              <Icon
-                name="edit"
-                style={{color: Color.primary, fontSize: 20}}
-                onPress={() => {
-                  setEditMode(true);
-                }}
-              />
-            </View>
             <View style={{justifyContent: 'center', flex: 1}}>
               <Image
                 style={{
@@ -190,7 +171,7 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
               onTextLayout={onTextLayout}
               numberOfLines={textShown ? undefined : 2}
               style={{lineHeight: 21, color: 'black'}}>
-              {doctorDetails?.[0]?.about}
+              {doctorDetails?.[0]?.about ?? '- -'}
             </Text>
 
             {lengthMore ? (
@@ -207,7 +188,7 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
             ) : null}
           </View>
         </View>
-      </FormProvider>
+      </View>
 
       <View style={{flexDirection: 'column', flex: 8}}>
         <View style={{flex: textShown ? 5 : 6, marginHorizontal: 20, flex: 3}}>
@@ -229,39 +210,8 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
 
           <ScrollView>
             <View style={{flex: 10}}>
-              {Availability?.map((i: any) => {
-                return (
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      marginTop: 10,
-                      backgroundColor: Color.primary,
-                      borderRadius: 5,
-                    }}>
-                    <View style={{flex: 1, alignItems: 'flex-start'}}>
-                      <Text
-                        style={{textAlign: 'left', padding: 5, color: 'black'}}>
-                        {i.clinic_name}
-                      </Text>
-                      <Text style={{padding: 5, color: 'black'}}>
-                        Slots: {i.no_of_slot}
-                      </Text>
-                    </View>
-                    <View style={{flex: 2, alignItems: 'center'}}>
-                      <Text style={{padding: 5, color: 'black'}}>
-                        {i.week_day}
-                      </Text>
-                    </View>
-                    <View style={{flex: 1, alignItems: 'center'}}>
-                      <Text style={{padding: 5, color: 'black'}}>
-                        {i.from_time}
-                      </Text>
-                      <Text style={{padding: 5, color: 'black'}}>
-                        {i.to_time}
-                      </Text>
-                    </View>
-                  </View>
-                );
+              {Availability?.map(a => {
+                return <AvailabilityCard availability={a} />;
               })}
             </View>
           </ScrollView>

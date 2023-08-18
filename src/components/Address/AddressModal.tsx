@@ -1,20 +1,19 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {FormProvider, useForm} from 'react-hook-form';
 import {
   Modal,
+  ScrollView,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  Button,
-  ScrollView,
-  KeyboardAvoidingView,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/AntDesign';
 import Color from '../../asset/Color';
-import {FormProvider, useForm} from 'react-hook-form';
+import {AddressDto} from '../../types';
+import Btn from '../Btn';
 import {RHFTextInput} from '../RHFTextInput';
 import {AddressStyles} from './styles';
-import Icon from 'react-native-vector-icons/AntDesign';
-import Btn from '../Btn';
-import {AddressDto} from '../../types';
 
 export const AddressModal = ({
   modalVisible,
@@ -29,8 +28,13 @@ export const AddressModal = ({
 }) => {
   const formMethods = useForm<AddressDto>({
     defaultValues: defaultValues,
+    mode: 'onSubmit',
   });
-  console.log('defaultValues: ', defaultValues);
+  useEffect(() => {
+    if (!modalVisible) {
+      formMethods.reset();
+    }
+  }, [modalVisible]);
   return (
     <Modal
       animationType="slide"
@@ -39,13 +43,15 @@ export const AddressModal = ({
       onRequestClose={() => setModalVisible(false)}>
       <FormProvider {...formMethods}>
         <View
-          style={{
-            flex: 1,
-            backgroundColor: Color.tertiary,
-            marginTop: 200,
-            borderTopEndRadius: 30,
-            borderTopStartRadius: 30,
-          }}>
+          style={[
+            {
+              flex: 1,
+              backgroundColor: Color.tertiary,
+              marginTop: 200,
+              borderTopEndRadius: 30,
+              borderTopStartRadius: 30,
+            },
+          ]}>
           <View
             style={{
               marginTop: 10,
@@ -83,6 +89,7 @@ export const AddressModal = ({
                 name="address_line1"
                 placeHolder={'Address line1'}
                 styles={AddressStyles.textInput}
+                required={true}
               />
               <RHFTextInput
                 name="address_line2"
@@ -93,28 +100,42 @@ export const AddressModal = ({
                 name="city"
                 placeHolder={'City'}
                 styles={AddressStyles.textInput}
+                required={true}
               />
               <RHFTextInput
                 name="state"
                 placeHolder={'State'}
                 styles={AddressStyles.textInput}
+                required={true}
               />
               <RHFTextInput
                 name="pincode"
                 placeHolder={'Pincode'}
                 styles={AddressStyles.textInput}
+                required={true}
+              />
+            </View>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Btn
+                title={'Submit'}
+                onPress={formMethods.handleSubmit(onSubmit)}
               />
             </View>
           </ScrollView>
-          <View
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <Btn
-              title={'Submit'}
-              onPress={formMethods.handleSubmit(onSubmit)}
-            />
-          </View>
         </View>
       </FormProvider>
     </Modal>
   );
 };
+
+const styles = StyleSheet.create({
+  avoidSoftInputView: {
+    alignItems: 'center',
+    alignSelf: 'stretch',
+  },
+});
