@@ -69,6 +69,9 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
     );
     formMethods.setValue('fees', data?.[0]?.fees?.toString() ?? '');
   });
+
+  console.log('doctorDetails1111==>', doctorDetails);
+
   const formMethods = useForm<ProfileForm>({
     defaultValues: {
       about: doctorDetails?.[0]?.about,

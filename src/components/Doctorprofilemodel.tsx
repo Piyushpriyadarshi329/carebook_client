@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   Modal,
   Text,
@@ -27,11 +27,13 @@ export const Doctorprofilemodel = ({
   onSubmit?: (p: AddressDto) => void;
   defaultValues?: any | undefined;
 }) => {
-  const formMethods = useForm<AddressDto>({
-    defaultValues: defaultValues,
-  });
-  console.log('defaultValues: ', defaultValues);
-
+  const formMethods = useForm<AddressDto>({});
+  console.log('defaultValues===>: ', defaultValues);
+  useEffect(() => {
+    if (!editMode) {
+      formMethods.reset(defaultValues);
+    }
+  }, []);
   return (
     <Modal
       animationType="slide"
