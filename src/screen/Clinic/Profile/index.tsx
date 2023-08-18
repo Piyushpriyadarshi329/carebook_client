@@ -23,6 +23,7 @@ import {AddressDto} from '../../../types';
 import {useUpdateClinic} from './useClinicQuery';
 import {useQueryClient} from '@tanstack/react-query';
 import EditButton from '../../../components/EditButton';
+import {Clinicprofilemodel} from '../../../components/Clinicprofilemodel';
 
 export default function Clinicprofile() {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ export default function Clinicprofile() {
   const [textShown, setTextShown] = useState(false); //To show ur remaining Text
   const [lengthMore, setLengthMore] = useState(false); //to show the "Read more & Less Line"
   const [modalVisible, setModalVisible] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
   const {data: profiles, isLoading} = useClinicsList({clinic_id: userId});
   const profile = profiles?.[0];
@@ -57,6 +59,15 @@ export default function Clinicprofile() {
       lan: Number(formValues.lan),
       type: 'Clinic',
     });
+  }
+
+  function profilehandler(formValues: any) {
+    // mutateAddress({
+    //   id: profile?.address.id,
+    //   user_id: userId,
+    //   name: formValues.name,
+    //   about: formValues.about,
+    // });
   }
 
   const toggleNumberOfLines = () => {
@@ -137,7 +148,11 @@ export default function Clinicprofile() {
             <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
               About
             </Text>
-            <EditButton onPress={() => {}} />
+            <EditButton
+              onPress={() => {
+                setEditMode(true);
+              }}
+            />
           </View>
           <View>
             <Text
@@ -188,6 +203,11 @@ export default function Clinicprofile() {
         setModalVisible={setModalVisible}
         onSubmit={submithandler}
         defaultValues={profile?.address}
+      />
+      <Clinicprofilemodel
+        editMode={editMode}
+        setEditMode={setEditMode}
+        onSubmit={profilehandler}
       />
     </View>
   );

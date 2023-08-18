@@ -15,7 +15,7 @@ import {useSelector} from 'react-redux';
 import {sendtime, showtime} from '../../AppFunction';
 import Color from '../../asset/Color';
 import Navbar from '../../components/Navbar';
-import {days} from '../../customhook/useGetavailability';
+import {days, weeks} from '../../customhook/useGetavailability';
 import {useClinicsList} from '../Clinic/Profile/useGetcliniclist';
 import type {RootState} from '../../redux/Store';
 import {useAddavailability} from '../../customhook/useAddavailability';
@@ -23,6 +23,7 @@ import Btn from '../../components/Btn';
 import useKeyboardAvoidHook from '../../utils/KeyboardAvoidHook';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {commonStyles} from '../../asset/styles';
+import CheckBox from 'react-native-check-box';
 
 export default function LoggedInDoctorAvailability() {
   const userId = useSelector((state: RootState) => state.Appdata.userid);
@@ -59,12 +60,15 @@ export function DoctorAvailabilityWithId(props: {
 }) {
   const navigation = useNavigation();
   const [open, setOpen] = useState(false);
+  const [openweek, setOpenweek] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [selectedclinic, setselectedclinic] = useState(props.clinic_id ?? null);
   const [datefrom, setDatefrom] = useState(new Date());
   const [dateto, setDateto] = useState(new Date());
   const [selectedday, setselectedday] = useState([]);
+  const [selectedweek, setselectedweek] = useState([]);
   const [noofslot, setnoofslot] = useState<number>(0);
+  const [allweeks, setallweeks] = useState(true);
 
   const {data: cliniclist} = useClinicsList({doctor_id: props.id});
 
@@ -109,7 +113,12 @@ export function DoctorAvailabilityWithId(props: {
       from_time: sendtime(datefrom.getTime()),
       to_time: sendtime(dateto.getTime()),
       no_of_slot: noofslot,
+      month_week: selectedweek,
+      all_weeks: allweeks,
     };
+
+    console.log('payload', payload);
+
     addAvailability(payload);
   }
 
@@ -134,7 +143,42 @@ export function DoctorAvailabilityWithId(props: {
             />
           </View>
         )}
-        <Text style={{color: 'black'}}>All Weeks</Text>
+        <View style={{flex: 1, flexDirection: 'row', marginHorizontal: 20}}>
+          <View>
+            <CheckBox
+              style={{flex: 1, padding: 10}}
+              checkBoxColor={Color.primary}
+              onClick={() => {
+                setallweeks(!allweeks);
+              }}
+              isChecked={allweeks}
+              leftText={''}
+            />
+          </View>
+
+          <View style={{marginTop: 10, marginLeft: 10}}>
+            <Text style={{color: 'black'}}>All Weeks</Text>
+          </View>
+        </View>
+        {!allweeks ? (
+          <>
+            <View style={{zIndex: 1001}}>
+              <DropDownPicker
+                open={openweek}
+                value={selectedweek}
+                items={weeks}
+                setOpen={setOpenweek}
+                setValue={setselectedweek}
+                placeholder="Select Weeks"
+                multipleText={selectedweek
+                  .sort()
+                  .reduce((a, c) => a + weeks[c].label + ', ', '')}
+                multiple
+              />
+            </View>
+          </>
+        ) : null}
+
         <View style={{zIndex: 1000}}>
           <DropDownPicker
             open={open}
@@ -149,7 +193,6 @@ export function DoctorAvailabilityWithId(props: {
             multiple
           />
         </View>
-
         <View style={commonStyles.flexRowAlignCenter}>
           <Text style={{color: 'black'}}>From Time:</Text>
 
@@ -159,7 +202,6 @@ export function DoctorAvailabilityWithId(props: {
             </Text>
           </TouchableOpacity>
         </View>
-
         <View style={commonStyles.flexRowAlignCenter}>
           <Text style={{color: 'black'}}>To Time:</Text>
 
@@ -169,7 +211,6 @@ export function DoctorAvailabilityWithId(props: {
             </Text>
           </TouchableOpacity>
         </View>
-
         <View style={commonStyles.flexRowAlignCenter}>
           <Text style={{color: 'black'}}>No of Slot:</Text>
           <TextInput

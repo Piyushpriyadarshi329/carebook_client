@@ -37,6 +37,28 @@ export const days = [
     label: 'SAT',
   },
 ];
+export const weeks = [
+  {
+    value: 0,
+    label: 'Week1',
+  },
+  {
+    value: 1,
+    label: 'Week2',
+  },
+  {
+    value: 2,
+    label: 'Week3',
+  },
+  {
+    value: 3,
+    label: 'Week4',
+  },
+  {
+    value: 4,
+    label: 'Week5',
+  },
+];
 
 export interface Availability extends Omit<AvailabilityRes, 'week_day'> {
   week_day: string;
@@ -46,13 +68,16 @@ export function useGetavailability(payload: GetAvailabilityRequest) {
   return useQuery(
     ['AVAILABILITY', payload],
     () => {
-      console.log('getavailablity');
+      // console.log('getavailablity');
       return axios.post<GetAvailabilityResponse>(GETAVAILABILITY_URL, payload);
     },
     {
       select: data => {
         let transformedData = data.data.data;
         let newData: Availability[] = [];
+
+        // console.log('transformedData', transformedData.length);
+
         transformedData?.map(i => {
           let local = newData?.filter((j: any) => j.entry_id == i.entry_id);
           if (!!local?.length) {

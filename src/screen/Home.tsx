@@ -17,31 +17,18 @@ import {useSelector, useDispatch} from 'react-redux';
 import {usegetAppointments} from '../customhook/usegetAppointments';
 
 import {monthlist, daylist} from './../Appconstant';
+import {usegetBookingsSummary} from '../customhook/usegetBookingsSummary';
 
 const screenWidth = Dimensions.get('window').width;
 
 export default function Home() {
   const Appdata = useSelector((state: RootState) => state.Appdata);
 
-  const [datelabel, setdatelabel] = useState<string[]>([]);
-
-  useEffect(() => {
-    let localdate = [];
-
-    for (let i = 1; i < 7; i++) {
-      let date = new Date();
-
-      date.setDate(date.getDate() - i);
-
-      let month = date.getMonth();
-
-      let d1 = date.getDate();
-
-      let s1 = d1 + ' ' + monthlist[month];
-      localdate.push(s1);
-    }
-    setdatelabel(localdate);
-  }, []);
+  // const [datelabel, setdatelabel] = useState<string[]>([]);
+  const {data: bookingdata} = usegetBookingsSummary({
+    doctor_id: Appdata.userid,
+  });
+  console.log('Bookingdata', bookingdata);
 
   const chartConfig = {
     backgroundGradientFrom: '#Ffffff',
@@ -70,10 +57,10 @@ export default function Home() {
   };
 
   const data = {
-    labels: datelabel,
+    labels: bookingdata?.datelabel || [],
     datasets: [
       {
-        data: [20, 45, 28, 80, 30, 43],
+        data: bookingdata?.count || [],
       },
     ],
   };

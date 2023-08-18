@@ -207,8 +207,13 @@ export interface WorkingTimeDto {
   week?: number;
   no_of_slot: number;
 }
-export type AddAvailabilityRequest = Omit<WorkingTimeDto, 'id' | 'week_day'> & {
+export type AddAvailabilityRequest = Omit<
+  WorkingTimeDto,
+  'id' | 'week_day' | 'week'
+> & {
   week_day: number[];
+  month_week?: number[];
+  all_weeks: boolean;
 };
 export interface OccupiedDto {
   work_time_id: string;
@@ -312,3 +317,10 @@ export interface Slot {
   index: number;
   status: SlotStatus;
 }
+
+export interface GetBookingsSummaryRequest {
+  doctor_id: string;
+}
+export type GetBookingsSummaryResponse = DataResponse<
+  {clinic_id: string; count: number}[]
+>;
