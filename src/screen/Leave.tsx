@@ -256,7 +256,7 @@ function LeaveById(props: {id: string}) {
         </View>
       </Modal>
 
-      <Navbar title="Leave" />
+      <Navbar title="Leave" asFullScreenModal />
       <View style={styles.formContainer}>
         <View style={commonStyles.flexRowAlignCenter}>
           <CheckBox

@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import Color from '../asset/Color';
 import {useNavigation} from '@react-navigation/native';
 
-const Navbar = (props: {title: string}) => {
+const Navbar = (props: {title: string; asFullScreenModal?: boolean}) => {
   const navigation = useNavigation();
   return (
     <View
@@ -13,14 +13,20 @@ const Navbar = (props: {title: string}) => {
         padding: 10,
         marginBottom: 10,
         alignItems: 'center',
+        justifyContent: 'center',
+        gap: 20,
       }}>
-      <View style={{marginRight: 20}} onTouchEnd={() => navigation.goBack()}>
-        <Icon
-          name="keyboard-arrow-left"
-          size={24}
-          style={{color: Color.primary}}
-        />
-      </View>
+      {!props.asFullScreenModal && (
+        <View
+          onTouchEnd={() => navigation.goBack()}
+          style={{position: 'absolute', left: 20, top: 10}}>
+          <Icon
+            name="keyboard-arrow-left"
+            size={24}
+            style={{color: Color.primary}}
+          />
+        </View>
+      )}
       <Text
         style={{
           color: 'black',
@@ -30,6 +36,13 @@ const Navbar = (props: {title: string}) => {
         }}>
         {props.title}
       </Text>
+      {props.asFullScreenModal && (
+        <View
+          style={{position: 'absolute', right: 20, top: 10}}
+          onTouchEnd={() => navigation.goBack()}>
+          <Icon name="close" size={24} style={{color: Color.primary}} />
+        </View>
+      )}
     </View>
   );
 };
