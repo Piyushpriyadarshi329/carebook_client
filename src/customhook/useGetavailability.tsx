@@ -75,10 +75,7 @@ export function useGetavailability(payload: GetAvailabilityRequest) {
       select: data => {
         let transformedData = data.data.data;
 
-        console.log('transformedData', transformedData);
         let newData: Availability[] = [];
-
-        // console.log('transformedData', transformedData.length);
 
         transformedData?.map(i => {
           let local = newData?.filter((j: any) => j.entry_id == i.entry_id);
@@ -114,7 +111,6 @@ export function useGetavailability(payload: GetAvailabilityRequest) {
           }
         });
 
-        console.log('newdata', newData);
         return newData;
       },
     },

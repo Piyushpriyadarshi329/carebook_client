@@ -3,6 +3,7 @@ import React from 'react';
 import Color from '../asset/Color';
 import Entypo from 'react-native-vector-icons/Entypo';
 import ImagePicker from 'react-native-image-crop-picker';
+import {useAddDocumentMutation} from '../screen/Doctor/useDocumentQuery';
 
 export default function Profilepicuploadmodel({
   modalVisible,
@@ -11,15 +12,22 @@ export default function Profilepicuploadmodel({
 }: {
   modalVisible: boolean;
   setModalVisible: any;
-  onSubmit: (p) => void;
+  onSubmit: (p: any) => void;
 }) {
+  const {mutate: addDocument} = useAddDocumentMutation({
+    onSuccess: data => {
+      console.log(data.id, data.presignedUrl);
+      onSubmit(data);
+    },
+  });
   async function openfolder() {
     ImagePicker.openPicker({
       width: 600,
       height: 800,
       cropping: true,
+      includeBase64: true,
     }).then(image => {
-      console.log(image);
+      addDocument((image as any).data);
       setModalVisible(false);
     });
   }
@@ -28,8 +36,9 @@ export default function Profilepicuploadmodel({
       width: 600,
       height: 800,
       cropping: true,
+      includeBase64: true,
     }).then(image => {
-      console.log(image);
+      addDocument((image as any).data);
       setModalVisible(false);
     });
   }
