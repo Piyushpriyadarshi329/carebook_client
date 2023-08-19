@@ -25,6 +25,7 @@ export default function App() {
       setshowsplash(false);
     }, 1500);
   }, []);
+
   return (
     <>
       {showsplash ? (

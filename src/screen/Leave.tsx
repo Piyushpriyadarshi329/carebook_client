@@ -39,7 +39,6 @@ export const Leave = (props: any) => {
 const {errorAlert, successAlert} = useAlert();
 
 function LeaveById(props: {id: string}) {
-  const userId = useSelector((state: RootState) => state.Appdata.userid);
   const navigation = useNavigation();
 
   const [multipledate, setmultipledate] = useState(false);
@@ -82,7 +81,7 @@ function LeaveById(props: {id: string}) {
       }
 
       let payload: AddLeaveRequest = {
-        doctor_id: userId,
+        doctor_id: props.id,
         fromdate: new Date(fromdate + 'T00:00:00Z').getTime(),
         todate: multipledate
           ? new Date(todate + 'T00:00:00Z').getTime()

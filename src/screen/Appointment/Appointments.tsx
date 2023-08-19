@@ -97,38 +97,36 @@ function Appointments({doctorId}: {doctorId: string}) {
         }}
         transparent={true}
         visible={modalVisible}>
-        <View style={{flex: 1}}>
-          <View
-            style={{
-              height: 400,
-              marginTop: 200,
-              marginHorizontal: 50,
-              borderRadius: 5,
-            }}>
-            <Calendar
-              onDayPress={day => {
-                setcenterdate(day.dateString);
-                setModalVisible(!modalVisible);
-              }}
-              style={{borderRadius: 5}}
-              theme={{
-                backgroundColor: '#bbbbbb',
-                calendarBackground: '#eeeeee',
-                textSectionTitleColor: '#b6c1cd',
-                selectedDayBackgroundColor: Color.primary,
-                selectedDayTextColor: '#ffffff',
-                todayTextColor: '#00adf5',
-                dayTextColor: '#2d4150',
-              }}
-              markedDates={{
-                [centerdate]: {
-                  selected: true,
-                  disableTouchEvent: true,
-                  selectedDotColor: 'orange',
-                },
-              }}
-            />
-          </View>
+        <View
+          style={{
+            height: 400,
+            marginTop: 200,
+            marginHorizontal: 50,
+            borderRadius: 50,
+          }}>
+          <Calendar
+            onDayPress={day => {
+              setcenterdate(day.dateString);
+              setModalVisible(!modalVisible);
+            }}
+            style={{borderRadius: 15}}
+            theme={{
+              backgroundColor: Color.secondary,
+              calendarBackground: Color.secondary,
+              textSectionTitleColor: '#b6c1cd',
+              selectedDayBackgroundColor: Color.primary,
+              selectedDayTextColor: '#ffffff',
+              todayTextColor: Color.primary,
+              dayTextColor: '#2d4150',
+            }}
+            markedDates={{
+              [centerdate]: {
+                selected: true,
+                disableTouchEvent: true,
+                selectedDotColor: 'orange',
+              },
+            }}
+          />
         </View>
       </Modal>
 
