@@ -126,7 +126,12 @@ export default function Adddoctor() {
               <View style={styles.rowItem}>
                 <Icon name="mail" size={20} color="black" />
 
-                <RHFTextInput name={'email'} placeholder="Email" required />
+                <RHFTextInput
+                  name={'email'}
+                  placeholder="Email"
+                  required
+                  keyboardType="email-address"
+                />
               </View>
 
               <View style={styles.rowItem}>
