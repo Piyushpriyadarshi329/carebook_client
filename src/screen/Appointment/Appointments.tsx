@@ -69,12 +69,21 @@ function Appointments({doctorId}: {doctorId: string}) {
       obj.date = d1 + ' ' + monthlist[month];
       obj.day = daylist[date.getDay()];
       obj.value = Appointment_date;
+      if (i == 0) {
+        setselecteddate(Appointment_date);
+      }
 
       localdate.push(obj);
     }
 
     return localdate;
   }, [centerdate]);
+
+  console.log('payload', {
+    doctorId: doctorId,
+    appointment_date: selecteddate,
+  });
+
   const {data: appointments} = usegetAppointments({
     doctorId: doctorId,
     appointment_date: selecteddate,

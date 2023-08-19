@@ -27,25 +27,21 @@ export default function App() {
   }, []);
   return (
     <>
-      {showsplash ? (
-        <Splashscreen />
-      ) : (
-        <QueryClientProvider client={queryClient}>
-          <Provider store={store}>
-            <Fragment>
-              <SafeAreaView style={{flex: 1, backgroundColor: 'blue'}}>
-                <StatusBar
-                  backgroundColor={Color.primary}
-                  barStyle="dark-content"
-                />
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Fragment>
+            <SafeAreaView style={{flex: 1, backgroundColor: 'blue'}}>
+              <StatusBar
+                backgroundColor={Color.primary}
+                barStyle="dark-content"
+              />
 
-                <Auth />
-              </SafeAreaView>
-            </Fragment>
-            <Toast />
-          </Provider>
-        </QueryClientProvider>
-      )}
+              <Auth />
+            </SafeAreaView>
+          </Fragment>
+          <Toast />
+        </Provider>
+      </QueryClientProvider>
     </>
   );
 }

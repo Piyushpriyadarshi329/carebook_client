@@ -5,6 +5,10 @@
 
 <!-- Define ACCESS_COARSE_LOCATION if you will use enableHighAccuracy=false  -->
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+<uses-feature android:name="android.hardware.camera" android:required="false" />
+<uses-feature android:name="android.hardware.camera.front" android:required="false" />
+<uses-permission android:name="android.permission.CAMERA"/>
+
 
     <application
       android:name=".MainApplication"
@@ -24,7 +28,8 @@
         android:launchMode="singleTask"
         android:windowSoftInputMode="adjustResize"
         android:exported="true"
-        android:screenOrientation="portrait">
+        android:screenOrientation="portrait"
+        >
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />

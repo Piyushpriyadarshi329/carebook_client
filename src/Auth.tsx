@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
@@ -7,16 +7,22 @@ import ClinicRoute from './Routes/Clinic/ClinicRoute';
 import DocterRoute from './Routes/Doctor/DocterRoute';
 import type {RootState} from './redux/Store';
 import {updateappstate} from './redux/reducer/Authreducer';
+import Splashscreen from './auth/Splashscreen';
 
 //GIT   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
 
 export default function Auth() {
   const Appdata = useSelector((state: RootState) => state.Appdata);
   const dispatch = useDispatch();
+  const [showsplash, setshowsplash] = useState(true);
 
   useEffect(() => {
-    getsayncdata();
+    setTimeout(() => {
+      getsayncdata();
+    }, 1500);
   }, []);
+
+  useEffect(() => {}, []);
 
   async function getsayncdata() {
     try {
@@ -27,6 +33,7 @@ export default function Auth() {
 
         dispatch(updateappstate(appstate));
       }
+      setshowsplash(false);
     } catch (error) {
       console.log(error);
     }
@@ -34,14 +41,20 @@ export default function Auth() {
 
   return (
     <>
-      {Appdata.islogin ? (
-        Appdata.isdoctor ? (
-          <DocterRoute />
-        ) : (
-          <ClinicRoute />
-        )
+      {showsplash ? (
+        <Splashscreen />
       ) : (
-        <Beforelogin />
+        <>
+          {Appdata.islogin ? (
+            Appdata.isdoctor ? (
+              <DocterRoute />
+            ) : (
+              <ClinicRoute />
+            )
+          ) : (
+            <Beforelogin />
+          )}
+        </>
       )}
     </>
   );

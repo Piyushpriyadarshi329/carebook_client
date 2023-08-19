@@ -1,5 +1,6 @@
 import React from 'react';
 import {Text, View} from 'react-native';
+import {showtimefromstring} from '../AppFunction';
 import Color from '../asset/Color';
 import {Availability} from '../customhook/useGetavailability';
 
@@ -24,12 +25,15 @@ const AvailabilityCard = ({availability}: {availability: Availability}) => {
         <Text style={{padding: 5, color: 'black'}}>
           {availability.week_day}
         </Text>
+        <Text style={{padding: 5, color: 'black'}}>{availability.week}</Text>
       </View>
       <View style={{flex: 1, alignItems: 'center'}}>
         <Text style={{padding: 5, color: 'black'}}>
-          {availability.from_time}
+          {showtimefromstring(availability.from_time)}
         </Text>
-        <Text style={{padding: 5, color: 'black'}}>{availability.to_time}</Text>
+        <Text style={{padding: 5, color: 'black'}}>
+          {showtimefromstring(availability.to_time)}
+        </Text>
       </View>
     </View>
   );

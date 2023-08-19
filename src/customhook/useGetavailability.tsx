@@ -74,27 +74,47 @@ export function useGetavailability(payload: GetAvailabilityRequest) {
     {
       select: data => {
         let transformedData = data.data.data;
+
+        console.log('transformedData', transformedData);
         let newData: Availability[] = [];
 
         // console.log('transformedData', transformedData.length);
 
         transformedData?.map(i => {
           let local = newData?.filter((j: any) => j.entry_id == i.entry_id);
+
           if (!!local?.length) {
             newData = newData.map((k: any) => {
               if (k.entry_id == i.entry_id) {
+                let localweek_day = '';
+                let localweek = '';
+
+                if (!k.week_day.includes(days[i.week_day].label)) {
+                  localweek_day = ',' + days[i.week_day].label;
+                }
+                if (!k.week.includes(weeks[i.week].label)) {
+                  localweek = ',' + weeks[i.week].label;
+                }
+
                 return {
                   ...k,
-                  week_day: k.week_day + ',' + days[i.week_day].label,
+                  week_day: k.week_day + localweek_day,
+                  week: k.week + localweek,
                 };
               } else {
                 return k;
               }
             });
           } else {
-            newData.push({...i, week_day: days[i.week_day].label});
+            newData.push({
+              ...i,
+              week_day: days[i.week_day].label,
+              week: weeks[Number(i.week)].label,
+            });
           }
         });
+
+        console.log('newdata', newData);
         return newData;
       },
     },

@@ -195,12 +195,19 @@ export function DoctorAvailabilityWithId(props: {
           </>
         ) : null}
 
+        {/* <ScrollView> */}
         <View style={{zIndex: 1000}}>
           <DropDownPicker
             open={open}
             value={selectedday}
             items={days}
             setOpen={setOpen}
+            dropDownContainerStyle={{
+              // backgroundColor: '#dfdfdf',
+              position: 'absolute', // to fix scroll issue ... it is by default 'absolute'
+              top: 50, //to fix gap between label box and container
+              maxHeight: 500,
+            }}
             setValue={setselectedday}
             placeholder="Select days"
             multipleText={selectedday
@@ -209,6 +216,8 @@ export function DoctorAvailabilityWithId(props: {
             multiple
           />
         </View>
+        {/* </ScrollView> */}
+
         <View style={commonStyles.flexRowAlignCenter}>
           <Text style={{color: 'black'}}>From Time:</Text>
 

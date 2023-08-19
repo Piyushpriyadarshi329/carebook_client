@@ -1,6 +1,13 @@
 import {useQueryClient} from '@tanstack/react-query';
 import React, {useCallback, useState} from 'react';
-import {Button, Image, StyleSheet, Text, View} from 'react-native';
+import {
+  Button,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Color from '../../../asset/Color';
 import {AddressModal} from '../../../components/Address/AddressModal';
@@ -15,6 +22,7 @@ import {AddressDto} from '../../../types';
 import {useAddaddressMutation} from './useAddaddress';
 import {useClinicsList} from './useGetcliniclist';
 import {useUpdateClinic} from './useClinicQuery';
+import Profilepicuploadmodel from '../../../components/Profilepicuploadmodel';
 
 export default function Clinicprofile() {
   const dispatch = useDispatch();
@@ -22,6 +30,7 @@ export default function Clinicprofile() {
   const [textShown, setTextShown] = useState(false); //To show ur remaining Text
   const [lengthMore, setLengthMore] = useState(false); //to show the "Read more & Less Line"
   const [modalVisible, setModalVisible] = useState(false);
+  const [picmodalVisible, setpicModalVisible] = useState(false); // profile pic
   const [clinicModalVisible, setClinicModalVisible] = useState(false);
 
   const {data: profiles, isLoading} = useClinicsList({clinic_id: userId});
@@ -170,15 +179,20 @@ export default function Clinicprofile() {
           </View>
         </View>
         <View style={{flex: 1, justifyContent: 'flex-start', paddingTop: 20}}>
-          <Image
-            style={{
-              width: 100,
-              height: 100,
-              borderRadius: 50,
-              marginTop: 10,
-            }}
-            source={require('../../../asset/image/Clinic.jpeg')}
-          />
+          <TouchableOpacity
+            onPress={() => {
+              setpicModalVisible(true);
+            }}>
+            <Image
+              style={{
+                width: 100,
+                height: 100,
+                borderRadius: 50,
+                marginTop: 10,
+              }}
+              source={require('../../../asset/image/Clinic.jpeg')}
+            />
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -215,6 +229,11 @@ export default function Clinicprofile() {
         setEditMode={setClinicModalVisible}
         onSubmit={profilehandler}
         profile={profile}
+      />
+      <Profilepicuploadmodel
+        modalVisible={picmodalVisible}
+        setModalVisible={setpicModalVisible}
+        onSubmit={submithandler}
       />
     </View>
   );

@@ -1,7 +1,15 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
-import {Button, Image, Pressable, ScrollView, Text, View} from 'react-native';
+import {
+  Button,
+  Image,
+  Pressable,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
 import Color from '../asset/Color';
@@ -18,6 +26,8 @@ import {Doctorprofilemodel} from '../components/Doctorprofilemodel';
 import AvailabilityCard from '../components/AvailabilityCard';
 import EditButton from '../components/EditButton';
 import DoctorProfileEntry from './DoctorProfileEntry';
+import ImagePicker from 'react-native-image-crop-picker';
+import Profilepicuploadmodel from '../components/Profilepicuploadmodel';
 
 export interface ProfileForm {
   username: string;
@@ -27,6 +37,7 @@ export interface ProfileForm {
 }
 export default function LoggedInDoctorProfile() {
   const dispatch = useDispatch();
+  const [picmodalVisible, setpicModalVisible] = useState(false); // profile pic
 
   const userId = useSelector((state: RootState) => state.Appdata.userid);
 
@@ -61,6 +72,8 @@ export const DoctorProfile = (props: any) => {
 function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
   const navigation = useNavigation();
   const [editMode, setEditMode] = useState(false);
+  const [picmodalVisible, setpicModalVisible] = useState(false); // profile pic
+
   const {data: doctorDetails} = useGetDoctor(props.id);
 
   console.log('doctorDetails1111==>', doctorDetails);
@@ -93,6 +106,13 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
     });
   };
 
+  async function uploadprofilpicfun() {
+    try {
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <Doctorprofilemodel
@@ -100,6 +120,11 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
         setEditMode={setEditMode}
         doctorDetails={doctorDetails?.length ? doctorDetails[0] : undefined}
         onSubmit={updateProfileHandler}
+      />
+      <Profilepicuploadmodel
+        modalVisible={picmodalVisible}
+        setModalVisible={setpicModalVisible}
+        onSubmit={uploadprofilpicfun}
       />
       <Navbar title="Profile" />
       <View style={{flex: 4}}>
@@ -127,15 +152,20 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
           </View>
           <View style={{flex: 1, marginTop: 10}}>
             <View style={{justifyContent: 'center', flex: 1}}>
-              <Image
-                style={{
-                  width: 100,
-                  height: 100,
-                  borderRadius: 50,
-                  marginTop: 10,
-                }}
-                source={require('./../asset/image/profile.png')}
-              />
+              <TouchableOpacity
+                onPress={() => {
+                  setpicModalVisible(true);
+                }}>
+                <Image
+                  style={{
+                    width: 100,
+                    height: 100,
+                    borderRadius: 50,
+                    marginTop: 10,
+                  }}
+                  source={require('./../asset/image/profile.png')}
+                />
+              </TouchableOpacity>
             </View>
           </View>
         </View>
