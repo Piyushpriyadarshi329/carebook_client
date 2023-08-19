@@ -17,6 +17,7 @@ import {
   UpdateDoctorRequest,
 } from '../types';
 import {useAlert} from '../utils/useShowAlert';
+import {texts} from '../asset/constants';
 
 export const useGetDoctorsList = (
   payload: GetDotcorsListRequest,
@@ -36,18 +37,22 @@ export const useGetDoctor = (
   id: string,
   onSuccess?: (p?: DoctorDto[]) => void,
 ) => {
+  const {axiosAlert} = useAlert();
   return useQuery(
     ['DOCTOR', id],
     () => axios.post<GetDoctorsListResponse>(GET_DOCTOR, {id}),
     {
       select: data => data.data.data,
       onSuccess: onSuccess,
+      onError: e => {
+        axiosAlert(e);
+      },
     },
   );
 };
 
 export const useMutateDoctorProfile = (doctor_id: string, onSuccess?: any) => {
-  const {errorAlert} = useAlert();
+  const {axiosAlert} = useAlert();
   const qc = useQueryClient();
   return useMutation(
     (payload: UpdateDoctorRequest) =>
@@ -59,13 +64,14 @@ export const useMutateDoctorProfile = (doctor_id: string, onSuccess?: any) => {
       },
       onError: (e, v, c) => {
         console.error(v);
-        errorAlert('Could not update Profile');
+        axiosAlert(e);
       },
     },
   );
 };
 
 export const useLinkDoctorMutation = (onSuccess: any) => {
+  const {axiosAlert} = useAlert();
   const qc = useQueryClient();
   return useMutation(
     (payload: LinkDoctorRequest) => axios.post(LINK_DOCTOR_URL, payload),
@@ -74,11 +80,15 @@ export const useLinkDoctorMutation = (onSuccess: any) => {
         qc.invalidateQueries(['DOCTORS']);
         onSuccess();
       },
+      onError: e => {
+        axiosAlert(e);
+      },
     },
   );
 };
 
 export const useAddDoctor = ({onSuccess}: {onSuccess: () => void}) => {
+  const {axiosAlert} = useAlert();
   const qc = useQueryClient();
   return useMutation(
     (payload: AddDoctorRequest) => {
@@ -89,8 +99,8 @@ export const useAddDoctor = ({onSuccess}: {onSuccess: () => void}) => {
         qc.invalidateQueries(['DOCTORS']);
         onSuccess();
       },
-      onError: e => {
-        alert(e.Message);
+      onError: (e: any) => {
+        axiosAlert(e);
       },
     },
   );

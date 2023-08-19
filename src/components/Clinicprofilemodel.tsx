@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Color from './../asset/Color';
 import {FormProvider, useForm} from 'react-hook-form';
-import {RHFTextInput} from './RHFTextInput';
+import {RHFTextInput} from './RHFInputs/RHFTextInput';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Btn from './Btn';
 import {AddressDto, ClinicWithAddress} from './../types';
@@ -92,19 +92,21 @@ export const Clinicprofilemodel = ({
               }}>
               <RHFTextInput
                 name="name"
-                placeHolder={'Name'}
-                styles={AddressStyles.textInput}
+                placeholder={'Name'}
+                style={AddressStyles.textInput}
+                required
               />
 
               <RHFTextInput
                 name="about"
-                placeHolder={'About'}
-                styles={{
+                placeholder={'About'}
+                style={{
                   ...AddressStyles.textInput,
                   height: 100,
                   borderRadius: 10,
                 }}
                 multiline={true}
+                required
               />
             </View>
           </ScrollView>

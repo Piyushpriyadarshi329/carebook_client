@@ -10,14 +10,20 @@ import {AuthStyles} from './authStyles';
 import {useAlert} from '../utils/useShowAlert';
 import {Image} from 'react-native';
 import Btn from '../components/Btn';
+import {FormProvider, useForm} from 'react-hook-form';
+import {RHFTextInput} from '../components/RHFInputs/RHFTextInput';
+import {commonStyles} from '../asset/styles';
+import {validateEmailOrPhone} from '../utils/validations';
 import messaging from '@react-native-firebase/messaging';
 
+interface LoginForm {
+  username: string;
+  password: string;
+}
 export default function Login() {
-  const navigation = useNavigation();
   const dispatch = useDispatch();
   const {errorAlert} = useAlert();
-  const [email, setemail] = useState('');
-  const [password, setpassword] = useState('');
+  const formMethods = useForm<LoginForm>({mode: 'onSubmit'});
 
   useEffect(() => {
     checkToken();
@@ -34,11 +40,11 @@ export default function Login() {
     }
   };
 
-  async function submithandler() {
+  async function submithandler(formValues: LoginForm) {
     try {
-      let payload: any = {
-        email: email,
-        password: password,
+      let payload = {
+        email: formValues.username,
+        password: formValues.password,
         userType: 2,
       };
 
@@ -85,64 +91,42 @@ export default function Login() {
           </Text>
         </View>
       </View>
-      {/* <View
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          paddingVertical: 40,
-          marginVertical: 40,
-        }}>
-        <Text
-          style={{
-            textAlign: 'center',
-            color: 'black',
-            fontSize: 20,
-            fontWeight: '700',
-          }}>
-          Welcome To Carebook
-        </Text>
+      <FormProvider {...formMethods}>
+        <View style={AuthStyles.loginContainer}>
+          <View style={commonStyles.flexRowAlignCenter}>
+            <Icon name="user" size={20} color="black" />
+            <RHFTextInput
+              name="username"
+              placeholder="Email/Phone"
+              keyboardType="default"
+              required
+              rules={{validate: validateEmailOrPhone}}
+            />
+          </View>
 
-        <Text style={{color: 'gray', fontSize: 18, fontWeight: '500'}}>
-          Signin to Continue
-        </Text>
-      </View> */}
+          <View style={commonStyles.flexRowAlignCenter}>
+            <Icon name="key" size={20} color="black" />
+            <RHFTextInput
+              name="password"
+              secureTextEntry
+              placeholder="Password"
+              keyboardType="default"
+              required
+            />
+          </View>
 
-      <View style={AuthStyles.loginContainer}>
-        <View style={AuthStyles.authFieldRow}>
-          <Icon name="user" size={20} color="black" />
-          <TextInput
-            style={AuthStyles.textInput}
-            placeholder="Email/Phone"
-            keyboardType="default"
-            onChangeText={text => {
-              setemail(text);
-            }}
-            placeholderTextColor={'black'}
-          />
+          <View
+            style={{
+              alignItems: 'center',
+              marginTop: 30,
+            }}>
+            <Btn
+              title={'Login'}
+              onPress={formMethods.handleSubmit(submithandler)}
+            />
+          </View>
         </View>
-
-        <View style={AuthStyles.authFieldRow}>
-          <Icon name="key" size={20} color="black" />
-          <TextInput
-            style={AuthStyles.textInput}
-            secureTextEntry
-            placeholder="Password"
-            keyboardType="default"
-            onChangeText={text => {
-              setpassword(text);
-            }}
-            placeholderTextColor={'black'}
-          />
-        </View>
-
-        <View
-          style={{
-            alignItems: 'center',
-            marginTop: 30,
-          }}>
-          <Btn title={'Login'} onPress={submithandler} />
-        </View>
-      </View>
+      </FormProvider>
     </View>
   );
 }

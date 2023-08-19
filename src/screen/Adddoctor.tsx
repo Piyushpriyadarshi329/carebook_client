@@ -14,6 +14,10 @@ import {
   useLinkDoctorMutation,
 } from './useDoctorQuery';
 import Btn from '../components/Btn';
+import {FormProvider, useForm} from 'react-hook-form';
+import {RHFTextInput} from '../components/RHFInputs/RHFTextInput';
+import {RHFDropdown} from '../components/RHFInputs/RHFDropdown';
+import {validateEmail, validatePhone} from '../utils/validations';
 
 const specialitylist = [
   {
@@ -45,37 +49,34 @@ export default function Adddoctor() {
   const userId = useSelector((state: RootState) => state.Appdata.userid);
   const {mutate: addDoctor} = useAddDoctor({
     onSuccess: () => {
+      console.log('success.');
       navigation.goBack();
     },
   });
   const {mutate: linkDoctorMutate} = useLinkDoctorMutation(() => {
     navigation.goBack();
   });
-  const [name, setname] = useState('');
-  const [mobile, setmobile] = useState('');
-  const [email, setemail] = useState('');
-  const [password, setpassword] = useState('');
-  const [speciality, setspeciality] = useState('');
-  const [open1, setOpen1] = useState(false);
+  const formMethods = useForm<DoctorAddForm>();
+  const mobile = formMethods.watch('mobile');
   const {data: existingDoctors} = useGetDoctorsList(
     {mobile: mobile},
-    mobile.length === 10,
+    mobile?.length === 10,
   );
-  async function submithandler() {
+  async function submithandler(formValues: DoctorAddForm) {
     try {
       let payload: AddDoctorRequest = {
-        mobile: mobile,
-        email: email,
-        name: name,
-        password: password,
+        mobile: formValues.mobile,
+        email: formValues.email,
+        name: formValues.name,
+        password: formValues.password,
         clinic_id: userId ?? '',
         degree: '',
         active: true,
         profile_image_key: '',
-        speciality: speciality,
-        usertype: 2,
+        speciality: formValues.speciality,
+        about: '',
       };
-
+      console.log('payload; ', payload);
       addDoctor(payload);
     } catch (error) {
       console.log(error);
@@ -93,132 +94,105 @@ export default function Adddoctor() {
       <View style={styles.headContainer}>
         <Text style={styles.head}>Fill Doctor Details</Text>
       </View>
+      <FormProvider {...formMethods}>
+        <View style={styles.formContainer}>
+          <View style={styles.rowItem}>
+            <Icon name="mobile1" size={20} color="black" />
+            <RHFTextInput
+              name="mobile"
+              placeholder="Mobile No"
+              keyboardType="numeric"
+              required
+              rules={{validate: validatePhone}}
+            />
+          </View>
+          {!existingDoctors?.length ? (
+            <>
+              <View style={styles.rowItem}>
+                <Icon name="user" size={20} color="black" />
+                <RHFTextInput name="name" placeholder="Full Name" required />
+              </View>
 
-      <View style={styles.formContainer}>
-        <View style={styles.fieldContainer}>
-          <Icon name="mobile1" size={20} color="black" />
-          <TextInput
-            placeholderTextColor={'black'}
-            style={styles.textInput}
-            placeholder="Mobile No"
-            keyboardType="numeric"
-            onChangeText={text => {
-              setmobile(text.trim());
-            }}
-          />
-        </View>
-        {!existingDoctors?.length ? (
-          <>
-            <View style={styles.fieldContainer}>
-              <Icon name="user" size={20} color="black" />
-              <TextInput
-                placeholderTextColor={'black'}
-                style={styles.textInput}
-                placeholder="Full Name"
-                onChangeText={text => {
-                  setname(text);
-                }}
-              />
-            </View>
-
-            <View style={styles.fieldContainer}>
-              <Icon name="tago" size={20} color="black" />
-              <View style={{width: '80%'}}>
-                <DropDownPicker
-                  open={open1}
-                  style={[styles.textInput, {width: '100%'}]}
-                  value={speciality}
-                  items={specialitylist}
-                  setOpen={setOpen1}
-                  setValue={setspeciality}
+              <View style={styles.rowItem}>
+                <Icon name="tago" size={20} color="black" />
+                <RHFDropdown
+                  name={'speciality'}
+                  options={specialitylist}
                   placeholder="Select speciality"
+                  required
                 />
               </View>
-            </View>
 
-            <View style={styles.fieldContainer}>
-              <View style={{marginTop: 10}}>
+              <View style={styles.rowItem}>
                 <Icon name="mail" size={20} color="black" />
+
+                <RHFTextInput
+                  name={'email'}
+                  placeholder="Email"
+                  required
+                  keyboardType="email-address"
+                />
               </View>
-              <TextInput
-                placeholderTextColor={'black'}
-                style={styles.textInput}
-                placeholder="Email"
-                onChangeText={text => {
-                  setemail(text);
-                }}
-              />
-            </View>
 
-            <View style={styles.fieldContainer}>
-              <Icon name="key" size={20} color="black" />
+              <View style={styles.rowItem}>
+                <Icon name="key" size={20} color="black" />
 
-              <TextInput
-                placeholderTextColor={'black'}
-                style={styles.textInput}
-                placeholder="Password"
-                onChangeText={text => {
-                  setpassword(text);
-                }}
-              />
-            </View>
+                <RHFTextInput
+                  name="password"
+                  placeholder="Password"
+                  secureTextEntry
+                  required
+                />
+              </View>
 
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: 10,
+                }}>
+                <Btn
+                  onPress={formMethods.handleSubmit(submithandler)}
+                  title={'Submit'}
+                />
+              </View>
+            </>
+          ) : (
             <View
               style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginTop: 10,
+                backgroundColor: Color.tertiary,
+                marginHorizontal: 50,
+                borderRadius: 10,
+                padding: 20,
               }}>
-              <Btn onPress={submithandler} title={'Submit'} />
+              <Text style={{color: 'black'}}>{existingDoctors?.[0]?.name}</Text>
+              <Text style={{color: 'black'}}>
+                {existingDoctors?.[0]?.email}
+              </Text>
+              <Text style={{color: 'black'}}>
+                {existingDoctors?.[0]?.speciality}
+              </Text>
+              <Button title="Link" onPress={linkDoctor} color={Color.primary} />
             </View>
-          </>
-        ) : (
-          <View
-            style={{
-              backgroundColor: Color.tertiary,
-              marginHorizontal: 50,
-              borderRadius: 10,
-              padding: 20,
-            }}>
-            <Text style={{color: 'black'}}>{existingDoctors?.[0]?.name}</Text>
-            <Text style={{color: 'black'}}>{existingDoctors?.[0]?.email}</Text>
-            <Text style={{color: 'black'}}>
-              {existingDoctors?.[0]?.speciality}
-            </Text>
-            <Button title="Link" onPress={linkDoctor} color={Color.primary} />
-          </View>
-        )}
-      </View>
-
-      <View
-        style={{
-          flex: 3,
-          justifyContent: 'flex-end',
-          marginBottom: 30,
-          alignItems: 'center',
-        }}></View>
+          )}
+        </View>
+      </FormProvider>
     </View>
   );
 }
 
 export const styles = StyleSheet.create({
   formContainer: {
-    flex: 6,
-    justifyContent: 'space-between',
+    flex: 1,
+    justifyContent: 'center',
     alignSelf: 'center',
+    marginHorizontal: 40,
+    marginRight: 60,
   },
-  fieldContainer: {
+  rowItem: {
     ...commonStyles.flexRowAlignCenter,
-    gap: 15,
-    paddingHorizontal: 10,
-  },
-  textInput: {
-    borderWidth: 0,
-    borderBottomWidth: 1,
-    borderRadius: 5,
-    color: 'black',
-    width: '80%',
+    ...commonStyles.gap10,
   },
   headContainer: {
     marginVertical: 60,
