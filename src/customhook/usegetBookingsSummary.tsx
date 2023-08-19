@@ -68,7 +68,11 @@ export function usegetBookingsSummary(payload: GetBookingsSummaryRequest) {
           datelabel.push(s1);
         }
 
-        return {count, datelabel};
+        if (data?.data?.data.length == 0) {
+          return {count: [], datelabel};
+        } else {
+          return {count, datelabel};
+        }
       },
     },
   );

@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Button, Text, TextInput, View} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {useDispatch} from 'react-redux';
@@ -10,6 +10,7 @@ import {AuthStyles} from './authStyles';
 import {useAlert} from '../utils/useShowAlert';
 import {Image} from 'react-native';
 import Btn from '../components/Btn';
+import messaging from '@react-native-firebase/messaging';
 
 export default function Login() {
   const navigation = useNavigation();
@@ -17,6 +18,21 @@ export default function Login() {
   const {errorAlert} = useAlert();
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
+
+  useEffect(() => {
+    checkToken();
+  });
+
+  const checkToken = async () => {
+    try {
+      const fcmToken = await messaging().getToken();
+      if (fcmToken) {
+        console.log(fcmToken);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   async function submithandler() {
     try {
@@ -56,7 +72,7 @@ export default function Login() {
         }}>
         <Image
           style={{height: 200, width: 300, resizeMode: 'contain'}}
-          source={require('./../asset/image/CAREBOOK.jpg.png')}
+          source={require('./../asset/image/logo.jpeg')}
         />
 
         <View style={AuthStyles.authFieldRow}>
