@@ -96,23 +96,23 @@ export const Doctorprofilemodel = ({
               }}>
               <RHFTextInput
                 name="username"
-                placeHolder={'Name'}
-                styles={AddressStyles.textInput}
+                placeholder={'Name'}
+                style={AddressStyles.textInput}
               />
               <RHFTextInput
                 name="consultationTime"
-                placeHolder={'Consultation Time (in minutes)'}
-                styles={AddressStyles.textInput}
+                placeholder={'Consultation Time (in minutes)'}
+                style={AddressStyles.textInput}
               />
               <RHFTextInput
                 name="fees"
-                placeHolder={'Consultation Fees'}
-                styles={AddressStyles.textInput}
+                placeholder={'Consultation Fees'}
+                style={AddressStyles.textInput}
               />
               <RHFTextInput
                 name="about"
-                placeHolder={'About'}
-                styles={{
+                placeholder={'About'}
+                style={{
                   ...AddressStyles.textInput,
                   height: 100,
                   borderRadius: 10,

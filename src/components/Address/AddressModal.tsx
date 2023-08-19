@@ -92,31 +92,31 @@ export const AddressModal = ({
               }}>
               <RHFTextInput
                 name="address_line1"
-                placeHolder={'Address line1'}
-                styles={AddressStyles.textInput}
+                placeholder={'Address line1'}
+                style={AddressStyles.textInput}
                 required={true}
               />
               <RHFTextInput
                 name="address_line2"
-                placeHolder={'Address line2'}
-                styles={AddressStyles.textInput}
+                placeholder={'Address line2'}
+                style={AddressStyles.textInput}
               />
               <RHFTextInput
                 name="city"
-                placeHolder={'City'}
-                styles={AddressStyles.textInput}
+                placeholder={'City'}
+                style={AddressStyles.textInput}
                 required={true}
               />
               <RHFTextInput
                 name="state"
-                placeHolder={'State'}
-                styles={AddressStyles.textInput}
+                placeholder={'State'}
+                style={AddressStyles.textInput}
                 required={true}
               />
               <RHFTextInput
                 name="pincode"
-                placeHolder={'Pincode'}
-                styles={AddressStyles.textInput}
+                placeholder={'Pincode'}
+                style={AddressStyles.textInput}
                 required={true}
               />
             </View>

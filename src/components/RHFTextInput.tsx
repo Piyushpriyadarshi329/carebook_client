@@ -1,16 +1,18 @@
 import {useFormContext, Controller} from 'react-hook-form';
-import {StyleSheet, TextInput} from 'react-native';
+import {StyleSheet, KeyboardTypeOptions} from 'react-native';
 import {ValidationErrors} from '../asset/constants';
 import {Input} from 'react-native-elements';
 import {Text} from 'react-native';
 
 export const RHFTextInput = (props: {
   name: string;
-  placeHolder?: string;
+  placeholder?: string;
   required?: boolean;
-  styles?: any;
+  style?: any;
   multiline?: boolean;
   rules?: any;
+  secureTextEntry?: boolean;
+  keyboardType?: KeyboardTypeOptions;
 }) => {
   const {control} = useFormContext();
   return (
@@ -21,13 +23,18 @@ export const RHFTextInput = (props: {
           errorMessage={errors[props.name]?.message?.toString()}
           {...field}
           onChangeText={t => field.onChange(t)}
-          style={{...props.styles}}
+          style={{...props.style}}
           multiline={props.multiline}
-          placeholder={props.placeHolder}
+          placeholder={props.placeholder}
+          secureTextEntry={props.secureTextEntry}
+          keyboardType={props.keyboardType}
         />
       )}
       name={props.name}
-      rules={{required: props.required ? ValidationErrors.Required : undefined}}
+      rules={{
+        required: props.required ? ValidationErrors.Required : undefined,
+        ...props.rules,
+      }}
     />
   );
 };

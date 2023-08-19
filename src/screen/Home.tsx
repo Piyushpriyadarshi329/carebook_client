@@ -18,6 +18,8 @@ import {usegetAppointments} from '../customhook/usegetAppointments';
 
 import {monthlist, daylist} from './../Appconstant';
 import {usegetBookingsSummary} from '../customhook/usegetBookingsSummary';
+import {BookingStatus} from '../types';
+import {getToday} from '../utils/dateMethods';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -66,6 +68,8 @@ export default function Home() {
   };
   const {data: Appointmentdata} = usegetAppointments({
     doctorId: Appdata.userid,
+    status: BookingStatus.BOOKED,
+    from_date: getToday(),
   });
 
   return (

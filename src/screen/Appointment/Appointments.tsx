@@ -22,7 +22,7 @@ import {daylist, monthlist} from '../../Appconstant';
 import IconButton from '../../components/IconButton';
 import Status from './Status';
 import _ from 'lodash';
-import {getTimeStringFromDBTime} from '../../utils/dateMethods';
+import {getTimeStringFromDBTime, getToday} from '../../utils/dateMethods';
 
 export const LoggedInUserAppointments = () => {
   const userId = useSelector((state: RootState) => state.Appdata.userid);
@@ -40,17 +40,7 @@ function Appointments({doctorId}: {doctorId: string}) {
     successAlert('Status updated Successfully');
   });
 
-  const [selecteddate, setselecteddate] = useState(
-    new Date(
-      `${
-        new Date().getFullYear() +
-        '-' +
-        ('0' + (new Date().getMonth() + 1)).slice(-2) +
-        '-' +
-        ('0' + new Date().getDate()).slice(-2)
-      }T00:00:00Z`,
-    ).getTime(),
-  );
+  const [selecteddate, setselecteddate] = useState(getToday());
 
   const upcomingDates = useMemo(() => {
     let localdate = [];
