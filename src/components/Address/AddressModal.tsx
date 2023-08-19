@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import {
   Modal,
@@ -14,6 +14,7 @@ import {AddressDto} from '../../types';
 import Btn from '../Btn';
 import {RHFTextInput} from '../RHFTextInput';
 import {AddressStyles} from './styles';
+import GetLocation from 'react-native-get-location';
 
 export const AddressModal = ({
   modalVisible,
@@ -30,6 +31,7 @@ export const AddressModal = ({
     defaultValues: defaultValues,
     mode: 'onSubmit',
   });
+  const [location, setlocation] = useState(null);
 
   useEffect(() => {
     formMethods.reset(defaultValues);
@@ -40,6 +42,22 @@ export const AddressModal = ({
       formMethods.reset(defaultValues);
     }
   }, [modalVisible]);
+
+  useEffect(() => {
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 60000,
+    })
+      .then(location => {
+        console.log(location);
+        setlocation(location);
+      })
+      .catch(error => {
+        const {code, message} = error;
+        console.warn(code, message);
+      });
+  }, []);
+
   return (
     <Modal
       animationType="slide"

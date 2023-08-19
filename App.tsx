@@ -1,5 +1,5 @@
 import {View, Text, StatusBar} from 'react-native';
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import Auth from './src/Auth';
 
 import {store} from './src/redux/Store';
@@ -14,24 +14,38 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
+import Splashscreen from './src/auth/Splashscreen';
 const queryClient = new QueryClient();
 
 export default function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
-        <Fragment>
-          <SafeAreaView style={{flex: 1, backgroundColor: 'blue'}}>
-            <StatusBar
-              backgroundColor={Color.primary}
-              barStyle="dark-content"
-            />
+  const [showsplash, setshowsplash] = useState(true);
 
-            <Auth />
-          </SafeAreaView>
-        </Fragment>
-        <Toast />
-      </Provider>
-    </QueryClientProvider>
+  useEffect(() => {
+    setTimeout(() => {
+      setshowsplash(false);
+    }, 1500);
+  }, []);
+  return (
+    <>
+      {showsplash ? (
+        <Splashscreen />
+      ) : (
+        <QueryClientProvider client={queryClient}>
+          <Provider store={store}>
+            <Fragment>
+              <SafeAreaView style={{flex: 1, backgroundColor: 'blue'}}>
+                <StatusBar
+                  backgroundColor={Color.primary}
+                  barStyle="dark-content"
+                />
+
+                <Auth />
+              </SafeAreaView>
+            </Fragment>
+            <Toast />
+          </Provider>
+        </QueryClientProvider>
+      )}
+    </>
   );
 }
