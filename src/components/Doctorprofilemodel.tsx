@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Color from './../asset/Color';
 import {FormProvider, useForm} from 'react-hook-form';
-import {RHFTextInput} from './RHFTextInput';
+import {RHFTextInput} from './RHFInputs/RHFTextInput';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Btn from './Btn';
 import {AddressDto, DoctorDto} from './../types';

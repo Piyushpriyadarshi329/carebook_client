@@ -41,12 +41,8 @@ export default function Doctorlist() {
             </View>
           ) : (
             <ScrollView>
-              {doctorlist?.map((i: any, index: number) => {
-                return (
-                  <View style={{flex: 1}} key={index}>
-                    <Doctorcard data={i} />
-                  </View>
-                );
+              {doctorlist?.map(doctor => {
+                return <Doctorcard doctor={doctor} />;
               })}
             </ScrollView>
           )}

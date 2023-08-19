@@ -19,4 +19,7 @@ export const commonStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  gap10: {
+    gap: 10,
+  },
 });

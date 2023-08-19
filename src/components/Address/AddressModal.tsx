@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import Color from '../../asset/Color';
 import {AddressDto} from '../../types';
 import Btn from '../Btn';
-import {RHFTextInput} from '../RHFTextInput';
+import {RHFTextInput} from '../RHFInputs/RHFTextInput';
 import {AddressStyles} from './styles';
 
 export const AddressModal = ({

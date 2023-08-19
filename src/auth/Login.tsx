@@ -11,10 +11,9 @@ import {useAlert} from '../utils/useShowAlert';
 import {Image} from 'react-native';
 import Btn from '../components/Btn';
 import {FormProvider, useForm} from 'react-hook-form';
-import {RHFTextInput} from '../components/RHFTextInput';
+import {RHFTextInput} from '../components/RHFInputs/RHFTextInput';
 import {commonStyles} from '../asset/styles';
-import {emailRegex, phoneRegex} from '../asset/constants';
-import {validEmailOrPhone} from '../utils/validations';
+import {validateEmailOrPhone} from '../utils/validations';
 import messaging from '@react-native-firebase/messaging';
 
 interface LoginForm {
@@ -101,7 +100,7 @@ export default function Login() {
               placeholder="Email/Phone"
               keyboardType="default"
               required
-              rules={{validate: validEmailOrPhone}}
+              rules={{validate: validateEmailOrPhone}}
             />
           </View>
 

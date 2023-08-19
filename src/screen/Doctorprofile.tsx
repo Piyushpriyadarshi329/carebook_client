@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
 import Color from '../asset/Color';
 import Navbar from '../components/Navbar';
-import {RHFTextInput} from '../components/RHFTextInput';
+import {RHFTextInput} from '../components/RHFInputs/RHFTextInput';
 import {useGetLeaves} from '../customhook/useGetLeaves';
 import {useGetavailability} from '../customhook/useGetavailability';
 import type {RootState} from '../redux/Store';

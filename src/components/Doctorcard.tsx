@@ -6,14 +6,14 @@ import Icon from 'react-native-vector-icons/Entypo';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux/Store';
 import {AppPages} from '../appPages';
+import {DoctorDto} from '../types';
 
-export default function Doctorcard({data}: any) {
+export default function Doctorcard({doctor}: {doctor: DoctorDto}) {
   const navigation = useNavigation();
   const userId = useSelector((state: RootState) => state.Appdata.userid);
   return (
     <View
       style={{
-        flex: 1,
         flexDirection: 'row',
         backgroundColor: Color.tertiary,
         marginTop: 10,
@@ -33,15 +33,19 @@ export default function Doctorcard({data}: any) {
         />
       </View>
 
-      <View style={{flex: 1, justifyContent: 'center'}}>
-        <Text style={{color: 'black'}}>{data.name}</Text>
-        <Text style={{color: 'black'}}>Heart Specialist</Text>
-        <Text style={{color: 'black'}}>{data.mobile}</Text>
-        <Text style={{color: 'black'}}>{data.email}</Text>
+      <View style={{flex: 2, justifyContent: 'center'}}>
+        <Text style={{color: 'black', fontWeight: '600', fontSize: 20}}>
+          {doctor.name}
+        </Text>
+        <Text style={{color: 'black'}}>{doctor.mobile}</Text>
+        {doctor.email && <Text style={{color: 'black'}}>{doctor.email}</Text>}
+        {doctor.speciality && (
+          <Text style={{color: 'black'}}>{doctor.speciality}</Text>
+        )}
       </View>
       <View
         style={{
-          flex: 0.2,
+          flex: 0.3,
           justifyContent: 'space-around',
         }}>
         <Icon
@@ -49,7 +53,7 @@ export default function Doctorcard({data}: any) {
           style={{color: Color.primary, fontSize: 24}}
           onPress={() => {
             navigation.navigate('DoctorProfile', {
-              id: data.id,
+              id: doctor.id,
               clinic_id: userId,
             });
           }}
@@ -59,7 +63,7 @@ export default function Doctorcard({data}: any) {
           style={{color: Color.primary, fontSize: 24}}
           onPress={() => {
             navigation.navigate(AppPages.Appointments, {
-              id: data.id,
+              id: doctor.id,
               clinic_id: userId,
             });
           }}
