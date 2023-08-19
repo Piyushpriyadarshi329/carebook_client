@@ -116,7 +116,6 @@ export const Doctorprofilemodel = ({
                 placeholder={'About'}
                 style={{
                   ...AddressStyles.textInput,
-                  height: 100,
                   borderRadius: 10,
                 }}
                 multiline={true}
