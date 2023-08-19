@@ -1,7 +1,15 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
-import {Button, Image, Pressable, ScrollView, Text, View} from 'react-native';
+import {
+  Button,
+  Image,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+  StyleSheet,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
 import Color from '../asset/Color';
@@ -18,6 +26,8 @@ import {Doctorprofilemodel} from '../components/Doctorprofilemodel';
 import AvailabilityCard from '../components/AvailabilityCard';
 import EditButton from '../components/EditButton';
 import DoctorProfileEntry from './DoctorProfileEntry';
+import Btn from '../components/Btn';
+import PopupMenu from '../components/PopupMenu';
 
 export interface ProfileForm {
   username: string;
@@ -93,6 +103,20 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
     });
   };
 
+  const navigateToAddAvailability = () => {
+    navigation.navigate('Addavailability', {
+      id: props.id,
+      clinic_id: props.clinic_id,
+    });
+  };
+
+  const navigateToLeaveAddPage = () => {
+    navigation.navigate(AppPages.Leave, {
+      id: props.id,
+      clinic_id: props.clinic_id,
+    });
+  };
+
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <Doctorprofilemodel
@@ -102,7 +126,7 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
         onSubmit={updateProfileHandler}
       />
       <Navbar title="Profile" />
-      <View style={{flex: 4}}>
+      <View style={[{flex: 4}, style.profileSection]}>
         <View style={{flex: 2, flexDirection: 'row', marginHorizontal: 20}}>
           <View style={{flex: 2, marginTop: 10}}>
             <View
@@ -176,23 +200,33 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
       </View>
 
       <View style={{flexDirection: 'column', flex: 8}}>
-        <View style={{flex: textShown ? 5 : 6, marginHorizontal: 20, flex: 3}}>
-          <ScrollView>
-            <View style={{flexDirection: 'row', flex: 1}}>
-              <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
-                Availablity
-              </Text>
+        <View style={[{flex: 1}, style.profileSection]}>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+              Availablity
+            </Text>
+            {!!Availability?.length && (
               <Pressable
-                onPress={() => {
-                  navigation.navigate('Addavailability', {
-                    id: props.id,
-                    clinic_id: props.clinic_id,
-                  });
-                }}
+                onPress={navigateToAddAvailability}
                 style={{flex: 1, alignItems: 'flex-end', marginRight: 30}}>
                 <Icon name="plus" size={24} color={Color.primary} />
               </Pressable>
+            )}
+          </View>
+          {!Availability?.length && (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Btn
+                title="Add Availability"
+                onPress={navigateToAddAvailability}
+              />
             </View>
+          )}
+          <ScrollView>
             <View style={{flex: 10}}>
               {Availability?.map(a => {
                 return <AvailabilityCard availability={a} />;
@@ -201,63 +235,81 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
           </ScrollView>
         </View>
 
-        <View style={{flex: 3, marginHorizontal: 20}}>
-          <View style={{flexDirection: 'row', flex: 1}}>
+        <View style={[{flex: 1}, style.profileSection]}>
+          <View style={{flexDirection: 'row'}}>
             <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
               Leaves
             </Text>
-            <Pressable
-              onPress={() => {
-                navigation.navigate(AppPages.Leave, {
-                  id: props.id,
-                  clinic_id: props.clinic_id,
-                });
-              }}
-              style={{flex: 1, alignItems: 'flex-end', marginRight: 30}}>
-              <Icon name="plus" size={24} color={Color.primary} />
-            </Pressable>
+            {!!leaves?.length && (
+              <Pressable
+                onPress={navigateToLeaveAddPage}
+                style={{flex: 1, alignItems: 'flex-end', marginRight: 30}}>
+                <Icon name="plus" size={24} color={Color.primary} />
+              </Pressable>
+            )}
           </View>
-
-          <View style={{flex: 10}}>
-            <ScrollView>
-              {leaves?.map((i: any) => {
-                return (
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      marginTop: 10,
-                      backgroundColor: Color.primary,
-                      borderRadius: 5,
-                    }}>
-                    <View style={{flex: 1, alignItems: 'flex-start'}}>
-                      <Text style={{padding: 5, color: 'black'}}>
-                        To date:{' '}
-                        {new Date(Number(i.todate))
-                          .toISOString()
-                          .substring(0, 10)}
-                      </Text>
-                      <Text style={{padding: 5, color: 'black'}}>
-                        From date:{' '}
-                        {new Date(Number(i.fromdate))
-                          .toISOString()
-                          .substring(0, 10)}
-                      </Text>
+          {!!leaves?.length && (
+            <View style={{flex: 10}}>
+              <ScrollView>
+                {leaves?.map((i: any) => {
+                  return (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        marginTop: 10,
+                        backgroundColor: Color.primary,
+                        borderRadius: 5,
+                      }}>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <Text style={{padding: 5, color: 'black'}}>
+                          To date:{' '}
+                          {new Date(Number(i.todate))
+                            .toISOString()
+                            .substring(0, 10)}
+                        </Text>
+                        <Text style={{padding: 5, color: 'black'}}>
+                          From date:{' '}
+                          {new Date(Number(i.fromdate))
+                            .toISOString()
+                            .substring(0, 10)}
+                        </Text>
+                      </View>
+                      <View style={{flex: 1, alignItems: 'center'}}>
+                        <Text style={{padding: 5, color: 'black'}}>
+                          Reason: {i.reason}
+                        </Text>
+                        <Text style={{padding: 5, color: 'black'}}>
+                          {i.fullday ? 'fullday' : null}
+                        </Text>
+                      </View>
                     </View>
-                    <View style={{flex: 1, alignItems: 'center'}}>
-                      <Text style={{padding: 5, color: 'black'}}>
-                        Reason: {i.reason}
-                      </Text>
-                      <Text style={{padding: 5, color: 'black'}}>
-                        {i.fullday ? 'fullday' : null}
-                      </Text>
-                    </View>
-                  </View>
-                );
-              })}
-            </ScrollView>
-          </View>
+                  );
+                })}
+              </ScrollView>
+            </View>
+          )}
+          {!leaves?.length && (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Btn title="Add Leave" onPress={navigateToLeaveAddPage} />
+            </View>
+          )}
         </View>
       </View>
     </View>
   );
 }
+
+const style = StyleSheet.create({
+  profileSection: {
+    backgroundColor: Color.tertiary,
+    padding: 10,
+    borderRadius: 10,
+    marginVertical: 3,
+    marginHorizontal: 20,
+  },
+});

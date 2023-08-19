@@ -60,6 +60,8 @@ export const Doctorprofilemodel = ({
             marginTop: 200,
             borderTopEndRadius: 30,
             borderTopStartRadius: 30,
+            borderColor: Color.primary,
+            borderWidth: 1,
           }}>
           <View
             style={{

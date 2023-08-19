@@ -11,7 +11,7 @@ import {
 import {Calendar} from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {useSelector} from 'react-redux';
-import Color from '../../asset/Color';
+import Color, {Pallet2} from '../../asset/Color';
 import {UpcomingDateTile} from '../../components/DateTile';
 import Navbar from '../../components/Navbar';
 import {useUpdateSlotStatus} from '../../customhook/useUpdateSlotStatus';
@@ -54,8 +54,6 @@ function Appointments({doctorId}: {doctorId: string}) {
 
       let d1 = date.getDate();
 
-      let obj: any = {};
-
       let Appointment_date = new Date(
         `${
           date.getFullYear() +
@@ -66,11 +64,11 @@ function Appointments({doctorId}: {doctorId: string}) {
         }T00:00:00Z`,
       ).getTime();
 
-      obj.date = d1 + ' ' + monthlist[month];
-      obj.day = daylist[date.getDay()];
-      obj.value = Appointment_date;
-
-      localdate.push(obj);
+      localdate.push({
+        date: d1 + ' ' + monthlist[month],
+        day: daylist[date.getDay()],
+        value: Appointment_date,
+      });
     }
 
     return localdate;
@@ -86,7 +84,7 @@ function Appointments({doctorId}: {doctorId: string}) {
       status: status,
     });
   }
-
+  console.log(upcomingDates[0], selecteddate);
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <Navbar title="Appointments" />
@@ -99,10 +97,11 @@ function Appointments({doctorId}: {doctorId: string}) {
         visible={modalVisible}>
         <View
           style={{
-            height: 400,
             marginTop: 200,
             marginHorizontal: 50,
-            borderRadius: 50,
+            borderRadius: 15,
+            borderWidth: 1,
+            borderColor: Color.primary,
           }}>
           <Calendar
             onDayPress={day => {
@@ -111,13 +110,13 @@ function Appointments({doctorId}: {doctorId: string}) {
             }}
             style={{borderRadius: 15}}
             theme={{
-              backgroundColor: Color.secondary,
-              calendarBackground: Color.secondary,
-              textSectionTitleColor: '#b6c1cd',
-              selectedDayBackgroundColor: Color.primary,
+              backgroundColor: Pallet2.tertiary,
+              calendarBackground: Pallet2.tertiary,
+              textSectionTitleColor: Pallet2.primary,
+              selectedDayBackgroundColor: Pallet2.primary,
               selectedDayTextColor: '#ffffff',
-              todayTextColor: Color.primary,
-              dayTextColor: '#2d4150',
+              todayTextColor: Pallet2.primary,
+              dayTextColor: Pallet2.primary,
             }}
             markedDates={{
               [centerdate]: {
@@ -140,7 +139,12 @@ function Appointments({doctorId}: {doctorId: string}) {
         <View style={{flex: 6}}>
           <ScrollView horizontal={true}>
             {upcomingDates.map(date => {
-              return <UpcomingDateTile {...{date, setselecteddate}} />;
+              return (
+                <UpcomingDateTile
+                  {...{date, setselecteddate}}
+                  isSelected={date.value === selecteddate}
+                />
+              );
             })}
           </ScrollView>
         </View>
@@ -164,7 +168,13 @@ function Appointments({doctorId}: {doctorId: string}) {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                <Text style={{color: Color.black}}>
+                <Text
+                  style={{
+                    color: Color.black,
+                    fontWeight: '600',
+                    fontSize: 20,
+                    marginTop: 40,
+                  }}>
                   No Appointments for the date.
                 </Text>
               </View>

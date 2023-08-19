@@ -5,7 +5,11 @@ import Color from '../asset/Color';
 import {usegetAppointments} from '../customhook/usegetAppointments';
 import {RootState} from '../redux/Store';
 
-export const UpcomingDateTile = (props: {date: any; setselecteddate: any}) => {
+export const UpcomingDateTile = (props: {
+  date: any;
+  setselecteddate: any;
+  isSelected: boolean;
+}) => {
   const userId = useSelector((state: RootState) => state.Appdata.userid);
   const {data: appointmentdata} = usegetAppointments({
     doctorId: userId,
@@ -19,25 +23,22 @@ export const UpcomingDateTile = (props: {date: any; setselecteddate: any}) => {
       }}>
       <View
         style={{
-          backgroundColor: Color.primary,
+          backgroundColor: props.isSelected ? Color.primary : Color.secondary,
           width: 60,
           height: 100,
           marginHorizontal: 5,
           borderRadius: 3,
         }}>
-        <View style={{alignItems: 'flex-end'}}>
-          <View
+        <View style={{alignItems: 'flex-end', marginRight: 10, marginTop: 10}}>
+          <Text
             style={{
-              width: 20,
-              height: 20,
-              margin: 5,
-              borderRadius: 20,
-              backgroundColor: Color.secondary,
+              textAlign: 'center',
+              color: 'black',
+              fontWeight: '400',
+              fontSize: 19,
             }}>
-            <Text style={{textAlign: 'center', color: 'black'}}>
-              {appointmentdata?.length}
-            </Text>
-          </View>
+            {appointmentdata?.length || '-'}
+          </Text>
         </View>
 
         <View style={{marginTop: 10}}>

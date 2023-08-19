@@ -4,7 +4,11 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import Color from '../asset/Color';
 import {useNavigation} from '@react-navigation/native';
 
-const Navbar = (props: {title: string; asFullScreenModal?: boolean}) => {
+const Navbar = (props: {
+  title: string;
+  asFullScreenModal?: boolean;
+  endAdornment?: JSX.Element;
+}) => {
   const navigation = useNavigation();
   return (
     <View
@@ -43,6 +47,7 @@ const Navbar = (props: {title: string; asFullScreenModal?: boolean}) => {
           <Icon name="close" size={24} style={{color: Color.primary}} />
         </View>
       )}
+      {props.endAdornment}
     </View>
   );
 };
