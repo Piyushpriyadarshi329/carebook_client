@@ -94,6 +94,7 @@ export const Clinicprofilemodel = ({
                 name="name"
                 placeholder={'Name'}
                 style={AddressStyles.textInput}
+                required
               />
 
               <RHFTextInput
@@ -105,6 +106,7 @@ export const Clinicprofilemodel = ({
                   borderRadius: 10,
                 }}
                 multiline={true}
+                required
               />
             </View>
           </ScrollView>

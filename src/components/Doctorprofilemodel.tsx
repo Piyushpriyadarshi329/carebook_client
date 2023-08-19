@@ -98,11 +98,13 @@ export const Doctorprofilemodel = ({
                 name="username"
                 placeholder={'Name'}
                 style={AddressStyles.textInput}
+                required
               />
               <RHFTextInput
                 name="consultationTime"
                 placeholder={'Consultation Time (in minutes)'}
                 style={AddressStyles.textInput}
+                required
               />
               <RHFTextInput
                 name="fees"
@@ -118,6 +120,7 @@ export const Doctorprofilemodel = ({
                   borderRadius: 10,
                 }}
                 multiline={true}
+                required
               />
             </View>
             <View
