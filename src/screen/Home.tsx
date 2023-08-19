@@ -37,13 +37,15 @@ export default function Home() {
     backgroundGradientTo: '#ffffff',
     backgroundGradientFromOpacity: 0,
     backgroundGradientToOpacity: 1,
-    color: (opacity = 1) => `rgba(227,182,77, 1)`,
-    // color: () => Color.primary,
+    color: (opacity = 1) => `rgba(227,182,77, ${opacity})`,
+    // color: () => '#333', // THIS
     strokeWidth: 2.5, // optional, default 3
     barPercentage: 0.5,
     decimalPlaces: 0, // optional, defaults to 2dp
     barRadius: 5,
     useShadowColorFromDataset: false, // optional,
+    fillShadowGradient: Color.primary, // THIS
+    fillShadowGradientOpacity: 1, // THIS
     style: {
       borderRadius: 16,
       fontFamily: 'Bogle-Regular',
@@ -115,21 +117,34 @@ export default function Home() {
           </ScrollView>
         </View>
       </View>
-      <View style={{flex: 5, marginHorizontal: 10}}>
+      <View style={{flex: 5, marginHorizontal: 5, marginRight: 20}}>
         <View style={{marginTop: 10}}>
-          <BarChart
-            style={{flex: 1}}
-            data={data}
-            width={screenWidth - 20}
-            height={240}
-            yAxisLabel=""
-            chartConfig={chartConfig}
-            verticalLabelRotation={30}
-            yAxisSuffix={''}
-            showBarTops={false}
-            fromZero={true}
-            segments={5}
-          />
+          {bookingdata?.count.length == 0 ? (
+            <>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text>Nothing is here</Text>
+              </View>
+            </>
+          ) : (
+            <BarChart
+              style={{flex: 1}}
+              data={data}
+              width={screenWidth - 40}
+              height={240}
+              yAxisLabel=""
+              chartConfig={chartConfig}
+              verticalLabelRotation={30}
+              yAxisSuffix={''}
+              showBarTops={false}
+              fromZero={true}
+              segments={5}
+            />
+          )}
         </View>
       </View>
 

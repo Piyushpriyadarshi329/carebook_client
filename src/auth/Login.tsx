@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Button, Text, TextInput, View} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {useDispatch} from 'react-redux';
@@ -15,6 +15,7 @@ import {RHFTextInput} from '../components/RHFTextInput';
 import {commonStyles} from '../asset/styles';
 import {emailRegex, phoneRegex} from '../asset/constants';
 import {validEmailOrPhone} from '../utils/validations';
+import messaging from '@react-native-firebase/messaging';
 
 interface LoginForm {
   username: string;
@@ -24,6 +25,21 @@ export default function Login() {
   const dispatch = useDispatch();
   const {errorAlert} = useAlert();
   const formMethods = useForm<LoginForm>({mode: 'onSubmit'});
+
+  useEffect(() => {
+    checkToken();
+  });
+
+  const checkToken = async () => {
+    try {
+      const fcmToken = await messaging().getToken();
+      if (fcmToken) {
+        console.log(fcmToken);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   async function submithandler(formValues: LoginForm) {
     try {
@@ -63,7 +79,7 @@ export default function Login() {
         }}>
         <Image
           style={{height: 200, width: 300, resizeMode: 'contain'}}
-          source={require('./../asset/image/CAREBOOK.jpg.png')}
+          source={require('./../asset/image/logo.jpeg')}
         />
 
         <View style={AuthStyles.authFieldRow}>
