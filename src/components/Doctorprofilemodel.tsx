@@ -60,6 +60,8 @@ export const Doctorprofilemodel = ({
             marginTop: 200,
             borderTopEndRadius: 30,
             borderTopStartRadius: 30,
+            borderColor: Color.primary,
+            borderWidth: 1,
           }}>
           <View
             style={{
@@ -116,7 +118,6 @@ export const Doctorprofilemodel = ({
                 placeholder={'About'}
                 style={{
                   ...AddressStyles.textInput,
-                  height: 100,
                   borderRadius: 10,
                 }}
                 multiline={true}

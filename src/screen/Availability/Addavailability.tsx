@@ -142,7 +142,7 @@ export function DoctorAvailabilityWithId(props: {
 
   return (
     <>
-      <Navbar title="Add Availability" />
+      <Navbar title="Add Availability" asFullScreenModal />
       <View style={{gap: 10, marginHorizontal: 20}}>
         {!props.clinic_id && (
           <View style={{zIndex: 2000}}>
