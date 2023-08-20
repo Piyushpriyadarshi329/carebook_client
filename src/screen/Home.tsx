@@ -37,7 +37,7 @@ export default function Home() {
     backgroundGradientTo: '#ffffff',
     backgroundGradientFromOpacity: 0,
     backgroundGradientToOpacity: 1,
-    color: (opacity = 1) => `rgba(227,182,77, ${opacity})`,
+    color: (opacity = 1) => Color.primary,
     // color: () => '#333', // THIS
     strokeWidth: 2.5, // optional, default 3
     barPercentage: 0.5,
