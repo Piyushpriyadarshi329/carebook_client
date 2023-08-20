@@ -108,6 +108,7 @@ export const Doctorprofilemodel = ({
                 name="fees"
                 placeholder={'Consultation Fees'}
                 style={AddressStyles.textInput}
+                required
               />
               <RHFTextInput
                 name="degree"
@@ -118,6 +119,7 @@ export const Doctorprofilemodel = ({
                 name="experience"
                 placeholder={'Yrs of Experience'}
                 style={AddressStyles.textInput}
+                keyboardType="number-pad"
               />
               <RHFTextInput
                 name="about"
