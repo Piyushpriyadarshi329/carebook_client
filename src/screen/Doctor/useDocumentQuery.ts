@@ -4,9 +4,10 @@ import {DOCUMENT} from '../../API_CONFIG';
 import {useAlert} from '../../utils/useShowAlert';
 import {ImageOrVideo} from 'react-native-image-crop-picker';
 import mime from 'mime';
+import {AddDocumentResponse, VisibleDocument} from '../../types';
 
 export const useAddDocumentMutation = (props?: {
-  onSuccess?: (data: any) => void;
+  onSuccess?: (data: VisibleDocument | undefined) => void;
 }) => {
   const {axiosAlert} = useAlert();
   return useMutation(
@@ -20,7 +21,7 @@ export const useAddDocumentMutation = (props?: {
           type: mime.getType(newImageUri),
           name: newImageUri.split('/').pop(),
         });
-        return axios.post(DOCUMENT, form, {
+        return axios.post<AddDocumentResponse>(DOCUMENT, form, {
           headers: {
             'content-type': 'multipart/form-data',
           },
@@ -29,8 +30,7 @@ export const useAddDocumentMutation = (props?: {
     },
     {
       onSuccess: data => {
-        console.log('data: ', data?.data);
-        props?.onSuccess?.(data?.data);
+        props?.onSuccess?.(data?.data.data);
       },
       onError: e => {
         axiosAlert(e);

@@ -4,6 +4,7 @@ import Color from '../asset/Color';
 import Entypo from 'react-native-vector-icons/Entypo';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useAddDocumentMutation} from '../screen/Doctor/useDocumentQuery';
+import {VisibleDocument} from '../types';
 
 export default function Profilepicuploadmodel({
   modalVisible,
@@ -12,11 +13,10 @@ export default function Profilepicuploadmodel({
 }: {
   modalVisible: boolean;
   setModalVisible: any;
-  onSubmit: (p: any) => void;
+  onSubmit: (p: VisibleDocument | undefined) => void;
 }) {
   const {mutate: addDocument} = useAddDocumentMutation({
     onSuccess: data => {
-      console.log('onSuccess profile: ', data);
       onSubmit(data);
     },
   });

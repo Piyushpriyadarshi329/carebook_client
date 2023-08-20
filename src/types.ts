@@ -11,6 +11,7 @@ export interface DoctorDto {
   mobile: string;
   email: string;
   active: boolean;
+  profile_image: string;
   profile_image_key: string;
   speciality: string;
   degree: string;
@@ -345,3 +346,11 @@ export interface Document {
   fileName: string;
   path: string;
 }
+
+export interface VisibleDocument {
+  id: string;
+  fileKey: string;
+  presignedUrl: string;
+}
+
+export type AddDocumentResponse = DataResponse<VisibleDocument>;

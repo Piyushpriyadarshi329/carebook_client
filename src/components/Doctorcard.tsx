@@ -29,7 +29,11 @@ export default function Doctorcard({doctor}: {doctor: DoctorDto}) {
             marginVertical: 10,
             marginLeft: 10,
           }}
-          source={require('./../asset/image/profile.png')}
+          source={
+            doctor.profile_image
+              ? {uri: doctor.profile_image}
+              : require('./../asset/image/profile.png')
+          }
         />
       </View>
 

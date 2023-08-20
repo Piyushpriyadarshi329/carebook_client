@@ -31,6 +31,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import Profilepicuploadmodel from '../components/Profilepicuploadmodel';
 import Btn from '../components/Btn';
 import PopupMenu from '../components/PopupMenu';
+import {VisibleDocument} from '../types';
 
 export interface ProfileForm {
   username: string;
@@ -112,11 +113,10 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
     });
   };
 
-  async function uploadprofilpicfun() {
-    try {
-    } catch (error) {
-      console.log(error);
-    }
+  function uploadprofilpicfun(data: VisibleDocument | undefined) {
+    updateDoctor({
+      profile_image_key: data?.fileKey,
+    });
   }
   const navigateToAddAvailability = () => {
     navigation.navigate('Addavailability', {
@@ -131,7 +131,6 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
       clinic_id: props.clinic_id,
     });
   };
-
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <Doctorprofilemodel
@@ -182,7 +181,13 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
                     borderRadius: 50,
                     marginTop: 10,
                   }}
-                  source={require('./../asset/image/profile.png')}
+                  source={
+                    doctorDetails?.[0].profile_image
+                      ? {
+                          uri: doctorDetails?.[0].profile_image,
+                        }
+                      : require('./../asset/image/profile.png')
+                  }
                 />
               </TouchableOpacity>
             </View>
