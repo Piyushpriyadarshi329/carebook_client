@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "819409374058",
-    "project_id": "carebook-client",
-    "storage_bucket": "carebook-client.appspot.com"
+    "project_number": "64539536866",
+    "project_id": "carebook-43c49",
+    "storage_bucket": "carebook-43c49.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:819409374058:android:4f9efda16744986140f313",
+        "mobilesdk_app_id": "1:64539536866:android:b55e21d2f2c8331e679dbb",
         "android_client_info": {
           "package_name": "com.carebook_client"
         }
       },
       "oauth_client": [
         {
-          "client_id": "819409374058-ckbe1ajjptbj1b8vldu5osff04air88f.apps.googleusercontent.com",
+          "client_id": "64539536866-9dl9o269sl6jiilb6o6fjlfmhhcuhn8m.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCR43Coozd7M2SDE0Uefe-CsRfO1emrQVA"
+          "current_key": "AIzaSyASRbvoQfiRACJupvWHbVJz-pt1DB6TEk4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "819409374058-ckbe1ajjptbj1b8vldu5osff04air88f.apps.googleusercontent.com",
+              "client_id": "64539536866-9dl9o269sl6jiilb6o6fjlfmhhcuhn8m.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

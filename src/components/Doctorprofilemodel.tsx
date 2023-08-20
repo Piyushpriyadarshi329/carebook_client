@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Modal,
   Text,
@@ -16,6 +16,8 @@ import Btn from './Btn';
 import {AddressDto, DoctorDto} from './../types';
 import {AddressStyles} from './Address/styles';
 import {ProfileForm} from '../screen/Doctorprofile';
+import {RHFDropdown} from './RHFInputs/RHFDropdown';
+import {usegetSpeciality} from '../customhook/usegetSpeciality';
 
 export const Doctorprofilemodel = ({
   editMode,
@@ -28,6 +30,18 @@ export const Doctorprofilemodel = ({
   onSubmit: (p: ProfileForm) => void;
   doctorDetails?: DoctorDto;
 }) => {
+  const [speciallist, setspeciallist] = useState([]);
+
+  useEffect(() => {
+    getspeciallist();
+  }, []);
+
+  async function getspeciallist() {
+    let x = await usegetSpeciality();
+
+    setspeciallist(x);
+  }
+
   const formMethods = useForm<ProfileForm>({
     defaultValues: {
       about: doctorDetails?.about,
@@ -113,6 +127,7 @@ export const Doctorprofilemodel = ({
                 placeholder={'Consultation Fees'}
                 style={AddressStyles.textInput}
               />
+              <RHFDropdown name="speciality" options={speciallist} />
               <RHFTextInput
                 name="about"
                 placeholder={'About'}

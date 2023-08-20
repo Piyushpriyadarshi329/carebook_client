@@ -30,7 +30,7 @@ export default function Home() {
   const {data: bookingdata} = usegetBookingsSummary({
     doctor_id: Appdata.userid,
   });
-  console.log('Bookingdata', bookingdata);
+  console.log('Bookingdata==>', bookingdata);
 
   const chartConfig = {
     backgroundGradientFrom: '#Ffffff',
@@ -118,8 +118,8 @@ export default function Home() {
         </View>
       </View>
       <View style={{flex: 5, marginHorizontal: 5, marginRight: 20}}>
-        <View style={{marginTop: 10}}>
-          {bookingdata?.count.length == 0 ? (
+        <View style={{marginTop: 10, flex: 1}}>
+          {bookingdata?.count.length == 0 || !bookingdata ? (
             <>
               <View
                 style={{
@@ -127,7 +127,9 @@ export default function Home() {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                <Text>Nothing is here</Text>
+                <Text style={{color: 'black', fontWeight: '600', fontSize: 16}}>
+                  Nothing is here
+                </Text>
               </View>
             </>
           ) : (

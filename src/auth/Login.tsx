@@ -24,7 +24,7 @@ export default function Login() {
   const dispatch = useDispatch();
   const {errorAlert} = useAlert();
   const formMethods = useForm<LoginForm>({mode: 'onSubmit'});
-
+  const [fcm_token, setfcm_token] = useState('');
   useEffect(() => {
     checkToken();
   });
@@ -34,6 +34,7 @@ export default function Login() {
       const fcmToken = await messaging().getToken();
       if (fcmToken) {
         console.log(fcmToken);
+        setfcm_token(fcmToken);
       }
     } catch (error) {
       console.log(error);
@@ -46,6 +47,7 @@ export default function Login() {
         email: formValues.username,
         password: formValues.password,
         userType: 2,
+        fcm_token: fcm_token,
       };
 
       let {data}: any = await useLogin(payload);

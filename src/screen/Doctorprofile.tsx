@@ -37,6 +37,7 @@ export interface ProfileForm {
   about: string;
   consultationTime: string;
   fees: string;
+  speciality: string;
 }
 export default function LoggedInDoctorProfile() {
   const dispatch = useDispatch();
@@ -106,6 +107,7 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
       appointment_time: Number(formValues.consultationTime),
       fees: Number(formValues.fees),
       about: formValues.about,
+      speciality: formValues.speciality,
     });
   };
 
