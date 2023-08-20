@@ -5,6 +5,7 @@ import {useAlert} from '../../utils/useShowAlert';
 import {ImageOrVideo} from 'react-native-image-crop-picker';
 import mime from 'mime';
 import {AddDocumentResponse, VisibleDocument} from '../../types';
+const FormData = require('form-data');
 
 export const useAddDocumentMutation = (props?: {
   onSuccess?: (data: VisibleDocument | undefined) => void;

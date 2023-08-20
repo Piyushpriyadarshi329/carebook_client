@@ -1,9 +1,11 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
+import Color from './../asset/Color';
 import {FormProvider, useForm} from 'react-hook-form';
 import {Modal, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {ProfileForm} from '../screen/Doctorprofile';
-import Color from './../asset/Color';
+import {RHFDropdown} from './RHFInputs/RHFDropdown';
+import {usegetSpeciality} from '../customhook/usegetSpeciality';
 import {DoctorDto} from './../types';
 import {AddressStyles} from './Address/styles';
 import Btn from './Btn';
@@ -20,6 +22,18 @@ export const Doctorprofilemodel = ({
   onSubmit: (p: ProfileForm) => void;
   doctorDetails?: DoctorDto;
 }) => {
+  const [speciallist, setspeciallist] = useState([]);
+
+  useEffect(() => {
+    getspeciallist();
+  }, []);
+
+  async function getspeciallist() {
+    let x = await usegetSpeciality();
+
+    setspeciallist(x);
+  }
+
   const formMethods = useForm<ProfileForm>({
     defaultValues: {
       about: doctorDetails?.about,
@@ -121,6 +135,7 @@ export const Doctorprofilemodel = ({
                 style={AddressStyles.textInput}
                 keyboardType="number-pad"
               />
+              <RHFDropdown name="speciality" options={speciallist} />
               <RHFTextInput
                 name="about"
                 placeholder={'About'}

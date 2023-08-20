@@ -108,6 +108,7 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
       appointment_time: Number(formValues.consultationTime),
       fees: Number(formValues.fees),
       about: formValues.about,
+      speciality: formValues.speciality,
       experience: formValues.experience,
       degree: formValues.degree,
     });
