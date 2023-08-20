@@ -30,13 +30,14 @@ export default function Home() {
   const {data: bookingdata} = usegetBookingsSummary({
     doctor_id: Appdata.userid,
   });
+  console.log('Bookingdata==>', bookingdata);
 
   const chartConfig = {
     backgroundGradientFrom: '#Ffffff',
     backgroundGradientTo: '#ffffff',
     backgroundGradientFromOpacity: 0,
     backgroundGradientToOpacity: 1,
-    color: (opacity = 1) => Color.primary,
+    color: (opacity = 1) => `rgba(227,182,77, ${opacity})`,
     // color: () => '#333', // THIS
     strokeWidth: 2.5, // optional, default 3
     barPercentage: 0.5,
