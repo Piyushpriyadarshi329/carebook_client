@@ -12,7 +12,7 @@ export const useAddDocumentMutation = (props?: {
     (base64: string) => {
       const form = new FormData();
       form.append('file', decode(base64));
-      return axios.post(DOCUMENT);
+      return axios.post(DOCUMENT, form);
     },
     {
       onSuccess: data => {

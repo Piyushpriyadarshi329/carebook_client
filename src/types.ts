@@ -25,7 +25,11 @@ export interface GetDotcorsListRequest {
   mobile?: string;
 }
 
-export type GetDoctorsListResponse = DataResponse<DoctorDto[]>;
+export type GetDoctorsListResponse = DataResponse<
+  (DoctorDto & {
+    profile_image: string;
+  })[]
+>;
 
 export type AddDoctorRequest = Omit<DoctorDto, 'id'> & {
   password: string;
@@ -105,13 +109,18 @@ export interface ClinicDto {
 export interface ClinicWithAddress extends ClinicDto {
   address: AddressDto;
 }
-export type GetClinicsResponse = DataResponse<ClinicWithAddress[]>;
+export type GetClinicsResponse = DataResponse<
+  (ClinicWithAddress & {
+    profile_image: string;
+  })[]
+>;
 
 /** UserController */
 export interface LoginRequest {
   email: string;
   password: string;
   userType: number;
+  fcm_token: string;
 }
 
 export type LoginResponse = DataResponse<any>;
@@ -324,5 +333,11 @@ export interface GetBookingsSummaryRequest {
   doctor_id: string;
 }
 export type GetBookingsSummaryResponse = DataResponse<
-  {clinic_id: string; count: number}[]
+  {clinic_id: string; count: number; appointment_date: number}[]
 >;
+
+export interface Document {
+  id: string;
+  fileName: string;
+  path: string;
+}
