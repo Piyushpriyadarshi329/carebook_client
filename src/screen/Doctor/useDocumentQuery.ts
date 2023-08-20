@@ -15,15 +15,7 @@ export const useAddDocumentMutation = (props?: {
 
       var form = new FormData();
       form.append('file', decode(base64));
-      console.log('DOCUMENT', DOCUMENT);
-      axios({
-        method: 'post',
-        url: DOCUMENT,
-        data: form,
-        headers: {'Content-Type': 'multipart/form-data'},
-      }).then(res => {
-        console.log('res', res);
-      });
+      return axios.post(DOCUMENT, form);
     },
     {
       onSuccess: data => {

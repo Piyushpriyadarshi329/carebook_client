@@ -1,23 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {
-  Modal,
-  Text,
-  TouchableOpacity,
-  View,
-  Button,
-  ScrollView,
-  KeyboardAvoidingView,
-} from 'react-native';
 import Color from './../asset/Color';
 import {FormProvider, useForm} from 'react-hook-form';
-import {RHFTextInput} from './RHFInputs/RHFTextInput';
+import {Modal, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import Btn from './Btn';
-import {AddressDto, DoctorDto} from './../types';
-import {AddressStyles} from './Address/styles';
 import {ProfileForm} from '../screen/Doctorprofile';
 import {RHFDropdown} from './RHFInputs/RHFDropdown';
 import {usegetSpeciality} from '../customhook/usegetSpeciality';
+import {DoctorDto} from './../types';
+import {AddressStyles} from './Address/styles';
+import Btn from './Btn';
+import {RHFTextInput} from './RHFInputs/RHFTextInput';
 
 export const Doctorprofilemodel = ({
   editMode,
@@ -48,6 +40,8 @@ export const Doctorprofilemodel = ({
       consultationTime: doctorDetails?.appointment_time?.toString(),
       fees: doctorDetails?.fees?.toString(),
       username: doctorDetails?.name ?? '',
+      degree: doctorDetails?.degree ?? '',
+      experience: doctorDetails?.experience ?? 0,
     },
   });
   useEffect(() => {
@@ -57,6 +51,8 @@ export const Doctorprofilemodel = ({
         consultationTime: doctorDetails?.appointment_time?.toString(),
         fees: doctorDetails?.fees?.toString(),
         username: doctorDetails?.name ?? '',
+        degree: doctorDetails.degree ?? '',
+        experience: doctorDetails.experience ?? 0,
       });
     }
   }, [doctorDetails]);
@@ -126,6 +122,18 @@ export const Doctorprofilemodel = ({
                 name="fees"
                 placeholder={'Consultation Fees'}
                 style={AddressStyles.textInput}
+                required
+              />
+              <RHFTextInput
+                name="degree"
+                placeholder={'Degree'}
+                style={AddressStyles.textInput}
+              />
+              <RHFTextInput
+                name="experience"
+                placeholder={'Yrs of Experience'}
+                style={AddressStyles.textInput}
+                keyboardType="number-pad"
               />
               <RHFDropdown name="speciality" options={speciallist} />
               <RHFTextInput
