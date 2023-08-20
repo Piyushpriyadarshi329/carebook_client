@@ -17,6 +17,8 @@ export interface DoctorDto {
   appointment_time: number;
   fees: number;
   about: string;
+  no_of_bookings?: number;
+  experience?: number;
 }
 
 export interface GetDotcorsListRequest {
@@ -53,6 +55,8 @@ export type UpdateDoctorRequest = {
   appointment_time?: number;
   fees?: number;
   about?: string;
+  no_of_bookings?: number;
+  experience?: number;
 };
 
 export type UpdateClinicReqParams = {id: string};

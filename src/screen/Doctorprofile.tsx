@@ -37,6 +37,9 @@ export interface ProfileForm {
   about: string;
   consultationTime: string;
   fees: string;
+  experience: number;
+  degree: string;
+  speciality: string;
 }
 export default function LoggedInDoctorProfile() {
   const dispatch = useDispatch();
@@ -79,8 +82,6 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
 
   const {data: doctorDetails} = useGetDoctor(props.id);
 
-  console.log('doctorDetails1111==>', doctorDetails);
-
   const {mutate: updateDoctor} = useMutateDoctorProfile(props.id, () => {
     setEditMode(false);
   });
@@ -106,6 +107,8 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
       appointment_time: Number(formValues.consultationTime),
       fees: Number(formValues.fees),
       about: formValues.about,
+      experience: formValues.experience,
+      degree: formValues.degree,
     });
   };
 
