@@ -37,12 +37,13 @@ export default function Home() {
     backgroundGradientTo: '#ffffff',
     backgroundGradientFromOpacity: 0,
     backgroundGradientToOpacity: 1,
-    color: (opacity = 1) => `rgba(227,182,77, ${opacity})`,
+    color: (opacity = 1) => Color.primary,
     // color: () => '#333', // THIS
     strokeWidth: 2.5, // optional, default 3
     barPercentage: 0.5,
     decimalPlaces: 0, // optional, defaults to 2dp
     barRadius: 5,
+
     useShadowColorFromDataset: false, // optional,
     fillShadowGradient: Color.primary, // THIS
     fillShadowGradientOpacity: 1, // THIS
@@ -79,13 +80,13 @@ export default function Home() {
       <View
         style={{
           flex: 1.2,
-          marginHorizontal: 20,
+          marginHorizontal: 10,
+          marginTop: 20,
           flexDirection: 'row',
-          alignItems: 'center',
         }}>
         <View>
           <Text style={{color: 'black', fontSize: 14}}> Welcome back!</Text>
-          <Text style={{color: 'black', fontSize: 20, fontWeight: '600'}}>
+          <Text style={{color: 'black', fontSize: 16}}>
             Dr. {Appdata.username}
           </Text>
         </View>
@@ -94,51 +95,44 @@ export default function Home() {
           style={{
             alignItems: 'flex-end',
             flex: 1,
+            marginTop: 20,
             marginLeft: 10,
           }}>
           <Icon name="bell" size={30} color={Color.primary} />
         </View>
       </View>
-      <View
-        style={{
-          flex: 2,
-          marginHorizontal: 10,
-          padding: 10,
-          borderRadius: 10,
-          backgroundColor: Color.tertiary,
-        }}>
-        <Text
-          style={{
-            color: 'black',
-            fontWeight: '500',
-            fontSize: 19,
-          }}>
+      <View style={{flex: 4, marginHorizontal: 10}}>
+        <Text style={{color: 'black', fontWeight: '500'}}>
           Upcomming Appointments
         </Text>
 
-        <ScrollView horizontal={true}>
-          {Appointmentdata?.map(i => {
-            return (
-              <View style={{marginHorizontal: 10}}>
-                <Appointmentcard data={i} />
-              </View>
-            );
-          })}
-        </ScrollView>
+        <View style={{flex: 1}}>
+          <ScrollView horizontal={true}>
+            {Appointmentdata?.map(i => {
+              return (
+                <View style={{marginHorizontal: 10}}>
+                  <Appointmentcard data={i} />
+                </View>
+              );
+            })}
+          </ScrollView>
+        </View>
       </View>
       <View style={{flex: 5, marginHorizontal: 5, marginRight: 20}}>
         <View style={{marginTop: 10, flex: 1}}>
           {bookingdata?.count.length == 0 || !bookingdata ? (
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text style={{color: 'black', fontWeight: '600', fontSize: 16}}>
-                No Bookings yet.
-              </Text>
-            </View>
+            <>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text style={{color: 'black', fontWeight: '600', fontSize: 16}}>
+                  Nothing is here
+                </Text>
+              </View>
+            </>
           ) : (
             <BarChart
               style={{flex: 1}}
