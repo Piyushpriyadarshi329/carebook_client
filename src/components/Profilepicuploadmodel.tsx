@@ -16,7 +16,7 @@ export default function Profilepicuploadmodel({
 }) {
   const {mutate: addDocument} = useAddDocumentMutation({
     onSuccess: data => {
-      console.log(data.id, data.presignedUrl);
+      console.log('onSuccess profile: ', data);
       onSubmit(data);
     },
   });
@@ -27,7 +27,7 @@ export default function Profilepicuploadmodel({
       cropping: true,
       includeBase64: true,
     }).then(image => {
-      addDocument((image as any).data);
+      addDocument(image);
       setModalVisible(false);
     });
   }
@@ -38,7 +38,7 @@ export default function Profilepicuploadmodel({
       cropping: true,
       includeBase64: true,
     }).then(image => {
-      addDocument((image as any).data);
+      addDocument(image);
       setModalVisible(false);
     });
   }

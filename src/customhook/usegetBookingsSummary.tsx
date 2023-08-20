@@ -11,11 +11,9 @@ import {
   GetBookingsSummaryResponse,
 } from '../types';
 export function usegetBookingsSummary(payload: GetBookingsSummaryRequest) {
-  console.log('booking summary', payload);
   return useQuery(
     ['AVAILABILITY', payload],
     () => {
-      console.log('usegetBookingsSummary');
       return axios.post<GetBookingsSummaryResponse>(
         GETBOOKINGSUMMARY_Url,
         payload,
@@ -35,20 +33,15 @@ export function usegetBookingsSummary(payload: GetBookingsSummaryRequest) {
 
           curdate.setDate(curdate.getDate() + i);
 
-          console.log('curdate', curdate);
-
           let updatedate = new Date(
             curdate.toISOString().split('T')[0] + 'T00:00:00.000Z',
           );
 
           let timestamp = updatedate.getTime();
-          console.log('timestamp', timestamp);
 
           let filterdata = data.data.data.filter(
             i => i.appointment_date == timestamp,
           );
-
-          console.log('filterdata', filterdata);
 
           if (filterdata.length > 0) {
             // count.push(filterdata[0].count);
@@ -57,8 +50,6 @@ export function usegetBookingsSummary(payload: GetBookingsSummaryRequest) {
           } else {
             count.push(0);
           }
-
-          console.log('updatedate', updatedate);
 
           let month = updatedate.getMonth();
 

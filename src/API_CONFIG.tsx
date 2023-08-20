@@ -1,4 +1,5 @@
-const BASE_URL = 'http://16.171.126.47:80/api/v1'; //dev
+// const BASE_URL = 'http://16.171.126.47:80/api/v1'; //dev
+const BASE_URL = 'http://localhost:5001/api/v1'; //dev
 // var BASE_URL = 'http://43.204.45.2:5000/api/v1'; //prod
 
 export const LOGIN_URL = BASE_URL + '/login';
