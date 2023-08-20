@@ -30,7 +30,6 @@ export default function Home() {
   const {data: bookingdata} = usegetBookingsSummary({
     doctor_id: Appdata.userid,
   });
-  console.log('Bookingdata==>', bookingdata);
 
   const chartConfig = {
     backgroundGradientFrom: '#Ffffff',

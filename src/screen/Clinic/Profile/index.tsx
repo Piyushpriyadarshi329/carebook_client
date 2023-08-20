@@ -18,7 +18,7 @@ import {
 } from '../../../components/Clinicprofilemodel';
 import {RootState} from '../../../redux/Store';
 import {updateappstate} from '../../../redux/reducer/Authreducer';
-import {AddressDto} from '../../../types';
+import {AddressDto, VisibleDocument} from '../../../types';
 import {useAddaddressMutation} from './useAddaddress';
 import {useClinicsList} from './useGetcliniclist';
 import {useUpdateClinic} from './useClinicQuery';
@@ -63,7 +63,13 @@ export default function Clinicprofile() {
       type: 'Clinic',
     });
   }
-
+  const profilePicUploadSuccessHandler = (
+    data: VisibleDocument | undefined,
+  ) => {
+    updateClinic({
+      profile_image_key: data?.fileKey,
+    });
+  };
   function profilehandler(formValues: ClinicProfile) {
     updateClinic({
       name: formValues.name,
@@ -190,7 +196,13 @@ export default function Clinicprofile() {
                 borderRadius: 50,
                 marginTop: 10,
               }}
-              source={require('../../../asset/image/Clinic.jpeg')}
+              source={
+                profile?.profile_image
+                  ? {
+                      uri: profile?.profile_image,
+                    }
+                  : require('../../../asset/image/Clinic.jpeg')
+              }
             />
           </TouchableOpacity>
         </View>
@@ -233,7 +245,7 @@ export default function Clinicprofile() {
       <Profilepicuploadmodel
         modalVisible={picmodalVisible}
         setModalVisible={setpicModalVisible}
-        onSubmit={submithandler}
+        onSubmit={profilePicUploadSuccessHandler}
       />
     </View>
   );
