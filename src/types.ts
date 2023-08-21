@@ -20,6 +20,7 @@ export interface DoctorDto {
   about: string;
   no_of_bookings?: number;
   experience?: number;
+  clinic_id: string;
 }
 
 export interface GetDotcorsListRequest {

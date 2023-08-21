@@ -1,6 +1,6 @@
 // const BASE_URL = 'http://16.171.126.47:80/api/v1'; //dev
-const BASE_URL = 'http://localhost:5001/api/v1'; //local
-// const BASE_URL = 'http://192.168.29.230:5001/api/v1'; //local
+// const BASE_URL = 'http://localhost:5001/api/v1'; //local
+const BASE_URL = 'http://192.168.29.230:5001/api/v1'; //local
 // var BASE_URL = 'http://43.204.45.2:5000/api/v1'; //prod
 
 export const LOGIN_URL = BASE_URL + '/login';
@@ -23,3 +23,4 @@ export const updateClinicUrl = BASE_URL + '/updateClinic';
 export const GETBOOKINGSUMMARY_Url = BASE_URL + '/getBookingsSummary';
 export const DOCUMENT = BASE_URL + '/document';
 export const GETSPECIALITY_URL = BASE_URL + '/getSpeciality';
+export const REMOVEDOCTORMAPPING_URL = BASE_URL + '/removeDoctorMapping';

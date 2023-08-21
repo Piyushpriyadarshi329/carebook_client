@@ -9,6 +9,7 @@ import {AppPages} from '../appPages';
 import {DoctorDto} from '../types';
 
 export default function Doctorcard({doctor}: {doctor: DoctorDto}) {
+  console.log('doctor', doctor);
   const navigation = useNavigation();
   const userId = useSelector((state: RootState) => state.Appdata.userid);
   return (
