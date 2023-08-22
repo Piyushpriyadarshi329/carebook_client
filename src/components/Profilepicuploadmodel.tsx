@@ -1,4 +1,11 @@
-import {View, Text, Modal, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  Modal,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  StyleSheet,
+} from 'react-native';
 import React from 'react';
 import Color from '../asset/Color';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -51,6 +58,9 @@ export default function Profilepicuploadmodel({
       onRequestClose={() => {
         setModalVisible(!modalVisible);
       }}>
+      <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+        <View style={styles.modalOverlay} />
+      </TouchableWithoutFeedback>
       <View style={{flex: 1, justifyContent: 'flex-end'}}>
         <View
           style={{
@@ -84,3 +94,13 @@ export default function Profilepicuploadmodel({
     </Modal>
   );
 }
+
+const styles = StyleSheet.create({
+  modalOverlay: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+});

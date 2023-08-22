@@ -11,7 +11,7 @@ export function useremoveDoctorMapping(onSuccess: any) {
     (payload: AddLeaveRequest) => axios.post(REMOVEDOCTORMAPPING_URL, payload),
     {
       onSuccess: () => {
-        qc.invalidateQueries(['LEAVES']);
+        qc.invalidateQueries(['DOCTORS']);
         onSuccess();
       },
       onError: e => {

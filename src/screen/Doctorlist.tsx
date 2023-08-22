@@ -58,11 +58,6 @@ export default function Doctorlist() {
               <Text style={{color: 'black'}}>No Doctor FOund</Text>
             </View>
           ) : (
-            // <ScrollView>
-            //   {doctorlist?.map(doctor => {
-            //     return <Doctorcard doctor={doctor} />;
-            //   })}
-            // </ScrollView>
             <SwipeListView
               data={doctorlist}
               renderItem={(data, rowMap) => <Doctorcard doctor={data.item} />}
@@ -80,13 +75,12 @@ export default function Doctorlist() {
                     <AntDesign
                       style={{marginRight: 30, marginBottom: 30}}
                       name="delete"
-                      color={Color.primary}
+                      color={Color.red}
                       size={30}
                     />
                   </TouchableOpacity>
                 </View>
               )}
-              leftOpenValue={-75}
               rightOpenValue={-75}
             />
           )}
