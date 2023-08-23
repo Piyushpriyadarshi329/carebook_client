@@ -12,6 +12,11 @@ export default function Doctorcard({doctor}: {doctor: DoctorDto}) {
   console.log('doctor', doctor);
   const navigation = useNavigation();
   const userId = useSelector((state: RootState) => state.Appdata.userid);
+  const navigateToAppointments = () =>
+    navigation.navigate(AppPages.Appointments, {
+      id: doctor.id,
+      clinic_id: userId,
+    });
   return (
     <View
       style={{
@@ -21,58 +26,53 @@ export default function Doctorcard({doctor}: {doctor: DoctorDto}) {
         marginHorizontal: 10,
         borderRadius: 5,
       }}>
-      <View style={{flex: 1}}>
-        <Image
-          style={{
-            width: 75,
-            height: 75,
-            borderRadius: 50,
-            marginVertical: 10,
-            marginLeft: 10,
-          }}
-          source={
-            doctor.profile_image
-              ? {uri: doctor.profile_image}
-              : require('./../asset/image/profile.png')
-          }
-        />
-      </View>
-
-      <View style={{flex: 2, justifyContent: 'center'}}>
-        <Text style={{color: 'black', fontWeight: '600', fontSize: 20}}>
-          {doctor.name}
-        </Text>
-        <Text style={{color: 'black'}}>{doctor.mobile}</Text>
-        {doctor.email && <Text style={{color: 'black'}}>{doctor.email}</Text>}
-        {doctor.speciality && (
-          <Text style={{color: 'black'}}>{doctor.speciality}</Text>
-        )}
-      </View>
+      <TouchableOpacity
+        onPress={navigateToAppointments}
+        style={{
+          flexDirection: 'row',
+          flex: 3,
+        }}>
+        <View style={{flex: 1}}>
+          <Image
+            style={{
+              width: 75,
+              height: 75,
+              borderRadius: 50,
+              marginVertical: 10,
+              marginLeft: 10,
+            }}
+            source={
+              doctor.profile_image
+                ? {uri: doctor.profile_image}
+                : require('./../asset/image/profile.png')
+            }
+          />
+        </View>
+        <View style={{flex: 2, justifyContent: 'center'}}>
+          <Text style={{color: 'black', fontWeight: '600', fontSize: 20}}>
+            {doctor.name}
+          </Text>
+          <Text style={{color: 'black'}}>{doctor.mobile}</Text>
+          {doctor.email && <Text style={{color: 'black'}}>{doctor.email}</Text>}
+          {doctor.speciality && (
+            <Text style={{color: 'black'}}>{doctor.speciality}</Text>
+          )}
+        </View>
+      </TouchableOpacity>
       <View
         style={{
           flex: 0.3,
           justifyContent: 'space-around',
         }}>
-        <Icon
-          name="user"
-          style={{color: Color.primary, fontSize: 24}}
+        <TouchableOpacity
           onPress={() => {
             navigation.navigate('DoctorProfile', {
               id: doctor.id,
               clinic_id: userId,
             });
-          }}
-        />
-        <Icon
-          name="book"
-          style={{color: Color.primary, fontSize: 24}}
-          onPress={() => {
-            navigation.navigate(AppPages.Appointments, {
-              id: doctor.id,
-              clinic_id: userId,
-            });
-          }}
-        />
+          }}>
+          <Icon name="user" style={{color: Color.primary, fontSize: 24}} />
+        </TouchableOpacity>
       </View>
     </View>
   );
