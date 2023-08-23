@@ -19,8 +19,8 @@ import {RootState} from '../redux/Store';
 import {useAddleave} from '../customhook/useAddleave';
 import {
   Availability,
-  useGetavailability,
-} from '../customhook/useGetavailability';
+  useGetAvailabilityQuery,
+} from './Availability/useGetavailability';
 import {showtime} from '../AppFunction';
 import {useNavigation} from '@react-navigation/native';
 import Btn from '../components/Btn';
@@ -52,7 +52,9 @@ function LeaveById(props: {id: string}) {
 
   const [selectedAvailability, setSelectedAvailability] =
     useState<Availability | null>(null);
-  const {data: availabilityList} = useGetavailability({doctor_id: props.id});
+  const {data: availabilityList} = useGetAvailabilityQuery({
+    doctor_id: props.id,
+  });
 
   const {mutate: addleave} = useAddleave(() => {
     navigation.goBack();

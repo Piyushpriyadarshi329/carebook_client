@@ -15,7 +15,7 @@ import {useSelector} from 'react-redux';
 import {sendtime, showtime} from '../../AppFunction';
 import Color from '../../asset/Color';
 import Navbar from '../../components/Navbar';
-import {days, weeks} from '../../customhook/useGetavailability';
+import {days, weeks} from './useGetavailability';
 import {useClinicsList} from '../Clinic/Profile/useGetcliniclist';
 import type {RootState} from '../../redux/Store';
 import {useAddavailability} from '../../customhook/useAddavailability';
@@ -105,7 +105,7 @@ export function DoctorAvailabilityWithId(props: {
     });
   };
   const {mutate: addAvailability} = useAddavailability({
-    onSuccess: () => navigation.navigate('Profile'),
+    onSuccess: () => navigation.goBack(),
   });
   async function submithandler() {
     if (!selectedclinic) {

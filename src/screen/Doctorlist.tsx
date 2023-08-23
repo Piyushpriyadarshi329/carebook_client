@@ -11,6 +11,7 @@ import {SwipeListView} from 'react-native-swipe-list-view';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {DoctorDto} from '../types';
 import {useremoveDoctorMapping} from '../customhook/useremoveDoctorMapping';
+import SwipeDeleteButton from '../components/SwipeDeleteButton';
 
 export default function Doctorlist() {
   const navigation = useNavigation();
@@ -62,24 +63,7 @@ export default function Doctorlist() {
               data={doctorlist}
               renderItem={(data, rowMap) => <Doctorcard doctor={data.item} />}
               renderHiddenItem={(data, rowMap) => (
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: 'flex-end',
-                    alignItems: 'flex-end',
-                  }}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      deletehandler(data.item);
-                    }}>
-                    <AntDesign
-                      style={{marginRight: 30, marginBottom: 30}}
-                      name="delete"
-                      color={Color.red}
-                      size={30}
-                    />
-                  </TouchableOpacity>
-                </View>
+                <SwipeDeleteButton onPress={deletehandler} item={data.item} />
               )}
               rightOpenValue={-75}
             />

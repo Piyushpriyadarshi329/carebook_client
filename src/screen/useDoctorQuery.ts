@@ -1,8 +1,8 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import axios from 'axios';
 import {
-  ADDDOCTOR_URL,
-  GETDOCTORLIST_URL,
+  ADD_DOCTOR_URL,
+  GET_DOCTOR_LIST_URL,
   GET_DOCTOR,
   LINK_DOCTOR_URL,
   UPDATE_DOCTOR,
@@ -25,7 +25,7 @@ export const useGetDoctorsList = (
 ) => {
   return useQuery(
     ['DOCTORS', payload],
-    () => axios.post<GetDoctorsListResponse>(GETDOCTORLIST_URL, payload),
+    () => axios.post<GetDoctorsListResponse>(GET_DOCTOR_LIST_URL, payload),
     {
       select: data => data.data.data,
       enabled: enabled,
@@ -92,7 +92,7 @@ export const useAddDoctor = ({onSuccess}: {onSuccess: () => void}) => {
   const qc = useQueryClient();
   return useMutation(
     (payload: AddDoctorRequest) => {
-      return axios.post<AddDoctorResponse>(ADDDOCTOR_URL, payload);
+      return axios.post<AddDoctorResponse>(ADD_DOCTOR_URL, payload);
     },
     {
       onSuccess: () => {

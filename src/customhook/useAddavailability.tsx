@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {ADDAVAILABILITY_URL} from '../API_CONFIG';
+import {ADD_AVAILABILITY_URL} from '../API_CONFIG';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {AddAvailabilityRequest} from '../types';
 
@@ -7,7 +7,7 @@ export function useAddavailability(props?: {onSuccess?: any}) {
   const qc = useQueryClient();
   return useMutation(
     (payload: AddAvailabilityRequest) =>
-      axios.post<any>(ADDAVAILABILITY_URL, payload),
+      axios.post<any>(ADD_AVAILABILITY_URL, payload),
     {
       onSuccess: data => {
         console.log('data', data.data);

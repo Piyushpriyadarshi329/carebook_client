@@ -1,6 +1,6 @@
 import {useQuery} from '@tanstack/react-query';
 import axios from 'axios';
-import {GETBOOKINGSUMMARY_Url} from '../API_CONFIG';
+import {GET_BOOKING_SUMMARY_Url} from '../API_CONFIG';
 import {monthlist, daylist} from './../Appconstant';
 
 import {
@@ -15,7 +15,7 @@ export function usegetBookingsSummary(payload: GetBookingsSummaryRequest) {
     ['AVAILABILITY', payload],
     () => {
       return axios.post<GetBookingsSummaryResponse>(
-        GETBOOKINGSUMMARY_Url,
+        GET_BOOKING_SUMMARY_Url,
         payload,
       );
     },

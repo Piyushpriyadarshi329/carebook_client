@@ -1,7 +1,7 @@
 // GETDOCTORLIST_URL
 
 import axios from 'axios';
-import {GETSPECIALITY_URL} from '../API_CONFIG';
+import {GET_SPECIALTY_URL} from '../API_CONFIG';
 
 export async function usegetSpeciality() {
   // const config: any =  {
@@ -12,7 +12,7 @@ export async function usegetSpeciality() {
 
   let myPromise = new Promise(async function (myResolve, myReject) {
     try {
-      var res = await axios.get(GETSPECIALITY_URL);
+      var res = await axios.get(GET_SPECIALTY_URL);
 
       console.log('res', res.data);
 

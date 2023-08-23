@@ -1,6 +1,6 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import axios from 'axios';
-import {UPDATESLOTSSTATUS_URL} from '../API_CONFIG';
+import {UPDATE_SLOTS_STATUS_URL} from '../API_CONFIG';
 import {AddLeaveRequest, updateSlotsStatusRequest} from '../types';
 
 export function useUpdateSlotStatus(onSuccess: any) {
@@ -8,7 +8,7 @@ export function useUpdateSlotStatus(onSuccess: any) {
 
   return useMutation(
     (payload: updateSlotsStatusRequest) =>
-      axios.post(UPDATESLOTSSTATUS_URL, payload),
+      axios.post(UPDATE_SLOTS_STATUS_URL, payload),
     {
       onSuccess: (data, variables) => {
         qc.invalidateQueries(['APPOINTMENTS']);

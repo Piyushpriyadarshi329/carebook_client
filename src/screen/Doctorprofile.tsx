@@ -17,7 +17,11 @@ import Color from '../asset/Color';
 import Navbar from '../components/Navbar';
 import {RHFTextInput} from '../components/RHFInputs/RHFTextInput';
 import {useGetLeaves} from '../customhook/useGetLeaves';
-import {useGetavailability} from '../customhook/useGetavailability';
+import {
+  AvailabilityFE,
+  useGetAvailabilityQuery,
+  useRemoveAvailability,
+} from './Availability/useGetavailability';
 import type {RootState} from '../redux/Store';
 import {updateappstate} from '../redux/reducer/Authreducer';
 import {useGetDoctor, useMutateDoctorProfile} from './useDoctorQuery';
@@ -32,6 +36,8 @@ import Profilepicuploadmodel from '../components/Profilepicuploadmodel';
 import Btn from '../components/Btn';
 import PopupMenu from '../components/PopupMenu';
 import {VisibleDocument} from '../types';
+import {SwipeListView} from 'react-native-swipe-list-view';
+import SwipeDeleteButton from '../components/SwipeDeleteButton';
 
 export interface ProfileForm {
   username: string;
@@ -88,8 +94,11 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
   });
 
   const {data: leaves} = useGetLeaves({doctor_id: props.id});
-  const {data: Availability} = useGetavailability({doctor_id: props.id});
-
+  const {data: availability, isLoading} = useGetAvailabilityQuery({
+    doctor_id: props.id,
+  });
+  console.log(isLoading, availability?.length);
+  const {mutate: removeAvailability} = useRemoveAvailability();
   const [textShown, setTextShown] = useState(false); //To show ur remaining Text
   const [lengthMore, setLengthMore] = useState(false); //to show the "Read more & Less Line"
 
@@ -132,6 +141,11 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
       clinic_id: props.clinic_id,
     });
   };
+
+  const removeAvailabilityHandler = (item: AvailabilityFE) => {
+    removeAvailability(item.entry_id);
+  };
+
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <Doctorprofilemodel
@@ -236,7 +250,7 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
             <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
               Availablity
             </Text>
-            {!!Availability?.length && (
+            {!!availability?.length && (
               <Pressable
                 onPress={navigateToAddAvailability}
                 style={{flex: 1, alignItems: 'flex-end', marginRight: 30}}>
@@ -244,7 +258,7 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
               </Pressable>
             )}
           </View>
-          {!Availability?.length && (
+          {!availability?.length && (
             <View
               style={{
                 flex: 1,
@@ -257,13 +271,23 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
               />
             </View>
           )}
-          <ScrollView>
+          {!!availability?.length && (
             <View style={{flex: 10}}>
-              {Availability?.map(a => {
-                return <AvailabilityCard availability={a} />;
-              })}
+              <SwipeListView
+                data={availability}
+                renderItem={(data, rowMap) => (
+                  <AvailabilityCard availability={data.item} />
+                )}
+                renderHiddenItem={(data, rowMap) => (
+                  <SwipeDeleteButton
+                    onPress={removeAvailabilityHandler}
+                    item={data.item}
+                  />
+                )}
+                rightOpenValue={-75}
+              />
             </View>
-          </ScrollView>
+          )}
         </View>
 
         <View style={[{flex: 1}, style.profileSection]}>

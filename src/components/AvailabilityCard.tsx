@@ -2,9 +2,12 @@ import React from 'react';
 import {Text, View} from 'react-native';
 import {showtimefromstring} from '../AppFunction';
 import Color from '../asset/Color';
-import {Availability} from '../customhook/useGetavailability';
+import {
+  Availability,
+  AvailabilityFE,
+} from '../screen/Availability/useGetavailability';
 
-const AvailabilityCard = ({availability}: {availability: Availability}) => {
+const AvailabilityCard = ({availability}: {availability: AvailabilityFE}) => {
   return (
     <View
       style={{
