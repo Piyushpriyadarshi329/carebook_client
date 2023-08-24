@@ -140,9 +140,9 @@ export default function Clinicprofile() {
             value={doctorlist?.length ?? '- -'}
           />
           {/* // TODO get actual Values */}
-          <ClinicProfileEntry label="Total Bookings" value={'85'} />
+          {/* <ClinicProfileEntry label="Total Bookings" value={'85'} />
           <ClinicProfileEntry label="Average Bookings" value={'24/month'} />
-          <ClinicProfileEntry label="Partner Since" value={'Apr 12 2023'} />
+          <ClinicProfileEntry label="Partner Since" value={'Apr 12 2023'} /> */}
 
           <View style={styles.aboutContainer}>
             <Text style={[commonStyles.font18, commonStyles.weight600]}>

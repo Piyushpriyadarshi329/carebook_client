@@ -35,6 +35,8 @@ import DoctorProfileEntry from '../../DoctorProfileEntry';
 import {useGetDoctor, useMutateDoctorProfile} from '../../useDoctorQuery';
 import LeaveCard from './LeaveCard';
 import EditButton from '../../../components/EditButton';
+import AboutMenuOptions from '../../Clinic/Profile/MenuOptions';
+import {MenuProvider} from 'react-native-popup-menu';
 
 export interface ProfileForm {
   username: string;
@@ -47,41 +49,69 @@ export interface ProfileForm {
 }
 export default function LoggedInDoctorProfile() {
   const dispatch = useDispatch();
-  const [picmodalVisible, setpicModalVisible] = useState(false); // profile pic
+  const [editMode, setEditMode] = useState(false);
 
   const userId = useSelector((state: RootState) => state.Appdata.userid);
-
+  const logoutHandler = () =>
+    dispatch(
+      updateappstate({
+        islogin: false,
+        isdoctor: false,
+      }),
+    );
   return (
-    <View style={{backgroundColor: 'white', flex: 1}}>
-      <DoctorProfileWithId id={userId} />
-      <View style={{flex: 0.1, alignItems: 'center', marginTop: 10}}>
-        <Button
-          title="Log out"
-          color={Color.red}
-          onPress={() =>
-            dispatch(
-              updateappstate({
-                islogin: false,
-                isdoctor: false,
-              }),
-            )
+    <MenuProvider>
+      <View style={{backgroundColor: 'white'}}>
+        <Navbar
+          title="Profile"
+          endAdornment={
+            <AboutMenuOptions
+              onLogout={logoutHandler}
+              setEditMode={() => setEditMode(true)}
+            />
           }
         />
+        <DoctorProfileWithId
+          id={userId}
+          editMode={editMode}
+          setEditMode={setEditMode}
+        />
       </View>
-    </View>
+    </MenuProvider>
   );
 }
 export const DoctorProfile = (props: any) => {
+  const [editMode, setEditMode] = useState(false);
   return (
-    <DoctorProfileWithId
-      id={props.route.params?.id}
-      clinic_id={props.route.params?.clinic_id}
-    />
+    <MenuProvider>
+      <View style={{flex: 1, backgroundColor: 'white'}}>
+        <Navbar
+          title="Doctor Details"
+          endAdornment={
+            <AboutMenuOptions setEditMode={() => setEditMode(true)} />
+          }
+        />
+        <DoctorProfileWithId
+          id={props.route.params?.id}
+          clinic_id={props.route.params?.clinic_id}
+          editMode={editMode}
+          setEditMode={setEditMode}
+        />
+      </View>
+    </MenuProvider>
   );
 };
-function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
+function DoctorProfileWithId({
+  editMode,
+  setEditMode,
+  ...props
+}: {
+  id: string;
+  clinic_id?: string;
+  editMode: boolean;
+  setEditMode: (p: boolean) => void;
+}) {
   const navigation = useNavigation<any>();
-  const [editMode, setEditMode] = useState(false);
   const [picmodalVisible, setpicModalVisible] = useState(false); // profile pic
   const {data: leaves} = useGetLeaves({doctor_id: props.id});
   const {data: availability, isLoading} = useGetAvailabilityQuery({
@@ -142,18 +172,6 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
 
   return (
     <View style={style.container}>
-      <Doctorprofilemodel
-        editMode={editMode}
-        setEditMode={setEditMode}
-        doctorDetails={doctorDetails}
-        onSubmit={updateProfileHandler}
-      />
-      <Profilepicuploadmodel
-        modalVisible={picmodalVisible}
-        setModalVisible={setpicModalVisible}
-        onSubmit={uploadprofilpicfun}
-      />
-      <Navbar title="Profile" />
       <View style={{flex: 1}}>
         <View style={style.imageContainer}>
           <TouchableOpacity onPress={() => setpicModalVisible(true)}>
@@ -204,13 +222,6 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
         {section === 'About' && (
           <>
             <View style={style.contentContainer}>
-              <View style={{alignItems: 'flex-end', width: '100%'}}>
-                <EditButton
-                  onPress={() => {
-                    setEditMode(true);
-                  }}
-                />
-              </View>
               <DoctorProfileEntry
                 label="Degree"
                 value={doctorDetails?.degree}
@@ -315,6 +326,18 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
           </View>
         )}
       </View>
+
+      <Doctorprofilemodel
+        editMode={editMode}
+        setEditMode={setEditMode}
+        doctorDetails={doctorDetails}
+        onSubmit={updateProfileHandler}
+      />
+      <Profilepicuploadmodel
+        modalVisible={picmodalVisible}
+        setModalVisible={setpicModalVisible}
+        onSubmit={uploadprofilpicfun}
+      />
     </View>
   );
 }
