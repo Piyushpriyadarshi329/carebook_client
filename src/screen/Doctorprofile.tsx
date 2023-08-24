@@ -38,6 +38,7 @@ import PopupMenu from '../components/PopupMenu';
 import {VisibleDocument} from '../types';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import SwipeDeleteButton from '../components/SwipeDeleteButton';
+import ConformationModel from '../components/ConformationModel';
 
 export interface ProfileForm {
   username: string;
@@ -86,6 +87,13 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
   const navigation = useNavigation();
   const [editMode, setEditMode] = useState(false);
   const [picmodalVisible, setpicModalVisible] = useState(false); // profile pic
+
+  const [availabilitymodalVisible, setavailabilitymodalVisible] =
+    useState(false);
+
+  const [deleteavailability, setdeleteavailability] =
+    useState<AvailabilityFE | null>();
+  const [leavesmodalVisible, setleavesmodalVisible] = useState(false);
 
   const {data: doctorDetails} = useGetDoctor(props.id);
 
@@ -142,12 +150,36 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
     });
   };
 
-  const removeAvailabilityHandler = (item: AvailabilityFE) => {
-    removeAvailability(item.entry_id);
+  function deleteavailabilityfun(item: AvailabilityFE) {
+    setavailabilitymodalVisible(true);
+    setdeleteavailability(item);
+  }
+
+  const removeAvailabilityHandler = () => {
+    removeAvailability(deleteavailability?.entry_id);
+    setavailabilitymodalVisible(false);
   };
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
+      <ConformationModel
+        title="Delete availability?"
+        subtitle="Do you want to delete availability?"
+        modalVisible={availabilitymodalVisible}
+        setModalVisible={setavailabilitymodalVisible}
+        onsubmit={removeAvailabilityHandler}
+      />
+      {/* <ConformationModel
+        title="Delete Leaves?"
+        subtitle="Do you want to delete Leaves?"
+        modalVisible={leavesmodalVisible}
+        setModalVisible={setleavesmodalVisible}
+        onsubmit={removeAvailabilityHandler}
+      /> */}
+
+      {/* <ConformationModel
+      
+      /> */}
       <Doctorprofilemodel
         editMode={editMode}
         setEditMode={setEditMode}
@@ -280,7 +312,7 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
                 )}
                 renderHiddenItem={(data, rowMap) => (
                   <SwipeDeleteButton
-                    onPress={removeAvailabilityHandler}
+                    onPress={deleteavailabilityfun}
                     item={data.item}
                   />
                 )}

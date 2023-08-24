@@ -16,7 +16,7 @@ export default function DocterRoute() {
         screenOptions={({route}) => ({
           tabBarShowLabel: false,
           tabBarHideOnKeyboard: true,
-          tabBarIcon: () => {
+          tabBarIcon: ({focused, color, size}) => {
             let iconName;
             switch (route.name) {
               case 'Home':
@@ -32,8 +32,10 @@ export default function DocterRoute() {
                 break;
             }
 
-            return <Icon name={iconName} color={Color.primary} size={24} />;
+            return <Icon name={iconName} color={color} size={24} />;
           },
+          tabBarActiveTintColor: Color.primary,
+          tabBarInactiveTintColor: Color.secondary,
         })}>
         <Tab.Screen
           name={AppPages.DoctorStack}

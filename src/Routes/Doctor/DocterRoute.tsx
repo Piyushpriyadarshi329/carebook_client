@@ -32,8 +32,10 @@ export default function DocterRoute() {
               default:
                 break;
             }
-            return <Icon name={iconName} color={Color.primary} size={24} />;
+            return <Icon name={iconName} color={color} size={24} />;
           },
+          tabBarActiveTintColor: Color.primary,
+          tabBarInactiveTintColor: Color.secondary,
         })}>
         <Tab.Screen
           name="Home"

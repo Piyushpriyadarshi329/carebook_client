@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useState} from 'react';
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useSelector} from 'react-redux';
@@ -12,9 +12,13 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {DoctorDto} from '../types';
 import {useremoveDoctorMapping} from '../customhook/useremoveDoctorMapping';
 import SwipeDeleteButton from '../components/SwipeDeleteButton';
+import ConformationModel from '../components/ConformationModel';
 
 export default function Doctorlist() {
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [deleteddoctor, setdeleteddoctor] = useState<DoctorDto | null>();
+
   const userId = useSelector((state: RootState) => state.Appdata.userid);
 
   const {mutate: removeDoctor} = useremoveDoctorMapping(() => {});
@@ -22,21 +26,38 @@ export default function Doctorlist() {
     clinic_id: userId ?? '',
   });
 
+  async function onclick(doctor: DoctorDto) {
+    setdeleteddoctor(doctor);
+    setModalVisible(true);
+  }
+
   async function deletehandler(doctor: DoctorDto) {
     try {
       let payload = {
-        doctor_id: doctor.id,
-        clinic_id: doctor.clinic_id,
+        doctor_id: deleteddoctor?.id,
+        clinic_id: deleteddoctor?.clinic_id,
       };
 
+      console.log('payload', payload);
+
       let res = await removeDoctor(payload);
+      setModalVisible(false);
     } catch (error) {
+      setModalVisible(false);
+
       console.log(error);
     }
   }
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
+      <ConformationModel
+        title="Doctor Delete?"
+        subtitle="Do you want to delete Doctor?"
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        onsubmit={deletehandler}
+      />
       <View style={{flex: 10}}>
         <View
           style={{
@@ -63,7 +84,7 @@ export default function Doctorlist() {
               data={doctorlist}
               renderItem={(data, rowMap) => <Doctorcard doctor={data.item} />}
               renderHiddenItem={(data, rowMap) => (
-                <SwipeDeleteButton onPress={deletehandler} item={data.item} />
+                <SwipeDeleteButton onPress={onclick} item={data.item} />
               )}
               rightOpenValue={-75}
             />
