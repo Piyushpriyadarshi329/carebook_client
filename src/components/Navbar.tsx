@@ -25,7 +25,7 @@ const Navbar = (props: {
       {!props.asFullScreenModal && (
         <View
           onTouchEnd={() => navigation.goBack()}
-          style={{position: 'absolute', left: 20, top: 10}}>
+          style={{position: 'absolute', left: 10, top: 10}}>
           <Icon
             name="keyboard-arrow-left"
             size={24}
@@ -49,7 +49,9 @@ const Navbar = (props: {
           <Icon name="close" size={24} style={{color: Color.primary}} />
         </View>
       )}
-      {props.endAdornment}
+      <View style={{position: 'absolute', right: 10}}>
+        {props.endAdornment}
+      </View>
     </View>
   );
 };

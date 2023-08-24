@@ -23,6 +23,12 @@ import {useAddaddressMutation} from './useAddaddress';
 import {useClinicsList} from './useGetcliniclist';
 import {useUpdateClinic} from './useClinicQuery';
 import Profilepicuploadmodel from '../../../components/Profilepicuploadmodel';
+import {commonStyles} from '../../../asset/styles';
+import ClinicProfileEntry from './ClinicProfileEntry';
+import {useGetDoctorsList} from '../../useDoctorQuery';
+import Navbar from '../../../components/Navbar';
+import AboutMenuOptions from './MenuOptions';
+import {MenuProvider} from 'react-native-popup-menu';
 
 export default function Clinicprofile() {
   const dispatch = useDispatch();
@@ -34,11 +40,14 @@ export default function Clinicprofile() {
   const [clinicModalVisible, setClinicModalVisible] = useState(false);
 
   const {data: profiles, isLoading} = useClinicsList({clinic_id: userId});
-  const profile = profiles?.[0];
+  const clinicDetails = profiles?.[0];
   const qc = useQueryClient();
-  const {mutate: updateClinic} = useUpdateClinic(profile?.id ?? '', () => {
-    setClinicModalVisible(false);
-  });
+  const {mutate: updateClinic} = useUpdateClinic(
+    clinicDetails?.id ?? '',
+    () => {
+      setClinicModalVisible(false);
+    },
+  );
   const {mutate: mutateAddress} = useAddaddressMutation({
     onSuccess: data => {
       console.log('updated.', data.data);
@@ -51,7 +60,7 @@ export default function Clinicprofile() {
   }
   function submithandler(formValues: AddressDto) {
     mutateAddress({
-      id: profile?.address.id,
+      id: clinicDetails?.address.id,
       user_id: userId,
       address_line1: formValues.address_line1,
       address_line2: formValues.address_line2,
@@ -84,173 +93,107 @@ export default function Clinicprofile() {
   const onTextLayout = useCallback((e: any) => {
     setLengthMore(e.nativeEvent.lines.length >= 4); //to check the text is more than 4 lines or not
   }, []);
-
+  const logOutHandler = () =>
+    dispatch(
+      updateappstate({
+        islogin: false,
+        isdoctor: false,
+      }),
+    );
+  const {data: doctorlist} = useGetDoctorsList({
+    clinic_id: userId ?? '',
+  });
   return (
-    <View style={{flex: 1, backgroundColor: 'white', paddingHorizontal: 20}}>
-      <View style={{flex: 2, flexDirection: 'row'}}>
-        <View style={{flex: 2, marginTop: 30}}>
-          <View
-            style={{
-              flexDirection: 'column',
-              flex: 1,
-            }}>
-            <View
-              style={{
-                justifyContent: 'space-between',
-                display: 'flex',
-                flexDirection: 'row',
-              }}>
-              <Text style={{color: 'black', fontSize: 25, fontWeight: '600'}}>
-                {profile?.name}
-              </Text>
-              <EditButton
-                onPress={() => {
-                  setClinicModalVisible(true);
-                }}
-              />
-            </View>
-            <View style={{flex: textShown ? 2.5 : 1.5, marginTop: 20}}>
-              <Text style={styles.profileSectionHeading}>About</Text>
-
-              <View>
-                <Text
-                  onTextLayout={onTextLayout}
-                  numberOfLines={textShown ? undefined : 2}
-                  style={{lineHeight: 21, color: 'black'}}>
-                  {profile?.about || '- -'}
-                </Text>
-
-                {lengthMore ? (
-                  <Text
-                    onPress={toggleNumberOfLines}
-                    style={{
-                      lineHeight: 21,
-                      marginTop: 4,
-                      color: 'black',
-                      fontWeight: '700',
-                    }}>
-                    {textShown ? 'Read less...' : 'Read more...'}
-                  </Text>
-                ) : null}
-              </View>
-            </View>
-          </View>
-          <View
-            style={{
-              marginTop: 20,
-              flexDirection: 'column',
-              width: '100%',
-            }}>
-            <View
-              style={{
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-              }}>
-              <Text style={styles.profileSectionHeading}>Address: </Text>
-              <EditButton
-                onPress={() => {
-                  setModalVisible(true);
-                }}
-              />
-            </View>
-            <View style={{width: '100%'}}>
-              {profile?.address ? (
-                <>
-                  <View style={{width: '100%'}}>
-                    <Text
-                      style={{
-                        color: 'black',
-                        marginTop: 5,
-                        fontSize: 18,
-                        width: '100%',
-                      }}>
-                      {profile?.address?.address_line1}
-                    </Text>
-                    <Text style={{color: 'black', marginTop: 5, width: '100%'}}>
-                      {profile?.address?.address_line2}
-                    </Text>
-                  </View>
-                  <View style={{flexDirection: 'row', marginTop: 5}}>
-                    <Text style={{color: 'black'}}>
-                      {profile?.address?.city}, {profile?.address?.state}
-                      &nbsp;- &nbsp;
-                      {profile?.address?.pincode}
-                    </Text>
-                  </View>
-                </>
-              ) : (
-                <Text>--</Text>
-              )}
-            </View>
-          </View>
-        </View>
-        <View style={{flex: 1, justifyContent: 'flex-start', paddingTop: 20}}>
-          <TouchableOpacity
-            onPress={() => {
-              setpicModalVisible(true);
-            }}>
+    <MenuProvider>
+      <View style={styles.container}>
+        <Navbar
+          title="About"
+          endAdornment={
+            <AboutMenuOptions
+              onLogout={logOutHandler}
+              setEditMode={() => setClinicModalVisible(true)}
+            />
+          }
+        />
+        <View style={styles.imageContainer}>
+          <TouchableOpacity onPress={() => setpicModalVisible(true)}>
             <Image
-              style={{
-                width: 100,
-                height: 100,
-                borderRadius: 50,
-                marginTop: 10,
-              }}
-              source={
-                profile?.profile_image
-                  ? {
-                      uri: profile?.profile_image,
-                    }
-                  : require('../../../asset/image/Clinic.jpeg')
-              }
+              style={styles.image}
+              source={{uri: clinicDetails?.profile_image}}
             />
           </TouchableOpacity>
+          <View style={{marginTop: 20, alignItems: 'center'}}>
+            <Text style={[commonStyles.font24, commonStyles.weight700]}>
+              {clinicDetails?.name}
+            </Text>
+            <Text style={commonStyles.caption}>
+              {clinicDetails?.address.address_line1}
+            </Text>
+            <Text style={commonStyles.caption}>
+              {clinicDetails?.address.address_line2}
+            </Text>
+          </View>
         </View>
-      </View>
-
-      <View style={{flexDirection: 'column', flex: 4}}>
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}>
-          <Button
-            title={'Logout'}
-            onPress={() =>
-              dispatch(
-                updateappstate({
-                  islogin: false,
-                  isdoctor: false,
-                }),
-              )
-            }
-            color={Color.red}
+        <View style={styles.contentContainer}>
+          <ClinicProfileEntry
+            label="Total Doctors"
+            value={doctorlist?.length ?? '- -'}
           />
+          {/* // TODO get actual Values */}
+          <ClinicProfileEntry label="Total Bookings" value={'85'} />
+          <ClinicProfileEntry label="Average Bookings" value={'24/month'} />
+          <ClinicProfileEntry label="Partner Since" value={'Apr 12 2023'} />
+
+          <View style={styles.aboutContainer}>
+            <Text style={[commonStyles.font18, commonStyles.weight600]}>
+              About
+            </Text>
+            <Text style={commonStyles.font16}>{clinicDetails?.about}</Text>
+          </View>
         </View>
+        <AddressModal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          onSubmit={submithandler}
+          defaultValues={clinicDetails?.address}
+        />
+        <Clinicprofilemodel
+          editMode={clinicModalVisible}
+          setEditMode={setClinicModalVisible}
+          onSubmit={profilehandler}
+          profile={clinicDetails}
+        />
+        <Profilepicuploadmodel
+          modalVisible={picmodalVisible}
+          setModalVisible={setpicModalVisible}
+          onSubmit={profilePicUploadSuccessHandler}
+        />
       </View>
-      <AddressModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        onSubmit={submithandler}
-        defaultValues={profile?.address}
-      />
-      <Clinicprofilemodel
-        editMode={clinicModalVisible}
-        setEditMode={setClinicModalVisible}
-        onSubmit={profilehandler}
-        profile={profile}
-      />
-      <Profilepicuploadmodel
-        modalVisible={picmodalVisible}
-        setModalVisible={setpicModalVisible}
-        onSubmit={profilePicUploadSuccessHandler}
-      />
-    </View>
+    </MenuProvider>
   );
 }
 
 const styles = StyleSheet.create({
   profileSectionHeading: {color: 'black', fontSize: 18, fontWeight: '600'},
+
+  container: {flex: 1, backgroundColor: 'white', paddingHorizontal: 20},
+  imageContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '40%',
+  },
+  image: {
+    resizeMode: 'contain',
+    borderRadius: 150,
+    height: 150,
+    width: 150,
+  },
+  contentContainer: {
+    paddingHorizontal: 30,
+  },
+
+  aboutContainer: {
+    marginTop: 40,
+    backgroundColor: 'white',
+  },
 });
