@@ -3,7 +3,7 @@ import React from 'react';
 import {DoctorAvaiability} from '../../../screen/Availability/Addavailability';
 import Adddoctor from '../../../screen/Adddoctor';
 import Doctorlist from '../../../screen/Doctorlist';
-import {DoctorProfile} from '../../../screen/Doctorprofile';
+import {DoctorProfile} from '../../../screen/Doctor/Profile';
 import {Leave} from '../../../screen/Leave';
 import {AppPages} from '../../../appPages';
 import {AppointmentForDoctor} from '../../../screen/Appointment/Appointments';

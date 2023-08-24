@@ -8,6 +8,7 @@ const Navbar = (props: {
   title: string;
   asFullScreenModal?: boolean;
   endAdornment?: JSX.Element;
+  bgc?: string;
 }) => {
   const navigation = useNavigation();
   return (
@@ -15,10 +16,11 @@ const Navbar = (props: {
       style={{
         flexDirection: 'row',
         padding: 10,
-        marginBottom: 10,
+        paddingBottom: 10,
         alignItems: 'center',
         justifyContent: 'center',
         gap: 20,
+        backgroundColor: props.bgc,
       }}>
       {!props.asFullScreenModal && (
         <View

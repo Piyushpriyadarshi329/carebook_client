@@ -25,7 +25,7 @@ import {showtime} from '../AppFunction';
 import {useNavigation} from '@react-navigation/native';
 import Btn from '../components/Btn';
 import {commonStyles} from '../asset/styles';
-import AvailabilityCard from '../components/AvailabilityCard';
+import AvailabilityCard from './Doctor/Profile/AvailabilityCard';
 import {useAlert} from '../utils/useShowAlert';
 
 export function LoggedInUserLeave() {

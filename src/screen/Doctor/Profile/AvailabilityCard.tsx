@@ -1,11 +1,11 @@
 import React from 'react';
 import {Text, View} from 'react-native';
-import {showtimefromstring} from '../AppFunction';
-import Color from '../asset/Color';
+import {showtimefromstring} from '../../../AppFunction';
+import Color from '../../../asset/Color';
 import {
   Availability,
   AvailabilityFE,
-} from '../screen/Availability/useGetAvailability';
+} from '../../Availability/useGetAvailability';
 
 const AvailabilityCard = ({availability}: {availability: AvailabilityFE}) => {
   return (
@@ -13,7 +13,7 @@ const AvailabilityCard = ({availability}: {availability: AvailabilityFE}) => {
       style={{
         flexDirection: 'row',
         marginTop: 10,
-        backgroundColor: Color.primary,
+        backgroundColor: Color.secondary,
         borderRadius: 5,
       }}>
       <View style={{flex: 1, alignItems: 'flex-start'}}>

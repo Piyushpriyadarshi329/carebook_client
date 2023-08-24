@@ -16,6 +16,7 @@ const Color = {
   tertiary: Pallet2.tertiary,
   white: 'white',
   lightgray: 'lightgray',
+  greybgc: '#f2f2f2',
   black: 'black',
 };
 

@@ -1,7 +1,7 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import DoctorAvailabilityWithId from '../../../screen/Availability/Addavailability';
-import Doctorprofile from '../../../screen/Doctorprofile';
+import Doctorprofile from '../../../screen/Doctor/Profile';
 import {LoggedInUserLeave} from '../../../screen/Leave';
 import {AppPages} from '../../../appPages';
 

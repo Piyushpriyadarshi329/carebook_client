@@ -15,10 +15,10 @@ import SwipeDeleteButton from '../components/SwipeDeleteButton';
 import ConformationModel from '../components/ConformationModel';
 
 export default function Doctorlist() {
-  const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [deleteddoctor, setdeleteddoctor] = useState<DoctorDto | null>();
 
+  const navigation = useNavigation<any>();
   const userId = useSelector((state: RootState) => state.Appdata.userid);
 
   const {mutate: removeDoctor} = useremoveDoctorMapping(() => {});
