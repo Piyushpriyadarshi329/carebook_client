@@ -5,7 +5,7 @@ import Color from '../asset/Color';
 import {
   Availability,
   AvailabilityFE,
-} from '../screen/Availability/useGetavailability';
+} from '../screen/Availability/useGetAvailability';
 
 const AvailabilityCard = ({availability}: {availability: AvailabilityFE}) => {
   return (

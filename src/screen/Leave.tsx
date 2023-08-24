@@ -20,7 +20,7 @@ import {useAddleave} from '../customhook/useAddleave';
 import {
   Availability,
   useGetAvailabilityQuery,
-} from './Availability/useGetavailability';
+} from './Availability/useGetAvailability';
 import {showtime} from '../AppFunction';
 import {useNavigation} from '@react-navigation/native';
 import Btn from '../components/Btn';

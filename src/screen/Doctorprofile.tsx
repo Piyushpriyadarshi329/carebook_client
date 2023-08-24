@@ -21,7 +21,7 @@ import {
   AvailabilityFE,
   useGetAvailabilityQuery,
   useRemoveAvailability,
-} from './Availability/useGetavailability';
+} from './Availability/useGetAvailability';
 import type {RootState} from '../redux/Store';
 import {updateappstate} from '../redux/reducer/Authreducer';
 import {useGetDoctor, useMutateDoctorProfile} from './useDoctorQuery';
@@ -181,6 +181,14 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
             <DoctorProfileEntry
               label="Speciality"
               value={doctorDetails?.[0]?.speciality?.toString()}
+            />
+            <DoctorProfileEntry
+              label="Experience"
+              value={`${doctorDetails?.[0]?.experience?.toString()} Yrs`}
+            />
+            <DoctorProfileEntry
+              label="Degree"
+              value={doctorDetails?.[0]?.degree?.toString()}
             />
           </View>
           <View style={{flex: 1, marginTop: 10}}>

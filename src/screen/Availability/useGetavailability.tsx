@@ -1,65 +1,19 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import axios from 'axios';
-import {AVAILABILITY_URL, GET_AVAILABILITY_URL} from '../../API_CONFIG';
 import {
+  ADD_AVAILABILITY_URL,
+  AVAILABILITY_URL,
+  GET_AVAILABILITY_URL,
+} from '../../API_CONFIG';
+import {
+  AddAvailabilityRequest,
   AvailabilityRes,
   GetAvailabilityRequest,
   GetAvailabilityResponse,
 } from '../../types';
 import _ from 'lodash';
-
-export const days = [
-  {
-    value: 0,
-    label: 'SUN',
-  },
-  {
-    value: 1,
-    label: 'MON',
-  },
-  {
-    value: 2,
-    label: 'TUE',
-  },
-  {
-    value: 3,
-    label: 'WED',
-  },
-  {
-    value: 4,
-    label: 'THU',
-  },
-  {
-    value: 5,
-    label: 'FRI',
-  },
-  {
-    value: 6,
-    label: 'SAT',
-  },
-];
-export const weeks = [
-  {
-    value: 0,
-    label: 'Week1',
-  },
-  {
-    value: 1,
-    label: 'Week2',
-  },
-  {
-    value: 2,
-    label: 'Week3',
-  },
-  {
-    value: 3,
-    label: 'Week4',
-  },
-  {
-    value: 4,
-    label: 'Week5',
-  },
-];
+import {useAlert} from '../../utils/useShowAlert';
+import {days, weeks} from './helper';
 
 export interface Availability extends Omit<AvailabilityRes, 'week_day'> {
   week_day: string;
@@ -110,3 +64,20 @@ export const useRemoveAvailability = () => {
     },
   );
 };
+
+export function useAddAvailability(props?: {onSuccess?: any}) {
+  const qc = useQueryClient();
+  const {successAlert} = useAlert();
+  return useMutation(
+    (payload: AddAvailabilityRequest) =>
+      axios.post<any>(ADD_AVAILABILITY_URL, payload),
+    {
+      onSuccess: data => {
+        console.log('data', data.data);
+        qc.invalidateQueries(['AVAILABILITY']);
+        successAlert('Added Availability.');
+        props?.onSuccess?.();
+      },
+    },
+  );
+}

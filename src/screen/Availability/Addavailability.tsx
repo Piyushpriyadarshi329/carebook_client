@@ -15,10 +15,10 @@ import {useSelector} from 'react-redux';
 import {sendtime, showtime} from '../../AppFunction';
 import Color from '../../asset/Color';
 import Navbar from '../../components/Navbar';
-import {days, weeks} from './useGetavailability';
+import {days, weeks} from './helper';
 import {useClinicsList} from '../Clinic/Profile/useGetcliniclist';
 import type {RootState} from '../../redux/Store';
-import {useAddavailability} from '../../customhook/useAddavailability';
+import {useAddAvailability} from './useGetAvailability';
 import Btn from '../../components/Btn';
 import useKeyboardAvoidHook from '../../utils/KeyboardAvoidHook';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -104,7 +104,7 @@ export function DoctorAvailabilityWithId(props: {
       display: 'spinner',
     });
   };
-  const {mutate: addAvailability} = useAddavailability({
+  const {mutate: addAvailability} = useAddAvailability({
     onSuccess: () => navigation.goBack(),
   });
   async function submithandler() {
