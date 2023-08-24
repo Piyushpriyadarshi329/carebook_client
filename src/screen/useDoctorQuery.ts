@@ -59,6 +59,7 @@ export const useMutateDoctorProfile = (doctor_id: string, onSuccess?: any) => {
       axios.post(`${UPDATE_DOCTOR}/${doctor_id}`, payload),
     {
       onSuccess: () => {
+        qc.invalidateQueries(['DOCTORS']);
         qc.invalidateQueries(['DOCTOR', doctor_id]);
         onSuccess?.();
       },

@@ -1,30 +1,30 @@
 import {DateTimePickerAndroid} from '@react-native-community/datetimepicker';
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
+  ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-  ScrollView,
-  StyleSheet,
 } from 'react-native';
+import CheckBox from 'react-native-check-box';
 import DropDownPicker from 'react-native-dropdown-picker';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import uuid from 'react-native-uuid';
 import {useSelector} from 'react-redux';
 import {sendtime, showtime} from '../../AppFunction';
 import Color from '../../asset/Color';
-import Navbar from '../../components/Navbar';
-import {days, weeks} from './useGetavailability';
-import {useClinicsList} from '../Clinic/Profile/useGetcliniclist';
-import type {RootState} from '../../redux/Store';
-import {useAddavailability} from '../../customhook/useAddavailability';
-import Btn from '../../components/Btn';
-import useKeyboardAvoidHook from '../../utils/KeyboardAvoidHook';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {commonStyles} from '../../asset/styles';
-import CheckBox from 'react-native-check-box';
+import Btn from '../../components/Btn';
+import Navbar from '../../components/Navbar';
+import type {RootState} from '../../redux/Store';
+import useKeyboardAvoidHook from '../../utils/KeyboardAvoidHook';
 import {useAlert} from '../../utils/useShowAlert';
+import {useClinicsList} from '../Clinic/Profile/useGetcliniclist';
+import {days, weeks} from './helper';
+import {useAddAvailability} from './useGetAvailability';
 
 export default function LoggedInDoctorAvailability() {
   const userId = useSelector((state: RootState) => state.Appdata.userid);
@@ -65,8 +65,13 @@ export function DoctorAvailabilityWithId(props: {
   const [openweek, setOpenweek] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [selectedclinic, setselectedclinic] = useState(props.clinic_id ?? null);
-  const [datefrom, setDatefrom] = useState(new Date());
-  const [dateto, setDateto] = useState(new Date());
+  const fromDate = new Date();
+  fromDate.setMinutes(0);
+  fromDate.setSeconds(0);
+  const toDate = new Date(fromDate);
+  toDate.setHours(toDate.getHours() + 3);
+  const [datefrom, setDatefrom] = useState<Date>(fromDate);
+  const [dateto, setDateto] = useState<Date>(toDate);
   const [selectedday, setselectedday] = useState([]);
   const [selectedweek, setselectedweek] = useState([]);
   const [noofslot, setnoofslot] = useState<number>(0);
@@ -78,7 +83,7 @@ export function DoctorAvailabilityWithId(props: {
     const currentDate = selectedDate;
     setDatefrom(currentDate);
   };
-  const {errorAlert, successAlert} = useAlert();
+  const {errorAlert} = useAlert();
 
   const onChangeto = (event: any, selectedDate: any) => {
     const currentDate = selectedDate;
@@ -87,24 +92,26 @@ export function DoctorAvailabilityWithId(props: {
 
   const showModefrom = () => {
     DateTimePickerAndroid.open({
-      value: datefrom,
+      value: datefrom ?? new Date(),
       onChange: onChangefrom,
       mode: 'time',
       is24Hour: false,
       display: 'spinner',
+      minuteInterval: 5,
     });
   };
 
   const showModeto = () => {
     DateTimePickerAndroid.open({
-      value: dateto,
+      value: dateto ?? new Date(),
       onChange: onChangeto,
       mode: 'time',
       is24Hour: false,
       display: 'spinner',
+      minuteInterval: 5,
     });
   };
-  const {mutate: addAvailability} = useAddavailability({
+  const {mutate: addAvailability} = useAddAvailability({
     onSuccess: () => navigation.goBack(),
   });
   async function submithandler() {
@@ -130,8 +137,8 @@ export function DoctorAvailabilityWithId(props: {
       doctor_id: props.id,
       clinic_id: selectedclinic ?? '',
       week_day: selectedday ?? [],
-      from_time: sendtime(datefrom.getTime()),
-      to_time: sendtime(dateto.getTime()),
+      from_time: sendtime(datefrom?.getTime()),
+      to_time: sendtime(dateto?.getTime()),
       no_of_slot: noofslot,
       month_week: selectedweek,
       all_weeks: allweeks,
@@ -196,18 +203,19 @@ export function DoctorAvailabilityWithId(props: {
         ) : null}
 
         {/* <ScrollView> */}
-        <View style={{zIndex: 1000}}>
+        <View style={[styles.fieldRow, {zIndex: 1000}]}>
+          <Text style={commonStyles.font16}>Days: </Text>
           <DropDownPicker
             open={open}
             value={selectedday}
             items={days}
             setOpen={setOpen}
             dropDownContainerStyle={{
-              // backgroundColor: '#dfdfdf',
               position: 'absolute', // to fix scroll issue ... it is by default 'absolute'
               top: 50, //to fix gap between label box and container
               maxHeight: 500,
             }}
+            containerStyle={{width: '80%'}}
             setValue={setselectedday}
             placeholder="Select days"
             multipleText={selectedday
@@ -216,31 +224,29 @@ export function DoctorAvailabilityWithId(props: {
             multiple
           />
         </View>
-        {/* </ScrollView> */}
-
-        <View style={commonStyles.flexRowAlignCenter}>
-          <Text style={{color: 'black'}}>From Time:</Text>
-
-          <TouchableOpacity onPress={showModefrom}>
-            <Text style={{color: 'black'}}>
-              {datefrom ? showtime(datefrom.getTime()) : 'Select Time'}
-            </Text>
-          </TouchableOpacity>
+        <View style={styles.fieldRow}>
+          <Text style={commonStyles.font16}>Time: </Text>
+          <View style={styles.timeContainer}>
+            <TouchableOpacity style={styles.fromTime} onPress={showModefrom}>
+              <Text style={commonStyles.font16}>
+                {showtime(datefrom?.getTime()) || 'From Time'}
+              </Text>
+            </TouchableOpacity>
+            <Text style={[commonStyles.font24, commonStyles.weight800]}>:</Text>
+            <TouchableOpacity style={styles.toTime} onPress={showModeto}>
+              <Text style={commonStyles.font16}>
+                {showtime(dateto?.getTime()) || 'To Time'}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={commonStyles.flexRowAlignCenter}>
-          <Text style={{color: 'black'}}>To Time:</Text>
 
-          <TouchableOpacity onPress={showModeto}>
-            <Text style={{color: 'black'}}>
-              {dateto ? showtime(dateto.getTime()) : 'Select Time'}
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={commonStyles.flexRowAlignCenter}>
-          <Text style={{color: 'black'}}>No of Slot:</Text>
+        <View style={styles.fieldRow}>
+          <Text style={commonStyles.font16}>Slots:</Text>
           <TextInput
             style={styles.input}
             keyboardType="numeric"
+            placeholder="Slots Count"
             onChangeText={text => {
               setnoofslot(Number(text));
             }}></TextInput>
@@ -257,8 +263,24 @@ export const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderRadius: 5,
-    textAlign: 'center',
     color: 'black',
     width: '80%',
+    backgroundColor: 'white',
   },
+  fieldRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  timeContainer: {
+    flexDirection: 'row',
+    borderRadius: 5,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '80%',
+    backgroundColor: 'white',
+  },
+  fromTime: {padding: 10},
+  toTime: {padding: 10},
 });
