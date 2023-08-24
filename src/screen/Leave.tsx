@@ -17,16 +17,17 @@ import {AddLeaveRequest} from '../types';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux/Store';
 import {useAddleave} from '../customhook/useAddleave';
-import {
-  Availability,
-  useGetAvailabilityQuery,
-} from './Availability/useGetAvailability';
+
 import {showtime} from '../AppFunction';
 import {useNavigation} from '@react-navigation/native';
 import Btn from '../components/Btn';
 import {commonStyles} from '../asset/styles';
 import AvailabilityCard from './Doctor/Profile/AvailabilityCard';
 import {useAlert} from '../utils/useShowAlert';
+import {
+  useGetAvailabilityQuery,
+  Availability,
+} from './Availability/useGetavailability';
 
 export function LoggedInUserLeave() {
   const userId = useSelector((state: RootState) => state.Appdata.userid);

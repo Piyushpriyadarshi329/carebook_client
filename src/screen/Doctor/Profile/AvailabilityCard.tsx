@@ -3,9 +3,9 @@ import {Text, View} from 'react-native';
 import {showtimefromstring} from '../../../AppFunction';
 import Color from '../../../asset/Color';
 import {
-  Availability,
   AvailabilityFE,
-} from '../../Availability/useGetAvailability';
+  Availability,
+} from '../../Availability/useGetavailability';
 
 const AvailabilityCard = ({availability}: {availability: AvailabilityFE}) => {
   return (

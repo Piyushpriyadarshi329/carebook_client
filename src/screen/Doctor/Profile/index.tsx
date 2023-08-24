@@ -26,15 +26,17 @@ import {useGetLeaves} from '../../../customhook/useGetLeaves';
 import type {RootState} from '../../../redux/Store';
 import {updateappstate} from '../../../redux/reducer/Authreducer';
 import {VisibleDocument} from '../../../types';
-import {
-  AvailabilityFE,
-  useGetAvailabilityQuery,
-  useRemoveAvailability,
-} from '../../Availability/useGetAvailability';
+
 import DoctorProfileEntry from '../../DoctorProfileEntry';
 import {useGetDoctor, useMutateDoctorProfile} from '../../useDoctorQuery';
 import LeaveCard from './LeaveCard';
 import EditButton from '../../../components/EditButton';
+import {
+  useGetAvailabilityQuery,
+  AvailabilityFE,
+  useRemoveAvailability,
+} from '../../Availability/useGetavailability';
+import ConformationModel from '../../../components/ConformationModel';
 
 export interface ProfileForm {
   username: string;
@@ -83,6 +85,12 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
   const navigation = useNavigation<any>();
   const [editMode, setEditMode] = useState(false);
   const [picmodalVisible, setpicModalVisible] = useState(false); // profile pic
+  const [availabilitymodalVisible, setavailabilityModalVisible] =
+    useState(false);
+
+  const [deleteavailability, setdeleteavailability] =
+    useState<AvailabilityFE | null>();
+
   const {data: leaves} = useGetLeaves({doctor_id: props.id});
   const {data: availability, isLoading} = useGetAvailabilityQuery({
     doctor_id: props.id,
@@ -136,12 +144,26 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
     });
   };
 
-  const removeAvailabilityHandler = (item: AvailabilityFE) => {
-    removeAvailability(item.entry_id);
+  function removeAvailabilityfun(item: AvailabilityFE) {
+    setdeleteavailability(item);
+
+    setavailabilityModalVisible(true);
+  }
+
+  const removeAvailabilityHandler = () => {
+    removeAvailability(deleteavailability.entry_id);
+    setavailabilityModalVisible(false);
   };
 
   return (
     <View style={style.container}>
+      <ConformationModel
+        title="Delete Availability?"
+        subtitle="Do you want to Delete Availability?"
+        modalVisible={availabilitymodalVisible}
+        setModalVisible={setavailabilityModalVisible}
+        onsubmit={removeAvailabilityHandler}
+      />
       <Doctorprofilemodel
         editMode={editMode}
         setEditMode={setEditMode}
@@ -270,7 +292,7 @@ function DoctorProfileWithId(props: {id: string; clinic_id?: string}) {
                 )}
                 renderHiddenItem={(data, rowMap) => (
                   <SwipeDeleteButton
-                    onPress={removeAvailabilityHandler}
+                    onPress={removeAvailabilityfun}
                     item={data.item}
                   />
                 )}
