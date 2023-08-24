@@ -8,7 +8,7 @@ export function useremoveDoctorMapping(onSuccess: any) {
   const qc = useQueryClient();
   const {axiosAlert} = useAlert();
   return useMutation(
-    (payload: AddLeaveRequest) =>
+    (payload: {clinic_id: string; doctor_id: string}) =>
       axios.post(REMOVE_DOCTOR_MAPPING_URL, payload),
     {
       onSuccess: () => {

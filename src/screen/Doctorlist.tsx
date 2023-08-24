@@ -14,7 +14,7 @@ import {useremoveDoctorMapping} from '../customhook/useremoveDoctorMapping';
 import SwipeDeleteButton from '../components/SwipeDeleteButton';
 
 export default function Doctorlist() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const userId = useSelector((state: RootState) => state.Appdata.userid);
 
   const {mutate: removeDoctor} = useremoveDoctorMapping(() => {});

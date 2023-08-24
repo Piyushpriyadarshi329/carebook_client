@@ -20,13 +20,21 @@ export interface DoctorDto {
   about: string;
   no_of_bookings?: number;
   experience?: number;
-  clinic_id: string;
+}
+
+export interface SpecialityDto {
+  id: string;
+  name: string;
+  doc_key: string;
 }
 
 export interface GetDotcorsListRequest {
   clinic_id?: string;
   doctor_id?: string;
+  speciality?: string;
+  city?: string;
   mobile?: string;
+  orderBy?: 'BOOKINGS' | 'NAME';
 }
 
 export type GetDoctorsListResponse = DataResponse<
@@ -34,6 +42,7 @@ export type GetDoctorsListResponse = DataResponse<
     profile_image: string;
   })[]
 >;
+export type GetSpecialityListResponse = DataResponse<(SpecialityDto & {})[]>;
 
 export type AddDoctorRequest = Omit<DoctorDto, 'id'> & {
   password: string;
@@ -96,9 +105,12 @@ export interface CustomerDto {
   email: string;
   mobile: string;
   profile_image_key: string;
+  profile_image: string;
   active: boolean;
   address: string;
   is_agent: boolean;
+  gender: string;
+  age: number;
 }
 
 /** Clinic Controller */
@@ -113,13 +125,13 @@ export interface ClinicDto {
   about: string;
 }
 export interface ClinicWithAddress extends ClinicDto {
-  address: AddressDto;
+  address: ShowAddress;
 }
-export type GetClinicsResponse = DataResponse<
-  (ClinicWithAddress & {
-    profile_image: string;
-  })[]
->;
+export type ClinicWithAddressAndImage = ClinicWithAddress & {
+  profile_image: string;
+  clinic_doctor_id?: string;
+};
+export type GetClinicsResponse = DataResponse<ClinicWithAddressAndImage[]>;
 
 /** UserController */
 export interface LoginRequest {
@@ -259,11 +271,22 @@ export interface Appointmentdto extends BookingDto {
   customer_image_key?: string;
   doctorsName?: string;
   doctorSpeciality?: string;
+  doctor_id?: string;
   clinic_name?: string;
-  clinic_address?: string;
   from_working_time?: string;
+  address: ShowAddress;
 }
 
+export interface ShowAddress {
+  id: string;
+  address_line1: string;
+  address_line2: string;
+  city: string;
+  state: string;
+  pincode: string;
+  lat?: number;
+  lan?: number;
+}
 export interface AddressDto {
   id: string;
   address_line1: string;

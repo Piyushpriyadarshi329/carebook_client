@@ -1,5 +1,6 @@
 import React from 'react';
 import {Text, View} from 'react-native';
+import {commonStyles} from '../asset/styles';
 
 const DoctorProfileEntry = ({
   label,
@@ -14,9 +15,10 @@ const DoctorProfileEntry = ({
         flexDirection: 'row',
         marginTop: 5,
         alignItems: 'center',
+        justifyContent: 'space-between',
       }}>
-      <Text style={{color: 'black'}}>{label}:</Text>
-      <Text style={{color: 'black', marginLeft: 10}}>{value ?? '- -'}</Text>
+      <Text style={commonStyles.font16}>{label}:</Text>
+      <Text style={commonStyles.font18}>{value ?? '- -'}</Text>
     </View>
   );
 };

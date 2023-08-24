@@ -3,7 +3,7 @@ import Color from './../asset/Color';
 import {FormProvider, useForm} from 'react-hook-form';
 import {Modal, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import {ProfileForm} from '../screen/Doctorprofile';
+import {ProfileForm} from '../screen/Doctor/Profile';
 import {RHFDropdown} from './RHFInputs/RHFDropdown';
 import {usegetSpeciality} from '../customhook/usegetSpeciality';
 import {DoctorDto} from './../types';

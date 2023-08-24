@@ -35,14 +35,18 @@ export const useGetDoctorsList = (
 
 export const useGetDoctor = (
   id: string,
-  onSuccess?: (p?: DoctorDto[]) => void,
+  onSuccess?: (
+    p?: DoctorDto & {
+      profile_image: string;
+    },
+  ) => void,
 ) => {
   const {axiosAlert} = useAlert();
   return useQuery(
     ['DOCTOR', id],
     () => axios.post<GetDoctorsListResponse>(GET_DOCTOR, {id}),
     {
-      select: data => data.data.data,
+      select: data => data.data.data?.[0],
       onSuccess: onSuccess,
       onError: e => {
         axiosAlert(e);
