@@ -32,7 +32,7 @@ import {
   AvailabilityFE,
   useGetAvailabilityQuery,
   useRemoveAvailability,
-} from '../../Availability/useGetavailability';
+} from '../../Availability/useGetAvailability';
 import AboutMenuOptions from '../../Clinic/Profile/MenuOptions';
 import DoctorProfileEntry from '../../DoctorProfileEntry';
 import {useGetDoctor, useMutateDoctorProfile} from '../../useDoctorQuery';

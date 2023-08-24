@@ -27,7 +27,7 @@ import {useAlert} from '../utils/useShowAlert';
 import {
   useGetAvailabilityQuery,
   Availability,
-} from './Availability/useGetavailability';
+} from './Availability/useGetAvailability';
 
 export function LoggedInUserLeave() {
   const userId = useSelector((state: RootState) => state.Appdata.userid);

@@ -24,7 +24,7 @@ import useKeyboardAvoidHook from '../../utils/KeyboardAvoidHook';
 import {useAlert} from '../../utils/useShowAlert';
 import {useClinicsList} from '../Clinic/Profile/useGetcliniclist';
 import {days, weeks} from './helper';
-import {useAddAvailability} from './useGetavailability';
+import {useAddAvailability} from './useGetAvailability';
 
 export default function LoggedInDoctorAvailability() {
   const userId = useSelector((state: RootState) => state.Appdata.userid);
