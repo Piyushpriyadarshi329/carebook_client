@@ -4,6 +4,8 @@ import {ValidationErrors} from '../../asset/constants';
 import {Text} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {useState} from 'react';
+import {commonStyles} from '../../asset/styles';
+import Color from '../../asset/Color';
 
 export const RHFDropdown = (props: {
   name: string;
@@ -12,6 +14,9 @@ export const RHFDropdown = (props: {
   style?: any;
   rules?: any;
   options: {label: string; value: string}[];
+  label?: string;
+  zIndex?: number;
+  componentProps?: any;
 }) => {
   const {control, getValues} = useFormContext();
   const [open, setOpen] = useState(false);
@@ -25,7 +30,18 @@ export const RHFDropdown = (props: {
             flexDirection: 'column',
             width: '100%',
             paddingHorizontal: 10,
+            gap: 10,
+            zIndex: props.zIndex,
           }}>
+          {props.label && (
+            <Text
+              style={[
+                commonStyles.caption,
+                {fontWeight: '700', color: '#8795a0'},
+              ]}>
+              {props.label}
+            </Text>
+          )}
           <DropDownPicker
             {...field}
             open={open}
@@ -37,6 +53,7 @@ export const RHFDropdown = (props: {
             style={props.style}
             items={props.options}
             placeholder={props.placeholder}
+            {...props.componentProps}
           />
           {errors[props.name]?.message?.toString() && (
             <Text style={{color: 'red', marginLeft: 5, marginTop: 5}}>

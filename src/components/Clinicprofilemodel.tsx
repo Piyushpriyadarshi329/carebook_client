@@ -92,14 +92,16 @@ export const Clinicprofilemodel = ({
               }}>
               <RHFTextInput
                 name="name"
-                placeholder={'Name'}
+                placeholder={'Enter Name'}
+                label={'Name'}
                 style={AddressStyles.textInput}
                 required
               />
 
               <RHFTextInput
                 name="about"
-                placeholder={'About'}
+                placeholder={'Enter About'}
+                label={'About'}
                 style={{
                   ...AddressStyles.textInput,
                   borderRadius: 10,

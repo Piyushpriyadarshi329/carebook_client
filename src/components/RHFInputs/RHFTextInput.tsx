@@ -12,6 +12,7 @@ export const RHFTextInput = (props: {
   rules?: any;
   secureTextEntry?: boolean;
   keyboardType?: KeyboardTypeOptions;
+  label?: string;
 }) => {
   const {control} = useFormContext();
   return (
@@ -19,6 +20,7 @@ export const RHFTextInput = (props: {
       control={control}
       render={({field, formState: {errors}}) => (
         <Input
+          label={props.label}
           errorMessage={errors[props.name]?.message?.toString()}
           {...field}
           onChangeText={t => field.onChange(t)}

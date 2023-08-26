@@ -108,37 +108,54 @@ export const Doctorprofilemodel = ({
               }}>
               <RHFTextInput
                 name="username"
-                placeholder={'Name'}
+                placeholder={'Enter Name'}
+                label={'Name'}
                 style={AddressStyles.textInput}
                 required
               />
               <RHFTextInput
                 name="consultationTime"
-                placeholder={'Consultation Time (in minutes)'}
+                placeholder={'Enter Consultation Time (in minutes)'}
+                label={'Consultation Time (in minutes)'}
                 style={AddressStyles.textInput}
                 required
               />
               <RHFTextInput
                 name="fees"
-                placeholder={'Consultation Fees'}
+                placeholder={'Enter Consultation Fees'}
+                label={'Consultation Fees'}
                 style={AddressStyles.textInput}
                 required
               />
               <RHFTextInput
                 name="degree"
-                placeholder={'Degree'}
+                placeholder={'Enter Degree'}
+                label={'Degree'}
                 style={AddressStyles.textInput}
               />
               <RHFTextInput
                 name="experience"
-                placeholder={'Yrs of Experience'}
+                placeholder={'Enter Yrs of Experience'}
+                label={'Yrs of Experience'}
                 style={AddressStyles.textInput}
                 keyboardType="number-pad"
               />
-              <RHFDropdown name="speciality" options={speciallist} />
+              <RHFDropdown
+                name="Enter specialty"
+                options={speciallist}
+                label="Specialty"
+                style={{backGroundColor: Color.tertiary}}
+                zIndex={100}
+                componentProps={{
+                  style: {backgroundColor: Color.tertiary},
+                  containerStyle: {backgroundColor: Color.tertiary},
+                  dropDownContainerStyle: {backgroundColor: Color.tertiary},
+                }}
+              />
               <RHFTextInput
                 name="about"
-                placeholder={'About'}
+                placeholder={'Enter About'}
+                label={'About'}
                 style={{
                   ...AddressStyles.textInput,
                   borderRadius: 10,
