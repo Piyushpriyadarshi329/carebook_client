@@ -38,6 +38,7 @@ import DoctorProfileEntry from '../../DoctorProfileEntry';
 import {useGetDoctor, useMutateDoctorProfile} from '../../useDoctorQuery';
 import LeaveCard from './LeaveCard';
 import {useRemoveLeave} from '../Leave/useLeaveQuery';
+import {useAlert} from '../../../utils/useShowAlert';
 
 export interface ProfileForm {
   username: string;
@@ -113,6 +114,7 @@ function DoctorProfileWithId({
   setEditMode: (p: boolean) => void;
 }) {
   const navigation = useNavigation<any>();
+  const {successAlert} = useAlert();
   const [picmodalVisible, setpicModalVisible] = useState(false); // profile pic
   const [availabilitymodalVisible, setavailabilityModalVisible] =
     useState(false);
@@ -126,8 +128,12 @@ function DoctorProfileWithId({
   const {data: availability, isLoading} = useGetAvailabilityQuery({
     doctor_id: props.id,
   });
-  const {mutate: removeAvailability} = useRemoveAvailability();
-  const {mutate: removeLeave} = useRemoveLeave();
+  const {mutate: removeAvailability} = useRemoveAvailability(() =>
+    successAlert('Removed Availability.'),
+  );
+  const {mutate: removeLeave} = useRemoveLeave({
+    onSuccess: () => successAlert('Removed Leave.'),
+  });
   const [textShown, setTextShown] = useState(false); //To show ur remaining Text
   const [lengthMore, setLengthMore] = useState(false); //to show the "Read more & Less Line"
   const [section, setSection] = useState<'About' | 'Availability' | 'Leaves'>(

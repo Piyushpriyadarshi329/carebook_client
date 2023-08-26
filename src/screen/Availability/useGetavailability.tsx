@@ -35,19 +35,31 @@ export function useGetAvailabilityQuery(payload: GetAvailabilityRequest) {
 
         const groupedByEntryID = _.groupBy(transformedData, 'entry_id');
         const newData = Object.keys(groupedByEntryID).map<AvailabilityFE>(
-          entryId => ({
-            ...groupedByEntryID[entryId][0],
-            week_day: groupedByEntryID[entryId].reduce(
-              (text, entry) =>
-                text + (text ? ',' : '') + days[entry.week_day].label,
-              '',
-            ),
-            week: groupedByEntryID[entryId].reduce(
-              (text, entry) =>
-                text + (text ? ',' : '') + weeks[entry.week ?? 0].label,
-              '',
-            ),
-          }),
+          entryId => {
+            const weekDays = _.uniq(
+              groupedByEntryID[entryId]
+                .map(e => e.week_day)
+                .sort((a, b) => a - b),
+            );
+            const av_weeks = _.uniq(
+              groupedByEntryID[entryId]
+                .map(e => e.week)
+                .sort((a, b) => Number(a) - Number(b)),
+            );
+            return {
+              ...groupedByEntryID[entryId][0],
+              week_day:
+                weekDays.length === 7
+                  ? 'All Days'
+                  : weekDays.map(e => days[e].label).join(', '),
+              week:
+                av_weeks.length === 4 ||
+                av_weeks.length === 0 ||
+                (av_weeks.length === 1 && av_weeks[0] === null)
+                  ? 'All Weeks'
+                  : av_weeks.map(e => weeks[e ?? 0].label).join(', '),
+            };
+          },
         );
         return newData;
       },
@@ -55,12 +67,15 @@ export function useGetAvailabilityQuery(payload: GetAvailabilityRequest) {
   );
 }
 
-export const useRemoveAvailability = () => {
+export const useRemoveAvailability = (p?: () => void) => {
   const qc = useQueryClient();
   return useMutation(
     (id: string) => axios.delete(`${AVAILABILITY_URL}/${id}`),
     {
-      onSuccess: () => qc.invalidateQueries(['AVAILABILITY']),
+      onSuccess: () => {
+        qc.invalidateQueries(['AVAILABILITY']);
+        p?.();
+      },
     },
   );
 };

@@ -6,37 +6,42 @@ import {
   AvailabilityFE,
   Availability,
 } from '../../Availability/useGetAvailability';
+import {commonStyles} from '../../../asset/styles';
 
 const AvailabilityCard = ({availability}: {availability: AvailabilityFE}) => {
   return (
     <View
       style={{
-        flexDirection: 'row',
-        marginTop: 10,
         backgroundColor: Color.secondary,
         borderRadius: 5,
+        padding: 10,
       }}>
-      <View style={{flex: 1, alignItems: 'flex-start'}}>
-        <Text style={{textAlign: 'left', padding: 5, color: 'black'}}>
-          {availability.clinic_name}
-        </Text>
-        <Text style={{padding: 5, color: 'black'}}>
-          Slots: {availability.no_of_slot}
-        </Text>
+      <View style={{flexDirection: 'row'}}>
+        <View style={{flex: 1, alignItems: 'flex-start'}}>
+          <Text style={{color: 'black'}}>{availability.clinic_name}</Text>
+        </View>
+        <View style={{flex: 2, alignItems: 'center'}}>
+          <Text style={{color: 'black'}}>
+            {showtimefromstring(availability.from_time)}
+          </Text>
+          <Text style={{color: 'black'}}>
+            {showtimefromstring(availability.to_time)}
+          </Text>
+        </View>
+        <View style={{flex: 1, alignItems: 'center'}}>
+          <Text style={{color: 'black'}}>Slots: {availability.no_of_slot}</Text>
+        </View>
       </View>
-      <View style={{flex: 2, alignItems: 'center'}}>
-        <Text style={{padding: 5, color: 'black'}}>
-          {availability.week_day}
-        </Text>
-        <Text style={{padding: 5, color: 'black'}}>{availability.week}</Text>
-      </View>
-      <View style={{flex: 1, alignItems: 'center'}}>
-        <Text style={{padding: 5, color: 'black'}}>
-          {showtimefromstring(availability.from_time)}
-        </Text>
-        <Text style={{padding: 5, color: 'black'}}>
-          {showtimefromstring(availability.to_time)}
-        </Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginTop: 10,
+        }}>
+        <View style={{flex: 1}}>
+          <Text style={{color: 'black'}}>{availability.week_day}</Text>
+          <Text style={{color: 'black'}}>{availability.week}</Text>
+        </View>
       </View>
     </View>
   );
