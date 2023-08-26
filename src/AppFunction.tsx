@@ -39,3 +39,7 @@ export function showtimefromstring(time: string) {
 
   return ('0' + hour).slice(-2) + ':' + ('0' + min).slice(-2) + ' ' + am_pm;
 }
+
+export const showDate = (date: Date) => {
+  return moment(date).day;
+};

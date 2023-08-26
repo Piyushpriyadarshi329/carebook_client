@@ -12,7 +12,7 @@ const CalendarModal = ({
   setModalVisible,
   minDate,
 }: {
-  date: Date;
+  date: Date | null;
   setDate: (p: Date) => void;
   modalVisible: boolean;
   setModalVisible: any;
@@ -37,7 +37,6 @@ const CalendarModal = ({
         }}>
         <Calendar
           onDayPress={day => {
-            console.log(day.dateString);
             setDate(new Date(day.dateString));
             setModalVisible(!modalVisible);
           }}

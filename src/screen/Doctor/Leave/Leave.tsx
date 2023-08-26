@@ -24,6 +24,7 @@ import {useAlert} from '../../../utils/useShowAlert';
 import {Availability} from '../../Availability/useGetAvailability';
 import AvailabilityCard from '../Profile/AvailabilityCard';
 import SlotModal from './SlotModal';
+import {showtime} from '../../../AppFunction';
 
 export function LoggedInUserLeave() {
   const userId = useSelector((state: RootState) => state.Appdata.userid);
@@ -35,12 +36,12 @@ export const Leave = (props: any) => {
 
 function LeaveById(props: {id: string}) {
   const navigation = useNavigation();
-  const {errorAlert} = useAlert();
+  const {errorAlert, successAlert} = useAlert();
   const [multipledate, setmultipledate] = useState(false);
   const [fullday, setfullday] = useState(false);
   const [reason, setreason] = useState('');
-  const [fromdate, setfromdate] = useState('');
-  const [todate, settodate] = useState('');
+  const [fromdate, setfromdate] = useState<Date | null>(null);
+  const [todate, settodate] = useState<Date | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisiblework_time, setModalVisiblework_time] = useState(false);
   const [modalVisibleto, setModalVisibleto] = useState(false);
@@ -48,15 +49,10 @@ function LeaveById(props: {id: string}) {
     useState<Availability | null>(null);
 
   const {mutate: addleave} = useAddleave(() => {
+    successAlert('Added Leave.');
     navigation.goBack();
   });
   async function markunavailablefun() {
-    console.log(
-      'todate',
-      todate + 'T00:00:00Z',
-      new Date(fromdate + 'T00:00:00Z').getTime(),
-    );
-    // return;
     try {
       if (!fromdate) {
         errorAlert('please Select From Date');
@@ -75,10 +71,8 @@ function LeaveById(props: {id: string}) {
 
       let payload: AddLeaveRequest = {
         doctor_id: props.id,
-        fromdate: new Date(fromdate + 'T00:00:00Z').getTime(),
-        todate: multipledate
-          ? new Date(todate + 'T00:00:00Z').getTime()
-          : new Date(fromdate + 'T00:00:00Z').getTime(),
+        fromdate: new Date(fromdate).getTime(),
+        todate: (multipledate ? todate?.getTime() : fromdate?.getTime()) ?? 0,
         worktime_id: fullday ? '' : selectedAvailability?.id ?? '',
         fullday: fullday,
         reason: reason,
@@ -96,82 +90,86 @@ function LeaveById(props: {id: string}) {
       <View style={styles.formContainer}>
         <View style={commonStyles.flexRowAlignCenter}>
           <CheckBox
-            style={{padding: 10}}
             checkBoxColor={Color.primary}
             onClick={() => {
               setmultipledate(!multipledate);
             }}
+            style={{flex: 1, padding: 10}}
             isChecked={multipledate}
-            leftText={''}
+            rightText="Multiples Dates"
+            rightTextStyle={commonStyles.font18}
           />
-          <Text style={{color: 'black'}}>Multiples Dates</Text>
         </View>
 
-        <View style={commonStyles.flexRowAlignCenter}>
-          <Text style={{color: 'black'}}>
-            {multipledate ? 'From Date:' : 'For Date:'}
-          </Text>
-
-          <TouchableOpacity
-            style={{marginLeft: 10}}
-            onPress={() => {
-              setModalVisible(!modalVisible);
-            }}>
-            <Text style={{color: 'black'}}>
-              {fromdate ? fromdate : 'Select Date'}
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        {multipledate ? (
-          <View style={commonStyles.flexRowAlignCenter}>
-            <Text style={{color: 'black'}}>To Date:</Text>
-
-            <View style={{marginLeft: 20}}>
+        <View style={styles.fieldRow}>
+          <Text style={commonStyles.font16}>Dates: </Text>
+          {!multipledate ? (
+            <TouchableOpacity
+              style={styles.fromToContainer}
+              onPress={() => setModalVisible(true)}>
+              <View style={styles.from}>
+                <Text style={commonStyles.font16}>
+                  {moment(fromdate).format('ll') || 'Select Date'}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.fromToContainer}>
               <TouchableOpacity
-                onPress={() => {
-                  setModalVisibleto(!modalVisible);
-                }}>
-                <Text style={{color: 'black'}}>
-                  {todate ? todate : 'select Date'}
+                style={styles.from}
+                onPress={() => setModalVisible(true)}>
+                <Text style={commonStyles.font16}>
+                  {moment(fromdate).format('ll') || 'From Date'}
+                </Text>
+              </TouchableOpacity>
+              <Text style={[commonStyles.font24, commonStyles.weight800]}>
+                :
+              </Text>
+              <TouchableOpacity
+                style={styles.to}
+                onPress={() => setModalVisibleto(true)}>
+                <Text style={commonStyles.font16}>
+                  {moment(todate).format('ll') || 'To Date'}
                 </Text>
               </TouchableOpacity>
             </View>
-          </View>
-        ) : null}
+          )}
+        </View>
 
         <View style={commonStyles.flexRowAlignCenter}>
           <CheckBox
-            style={{padding: 10}}
+            style={{flex: 1, padding: 10}}
             checkBoxColor={Color.primary}
             onClick={() => {
               setfullday(!fullday);
             }}
             isChecked={fullday}
-            leftText={''}
+            rightText="Full Days"
+            rightTextStyle={commonStyles.font18}
           />
-          <Text style={{color: 'black'}}>Full Days</Text>
         </View>
 
-        {!fullday ? (
+        {!fullday && (
           <View>
             <TouchableOpacity
+              style={{
+                borderWidth: 1,
+                borderColor: 'black',
+                padding: 10,
+                backgroundColor: 'white',
+                borderRadius: 5,
+              }}
               onPress={() => {
                 setModalVisiblework_time(!modalVisiblework_time);
               }}>
               <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
                 Select Slot
               </Text>
-            </TouchableOpacity>
-
-            <View>
               {selectedAvailability && (
                 <AvailabilityCard availability={selectedAvailability} />
               )}
-            </View>
+            </TouchableOpacity>
           </View>
-        ) : (
-          <></>
         )}
 
         <View>
@@ -184,6 +182,7 @@ function LeaveById(props: {id: string}) {
               marginTop: 10,
               borderRadius: 5,
               color: 'black',
+              backgroundColor: 'white',
             }}
             onChangeText={text => {
               setreason(text);
@@ -212,9 +211,9 @@ function LeaveById(props: {id: string}) {
       />
 
       <CalendarModal
-        date={new Date(fromdate)}
+        date={fromdate}
         setDate={date => {
-          setfromdate(moment(date).format('YYYY-MM-DD'));
+          setfromdate(date);
         }}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
@@ -222,15 +221,13 @@ function LeaveById(props: {id: string}) {
       />
 
       <CalendarModal
-        date={new Date(todate)}
+        date={todate}
         setDate={date => {
-          settodate(moment(date).format('YYYY-MM-DD'));
+          settodate(date);
         }}
         modalVisible={modalVisibleto}
         setModalVisible={setModalVisibleto}
-        minDate={moment(new Date(fromdate + 'T00:00:00Z') || new Date()).format(
-          'YYYY-MM-DD',
-        )}
+        minDate={moment(fromdate || new Date()).format('YYYY-MM-DD')}
       />
     </>
   );
@@ -243,4 +240,20 @@ const styles = StyleSheet.create({
     color: 'black',
     marginHorizontal: 20,
   },
+  fieldRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  fromToContainer: {
+    flexDirection: 'row',
+    borderRadius: 5,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '80%',
+    backgroundColor: 'white',
+  },
+  from: {padding: 10},
+  to: {padding: 10},
 });
