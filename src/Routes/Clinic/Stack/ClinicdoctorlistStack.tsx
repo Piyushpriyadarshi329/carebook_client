@@ -16,7 +16,7 @@ export default function Clinicdoctorliststack() {
       <Stack.Screen
         name={AppPages.DoctorList}
         component={Doctorlist}
-        options={{headerShown: true, headerTitle: 'Doctors'}}
+        options={{headerShown: false, headerTitle: 'Doctors'}}
       />
       <Stack.Screen
         name="Adddoctor"

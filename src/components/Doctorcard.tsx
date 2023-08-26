@@ -7,9 +7,9 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../redux/Store';
 import {AppPages} from '../appPages';
 import {DoctorDto} from '../types';
+import {commonStyles} from '../asset/styles';
 
 export default function Doctorcard({doctor}: {doctor: DoctorDto}) {
-  console.log('doctor', doctor);
   const navigation = useNavigation();
   const userId = useSelector((state: RootState) => state.Appdata.userid);
   const navigateToAppointments = () =>
@@ -21,10 +21,10 @@ export default function Doctorcard({doctor}: {doctor: DoctorDto}) {
     <View
       style={{
         flexDirection: 'row',
-        backgroundColor: Color.tertiary,
-        marginTop: 10,
+        backgroundColor: 'white',
         marginHorizontal: 10,
-        borderRadius: 5,
+        borderRadius: 15,
+        paddingVertical: 10,
       }}>
       <TouchableOpacity
         onPress={navigateToAppointments}
@@ -49,14 +49,14 @@ export default function Doctorcard({doctor}: {doctor: DoctorDto}) {
           />
         </View>
         <View style={{flex: 2, justifyContent: 'center'}}>
-          <Text style={{color: 'black', fontWeight: '600', fontSize: 20}}>
+          {doctor.speciality && (
+            <Text style={commonStyles.caption}>{doctor.speciality}</Text>
+          )}
+          <Text style={[commonStyles.font20, commonStyles.weight600]}>
             {doctor.name}
           </Text>
           <Text style={{color: 'black'}}>{doctor.mobile}</Text>
           {doctor.email && <Text style={{color: 'black'}}>{doctor.email}</Text>}
-          {doctor.speciality && (
-            <Text style={{color: 'black'}}>{doctor.speciality}</Text>
-          )}
         </View>
       </TouchableOpacity>
       <View

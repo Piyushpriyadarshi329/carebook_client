@@ -18,6 +18,7 @@ import {FormProvider, useForm} from 'react-hook-form';
 import {RHFTextInput} from '../components/RHFInputs/RHFTextInput';
 import {RHFDropdown} from '../components/RHFInputs/RHFDropdown';
 import {validateEmail, validatePhone} from '../utils/validations';
+import Navbar from '../components/Navbar';
 
 const specialitylist = [
   {
@@ -91,6 +92,11 @@ export default function Adddoctor() {
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
+      <View
+        style={{position: 'absolute', right: 20, top: 20}}
+        onTouchEnd={() => navigation.goBack()}>
+        <Icon name="close" size={24} style={{color: Color.primary}} />
+      </View>
       <View style={styles.headContainer}>
         <Text style={styles.head}>Fill Doctor Details</Text>
       </View>

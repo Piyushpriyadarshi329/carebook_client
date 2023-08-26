@@ -1,25 +1,28 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
-import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {Text, TouchableOpacity, View, StyleSheet} from 'react-native';
+import {SwipeListView} from 'react-native-swipe-list-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useSelector} from 'react-redux';
 import Color from '../asset/Color';
-import Doctorcard from '../components/Doctorcard';
-import type {RootState} from '../redux/Store';
-import {useGetDoctorsList} from './useDoctorQuery';
-import {SwipeListView} from 'react-native-swipe-list-view';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import {DoctorDto} from '../types';
-import {useremoveDoctorMapping} from '../customhook/useremoveDoctorMapping';
-import SwipeDeleteButton from '../components/SwipeDeleteButton';
 import ConformationModel from '../components/ConformationModel';
+import Doctorcard from '../components/Doctorcard';
+import SwipeDeleteButton from '../components/SwipeDeleteButton';
+import {useremoveDoctorMapping} from '../customhook/useremoveDoctorMapping';
+import type {RootState} from '../redux/Store';
+import {DoctorDto} from '../types';
+import {useGetDoctorsList} from './useDoctorQuery';
+import {commonStyles} from '../asset/styles';
+import {FAB} from '@rneui/base';
 
 export default function Doctorlist() {
   const [modalVisible, setModalVisible] = useState(false);
   const [deleteddoctor, setdeleteddoctor] = useState<DoctorDto | null>();
 
   const navigation = useNavigation<any>();
-  const userId = useSelector((state: RootState) => state.Appdata.userid);
+  const {userid: userId, username} = useSelector(
+    (state: RootState) => state.Appdata,
+  );
 
   const {mutate: removeDoctor} = useremoveDoctorMapping(() => {});
   const {data: doctorlist} = useGetDoctorsList({
@@ -51,6 +54,36 @@ export default function Doctorlist() {
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
+      <View style={styles.welcomeContainer}>
+        <Text style={[commonStyles.font24, commonStyles.weight700]}>
+          Welcome!
+        </Text>
+        <Text style={[commonStyles.font20, commonStyles.weight400]}>
+          {username}
+        </Text>
+      </View>
+      <View style={styles.doctorListContainer}>
+        {doctorlist?.length == 0 ? (
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={{color: 'black'}}>No Doctor FOund</Text>
+          </View>
+        ) : (
+          <SwipeListView
+            data={doctorlist}
+            renderItem={(data, rowMap) => <Doctorcard doctor={data.item} />}
+            renderHiddenItem={(data, rowMap) => (
+              <SwipeDeleteButton onPress={onclick} item={data.item} />
+            )}
+            rightOpenValue={-75}
+          />
+        )}
+        <FAB
+          placement="right"
+          onPress={() => navigation.navigate('Adddoctor')}
+          icon={{name: 'add', color: 'white'}}
+          color={Color.primary}
+        />
+      </View>
       <ConformationModel
         title="Doctor Delete?"
         subtitle="Do you want to delete Doctor?"
@@ -58,39 +91,24 @@ export default function Doctorlist() {
         setModalVisible={setModalVisible}
         onsubmit={deletehandler}
       />
-      <View style={{flex: 10}}>
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'flex-end',
-            marginRight: 20,
-            margin: 10,
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('Adddoctor');
-            }}>
-            <Icon name="add-circle" color={Color.primary} size={30} />
-          </TouchableOpacity>
-        </View>
-
-        <View style={{flex: 20}}>
-          {doctorlist?.length == 0 ? (
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <Text style={{color: 'black'}}>No Doctor FOund</Text>
-            </View>
-          ) : (
-            <SwipeListView
-              data={doctorlist}
-              renderItem={(data, rowMap) => <Doctorcard doctor={data.item} />}
-              renderHiddenItem={(data, rowMap) => (
-                <SwipeDeleteButton onPress={onclick} item={data.item} />
-              )}
-              rightOpenValue={-75}
-            />
-          )}
-        </View>
-      </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  welcomeContainer: {
+    flex: 1,
+    backgroundColor: Color.secondary,
+    paddingHorizontal: 30,
+    paddingTop: 30,
+  },
+  doctorListContainer: {
+    flex: 4,
+    borderTopStartRadius: 20,
+    borderTopEndRadius: 20,
+    marginTop: -20,
+    paddingTop: 40,
+    backgroundColor: Color.greybgc,
+    gap: 20,
+  },
+});
