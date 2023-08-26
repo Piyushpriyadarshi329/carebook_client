@@ -31,9 +31,9 @@ export default function App() {
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
           <Fragment>
-            <SafeAreaView style={{flex: 1, backgroundColor: 'blue'}}>
+            <SafeAreaView style={{flex: 1, backgroundColor: Color.secondary}}>
               <StatusBar
-                backgroundColor={Color.primary}
+                backgroundColor={Color.secondary}
                 barStyle="dark-content"
               />
 

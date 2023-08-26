@@ -3,7 +3,7 @@ import {GET_APPOINTMENTS_URL} from '../../API_CONFIG';
 import {useQueries, useQuery} from '@tanstack/react-query';
 import {GetAppointmentResponse, GetAppointmentsRequest} from '../../types';
 
-export function usegetAppointments(payload: GetAppointmentsRequest) {
+export function useGetAppointments(payload: GetAppointmentsRequest) {
   return useQuery(
     [
       'APPOINTMENTS',

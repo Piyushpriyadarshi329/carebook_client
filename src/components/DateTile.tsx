@@ -2,20 +2,19 @@ import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import Color from '../asset/Color';
-import {usegetAppointments} from '../screen/Appointment/useAppointmentsQuery';
+import {useGetAppointments} from '../screen/Appointment/useAppointmentsQuery';
 import {RootState} from '../redux/Store';
 
 export const UpcomingDateTile = (props: {
   date: any;
   setselecteddate: any;
   isSelected: boolean;
+  doctorId: string;
 }) => {
-  const userId = useSelector((state: RootState) => state.Appdata.userid);
-  const {data: appointmentdata} = usegetAppointments({
-    doctorId: userId,
+  const {data: appointmentdata} = useGetAppointments({
+    doctorId: props.doctorId,
     appointment_date: props.date.value,
   });
-
   return (
     <TouchableOpacity
       onPress={() => {

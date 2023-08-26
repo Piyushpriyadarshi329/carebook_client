@@ -17,7 +17,7 @@ import {RootState} from '../../redux/Store';
 import {getToday} from '../../utils/dateMethods';
 import {useGetDoctor} from '../useDoctorQuery';
 import AppointmentTimeline from './Timeline';
-import {usegetAppointments} from './useAppointmentsQuery';
+import {useGetAppointments} from './useAppointmentsQuery';
 
 export const LoggedInUserAppointments = () => {
   const userId = useSelector((state: RootState) => state.Appdata.userid);
@@ -70,7 +70,7 @@ function Appointments({
     return localdate;
   }, [centerdate]);
 
-  const {data: appointments, isLoading} = usegetAppointments({
+  const {data: appointments, isLoading} = useGetAppointments({
     doctorId: doctorId,
     appointment_date: selecteddate,
   });
@@ -79,7 +79,9 @@ function Appointments({
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <Navbar
         title={
-          view === 'CLINIC' ? `Dr. ${doctorDetails?.name}` : 'Appointments'
+          view === 'CLINIC'
+            ? `Dr. ${doctorDetails?.name ?? ''}`
+            : 'Appointments'
         }
       />
       <Modal
@@ -128,8 +130,10 @@ function Appointments({
           {upcomingDates.map(date => {
             return (
               <UpcomingDateTile
+                key={`appointments_date_tile_${date.value}`}
                 {...{date, setselecteddate}}
                 isSelected={date.value === selecteddate}
+                doctorId={doctorId}
               />
             );
           })}

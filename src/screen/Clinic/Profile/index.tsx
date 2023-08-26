@@ -1,40 +1,36 @@
 import {useQueryClient} from '@tanstack/react-query';
-import React, {useCallback, useState} from 'react';
+import React, {useState} from 'react';
 import {
-  Button,
   Image,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import {MenuProvider} from 'react-native-popup-menu';
 import {useDispatch, useSelector} from 'react-redux';
-import Color from '../../../asset/Color';
+import {commonStyles} from '../../../asset/styles';
 import {AddressModal} from '../../../components/Address/AddressModal';
-import EditButton from '../../../components/EditButton';
 import {
   ClinicProfile,
   Clinicprofilemodel,
 } from '../../../components/Clinicprofilemodel';
+import Navbar from '../../../components/Navbar';
+import Profilepicuploadmodel from '../../../components/Profilepicuploadmodel';
 import {RootState} from '../../../redux/Store';
 import {updateappstate} from '../../../redux/reducer/Authreducer';
 import {AddressDto, VisibleDocument} from '../../../types';
-import {useAddaddressMutation} from './useAddaddress';
-import {useClinicsList} from './useGetcliniclist';
-import {useUpdateClinic} from './useClinicQuery';
-import Profilepicuploadmodel from '../../../components/Profilepicuploadmodel';
-import {commonStyles} from '../../../asset/styles';
-import ClinicProfileEntry from './ClinicProfileEntry';
 import {useGetDoctorsList} from '../../useDoctorQuery';
-import Navbar from '../../../components/Navbar';
+import ClinicProfileEntry from './ClinicProfileEntry';
 import AboutMenuOptions from './MenuOptions';
-import {MenuProvider} from 'react-native-popup-menu';
+import {useAddaddressMutation} from './useAddaddress';
+import {useUpdateClinic} from './useClinicQuery';
+import {useClinicsList} from './useGetcliniclist';
 
 export default function Clinicprofile() {
   const dispatch = useDispatch();
   const userId = useSelector((state: RootState) => state.Appdata.userid);
-  const [textShown, setTextShown] = useState(false); //To show ur remaining Text
-  const [lengthMore, setLengthMore] = useState(false); //to show the "Read more & Less Line"
   const [modalVisible, setModalVisible] = useState(false);
   const [picmodalVisible, setpicModalVisible] = useState(false); // profile pic
   const [clinicModalVisible, setClinicModalVisible] = useState(false);
@@ -50,14 +46,10 @@ export default function Clinicprofile() {
   );
   const {mutate: mutateAddress} = useAddaddressMutation({
     onSuccess: data => {
-      console.log('updated.', data.data);
       setModalVisible(false);
       qc.invalidateQueries(['CLINICS', {clinic_id: userId}]);
     },
   });
-  if (isLoading) {
-    console.log('loading profile');
-  }
   function submithandler(formValues: AddressDto) {
     mutateAddress({
       id: clinicDetails?.address.id,
@@ -86,13 +78,6 @@ export default function Clinicprofile() {
     });
   }
 
-  const toggleNumberOfLines = () => {
-    setTextShown(!textShown);
-  };
-
-  const onTextLayout = useCallback((e: any) => {
-    setLengthMore(e.nativeEvent.lines.length >= 4); //to check the text is more than 4 lines or not
-  }, []);
   const logOutHandler = () =>
     dispatch(
       updateappstate({
@@ -145,10 +130,12 @@ export default function Clinicprofile() {
           <ClinicProfileEntry label="Partner Since" value={'Apr 12 2023'} /> */}
 
           <View style={styles.aboutContainer}>
-            <Text style={[commonStyles.font18, commonStyles.weight600]}>
-              About
-            </Text>
-            <Text style={commonStyles.font16}>{clinicDetails?.about}</Text>
+            <ScrollView>
+              <Text style={[commonStyles.font18, commonStyles.weight600]}>
+                About
+              </Text>
+              <Text style={commonStyles.font16}>{clinicDetails?.about}</Text>
+            </ScrollView>
           </View>
         </View>
         <AddressModal

@@ -106,7 +106,6 @@ const AppointmentTimeline = ({
       data={timelineData}
       innerCircle={'icon'}
       renderDetail={(rowData, rowId) => {
-        console.log(rowData, rowId);
         return rowData.type == 'SLOT' ? (
           <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
             <View>

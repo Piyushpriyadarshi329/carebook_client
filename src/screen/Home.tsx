@@ -14,7 +14,7 @@ import Appointmentcard from '../components/Appointmentcard';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import type {RootState} from '../redux/Store';
 import {useSelector, useDispatch} from 'react-redux';
-import {usegetAppointments} from './Appointment/useAppointmentsQuery';
+import {useGetAppointments} from './Appointment/useAppointmentsQuery';
 
 import {monthlist, daylist} from './../Appconstant';
 import {usegetBookingsSummary} from '../customhook/usegetBookingsSummary';
@@ -69,7 +69,7 @@ export default function Home() {
       },
     ],
   };
-  const {data: Appointmentdata} = usegetAppointments({
+  const {data: Appointmentdata} = useGetAppointments({
     doctorId: Appdata.userid,
     status: BookingStatus.BOOKED,
     from_date: getToday(),
