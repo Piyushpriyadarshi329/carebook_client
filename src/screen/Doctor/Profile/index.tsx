@@ -320,7 +320,7 @@ function DoctorProfileWithId({
             </View>
             {!!leaves?.length && (
               <View>
-                <ScrollView>
+                <ScrollView contentContainerStyle={{gap: 10}}>
                   {leaves?.map(i => (
                     <LeaveCard details={i} />
                   ))}
