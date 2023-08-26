@@ -18,6 +18,7 @@ import {getToday} from '../../utils/dateMethods';
 import {useGetDoctor} from '../useDoctorQuery';
 import AppointmentTimeline from './Timeline';
 import {useGetAppointments} from './useAppointmentsQuery';
+import CalendarModal from '../../components/CalendarModal';
 
 export const LoggedInUserAppointments = () => {
   const userId = useSelector((state: RootState) => state.Appdata.userid);
@@ -34,7 +35,7 @@ function Appointments({
   doctorId: string;
   view?: 'CLINIC' | 'DOCTOR';
 }) {
-  const [centerdate, setcenterdate] = useState(new Date());
+  const [centerdate, setcenterdate] = useState<Date>(new Date());
   const [modalVisible, setModalVisible] = useState(false);
   const [selecteddate, setselecteddate] = useState(getToday());
   const {data: doctorDetails} = useGetDoctor(doctorId);
@@ -84,46 +85,15 @@ function Appointments({
             : 'Appointments'
         }
       />
-      <Modal
-        animationType="slide"
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
+      <CalendarModal
+        date={centerdate}
+        setDate={date => {
+          setcenterdate(date);
+          setselecteddate(new Date(date).getTime());
         }}
-        transparent={true}
-        visible={modalVisible}>
-        <View
-          style={{
-            marginTop: 200,
-            marginHorizontal: 50,
-            borderRadius: 15,
-            borderWidth: 1,
-            borderColor: Color.primary,
-          }}>
-          <Calendar
-            onDayPress={day => {
-              setcenterdate(day.dateString);
-              setModalVisible(!modalVisible);
-            }}
-            style={{borderRadius: 15}}
-            theme={{
-              backgroundColor: Pallet2.tertiary,
-              calendarBackground: Pallet2.tertiary,
-              textSectionTitleColor: Pallet2.primary,
-              selectedDayBackgroundColor: Pallet2.primary,
-              selectedDayTextColor: '#ffffff',
-              todayTextColor: Pallet2.primary,
-              dayTextColor: Pallet2.primary,
-            }}
-            markedDates={{
-              [centerdate]: {
-                selected: true,
-                disableTouchEvent: true,
-                selectedDotColor: 'orange',
-              },
-            }}
-          />
-        </View>
-      </Modal>
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
 
       <View style={styles.datesContainer}>
         <ScrollView horizontal={true}>

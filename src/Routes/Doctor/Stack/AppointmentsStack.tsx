@@ -1,7 +1,7 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import {LoggedInUserAppointments} from '../../../screen/Appointment/Appointments';
-import {LoggedInUserLeave} from '../../../screen/Leave';
+import {LoggedInUserLeave} from '../../../screen/Doctor/Leave/Leave';
 import {AppPages} from '../../../appPages';
 
 export default function Appointmentsstack() {

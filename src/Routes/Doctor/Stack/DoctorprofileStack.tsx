@@ -2,7 +2,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import DoctorAvailabilityWithId from '../../../screen/Availability/Addavailability';
 import Doctorprofile from '../../../screen/Doctor/Profile';
-import {LoggedInUserLeave} from '../../../screen/Leave';
+import {LoggedInUserLeave} from '../../../screen/Doctor/Leave/Leave';
 import {AppPages} from '../../../appPages';
 
 export default function DoctorProfilestack() {

@@ -4,7 +4,7 @@ import {DoctorAvaiability} from '../../../screen/Availability/Addavailability';
 import Adddoctor from '../../../screen/Adddoctor';
 import Doctorlist from '../../../screen/Doctorlist';
 import {DoctorProfile} from '../../../screen/Doctor/Profile';
-import {Leave} from '../../../screen/Leave';
+import {Leave} from '../../../screen/Doctor/Leave/Leave';
 import {AppPages} from '../../../appPages';
 import {AppointmentForDoctor} from '../../../screen/Appointment/Appointments';
 
