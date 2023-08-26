@@ -1,6 +1,13 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
-import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  Button,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  ScrollView,
+} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {useSelector} from 'react-redux';
@@ -100,88 +107,96 @@ export default function Adddoctor() {
         <Text style={styles.head}>Fill Doctor Details</Text>
       </View>
       <FormProvider {...formMethods}>
-        <View style={styles.formContainer}>
-          <View style={styles.rowItem}>
-            <Icon name="mobile1" size={20} color="black" />
-            <RHFTextInput
-              name="mobile"
-              placeholder="Mobile No"
-              keyboardType="numeric"
-              required
-              rules={{validate: validatePhone}}
-            />
-          </View>
-          {!existingDoctors?.length ? (
-            <>
-              <View style={styles.rowItem}>
-                <Icon name="user" size={20} color="black" />
-                <RHFTextInput name="name" placeholder="Full Name" required />
-              </View>
+        <ScrollView>
+          <View style={styles.formContainer}>
+            <View style={styles.rowItem}>
+              <Icon name="mobile1" size={20} color="black" />
+              <RHFTextInput
+                name="mobile"
+                placeholder="Mobile No"
+                keyboardType="numeric"
+                required
+                rules={{validate: validatePhone}}
+              />
+            </View>
+            {!existingDoctors?.length ? (
+              <>
+                <View style={styles.rowItem}>
+                  <Icon name="user" size={20} color="black" />
+                  <RHFTextInput name="name" placeholder="Full Name" required />
+                </View>
 
-              <View style={styles.rowItem}>
-                <Icon name="tago" size={20} color="black" />
-                <RHFDropdown
-                  name={'speciality'}
-                  options={specialitylist}
-                  placeholder="Select speciality"
-                  required
-                />
-              </View>
+                <View style={styles.rowItem}>
+                  <Icon name="tago" size={20} color="black" />
+                  <RHFDropdown
+                    name={'speciality'}
+                    options={specialitylist}
+                    placeholder="Select speciality"
+                    required
+                  />
+                </View>
 
-              <View style={styles.rowItem}>
-                <Icon name="mail" size={20} color="black" />
+                <View style={styles.rowItem}>
+                  <Icon name="mail" size={20} color="black" />
 
-                <RHFTextInput
-                  name={'email'}
-                  placeholder="Email"
-                  required
-                  keyboardType="email-address"
-                />
-              </View>
+                  <RHFTextInput
+                    name={'email'}
+                    placeholder="Email"
+                    required
+                    keyboardType="email-address"
+                  />
+                </View>
 
-              <View style={styles.rowItem}>
-                <Icon name="key" size={20} color="black" />
+                <View style={styles.rowItem}>
+                  <Icon name="key" size={20} color="black" />
 
-                <RHFTextInput
-                  name="password"
-                  placeholder="Password"
-                  secureTextEntry
-                  required
-                />
-              </View>
+                  <RHFTextInput
+                    name="password"
+                    placeholder="Password"
+                    secureTextEntry
+                    required
+                  />
+                </View>
 
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: 10,
+                  }}>
+                  <Btn
+                    onPress={formMethods.handleSubmit(submithandler)}
+                    title={'Submit'}
+                  />
+                </View>
+              </>
+            ) : (
               <View
                 style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginTop: 10,
+                  backgroundColor: Color.tertiary,
+                  marginHorizontal: 50,
+                  borderRadius: 10,
+                  padding: 20,
                 }}>
-                <Btn
-                  onPress={formMethods.handleSubmit(submithandler)}
-                  title={'Submit'}
+                <Text style={{color: 'black'}}>
+                  {existingDoctors?.[0]?.name}
+                </Text>
+                <Text style={{color: 'black'}}>
+                  {existingDoctors?.[0]?.email}
+                </Text>
+                <Text style={{color: 'black'}}>
+                  {existingDoctors?.[0]?.speciality}
+                </Text>
+                <Button
+                  title="Link"
+                  onPress={linkDoctor}
+                  color={Color.primary}
                 />
               </View>
-            </>
-          ) : (
-            <View
-              style={{
-                backgroundColor: Color.tertiary,
-                marginHorizontal: 50,
-                borderRadius: 10,
-                padding: 20,
-              }}>
-              <Text style={{color: 'black'}}>{existingDoctors?.[0]?.name}</Text>
-              <Text style={{color: 'black'}}>
-                {existingDoctors?.[0]?.email}
-              </Text>
-              <Text style={{color: 'black'}}>
-                {existingDoctors?.[0]?.speciality}
-              </Text>
-              <Button title="Link" onPress={linkDoctor} color={Color.primary} />
-            </View>
-          )}
-        </View>
+            )}
+          </View>
+        </ScrollView>
       </FormProvider>
     </View>
   );
@@ -200,7 +215,7 @@ export const styles = StyleSheet.create({
     ...commonStyles.gap10,
   },
   headContainer: {
-    marginVertical: 60,
+    marginVertical: 15,
     paddingVertical: 60,
     justifyContent: 'center',
   },
