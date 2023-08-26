@@ -1,17 +1,11 @@
-import {
-  View,
-  Text,
-  Modal,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  StyleSheet,
-} from 'react-native';
 import React from 'react';
-import Color from '../asset/Color';
-import Entypo from 'react-native-vector-icons/Entypo';
+import {Modal, TouchableOpacity, View} from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
+import Entypo from 'react-native-vector-icons/Entypo';
+import Color from '../asset/Color';
 import {useAddDocumentMutation} from '../screen/Doctor/useDocumentQuery';
 import {VisibleDocument} from '../types';
+import ModalCloseOnEscape from '../utils/ModalCloseOnEscape';
 
 export default function Profilepicuploadmodel({
   modalVisible,
@@ -58,9 +52,7 @@ export default function Profilepicuploadmodel({
       onRequestClose={() => {
         setModalVisible(!modalVisible);
       }}>
-      <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-        <View style={styles.modalOverlay} />
-      </TouchableWithoutFeedback>
+      <ModalCloseOnEscape setVisible={setModalVisible} />
       <View style={{flex: 1, justifyContent: 'flex-end'}}>
         <View
           style={{
@@ -94,13 +86,3 @@ export default function Profilepicuploadmodel({
     </Modal>
   );
 }
-
-const styles = StyleSheet.create({
-  modalOverlay: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
-});

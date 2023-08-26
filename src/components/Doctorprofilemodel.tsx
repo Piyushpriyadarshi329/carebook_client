@@ -10,6 +10,7 @@ import {DoctorDto} from './../types';
 import {AddressStyles} from './Address/styles';
 import Btn from './Btn';
 import {RHFTextInput} from './RHFInputs/RHFTextInput';
+import ModalCloseOnEscape from '../utils/ModalCloseOnEscape';
 
 export const Doctorprofilemodel = ({
   editMode,
@@ -62,6 +63,7 @@ export const Doctorprofilemodel = ({
       transparent={true}
       visible={editMode}
       onRequestClose={() => setEditMode(false)}>
+      <ModalCloseOnEscape setVisible={setEditMode} />
       <FormProvider {...formMethods}>
         <View
           style={{
