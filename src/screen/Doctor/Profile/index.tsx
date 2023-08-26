@@ -61,7 +61,7 @@ export default function LoggedInDoctorProfile() {
     );
   return (
     <MenuProvider>
-      <View style={{backgroundColor: 'white'}}>
+      <View style={{flex: 1, backgroundColor: 'white'}}>
         <Navbar
           title="Profile"
           endAdornment={
