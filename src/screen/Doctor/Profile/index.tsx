@@ -23,7 +23,7 @@ import SwipeDeleteButton from '../../../components/SwipeDeleteButton';
 import {useGetLeaves} from '../../../customhook/useGetLeaves';
 import type {RootState} from '../../../redux/Store';
 import {updateappstate} from '../../../redux/reducer/Authreducer';
-import {VisibleDocument} from '../../../types';
+import {LeaveDto, VisibleDocument} from '../../../types';
 import AvailabilityCard from './AvailabilityCard';
 
 import {MenuProvider} from 'react-native-popup-menu';
@@ -37,6 +37,7 @@ import AboutMenuOptions from '../../Clinic/Profile/MenuOptions';
 import DoctorProfileEntry from '../../DoctorProfileEntry';
 import {useGetDoctor, useMutateDoctorProfile} from '../../useDoctorQuery';
 import LeaveCard from './LeaveCard';
+import {useRemoveLeave} from '../Leave/useLeaveQuery';
 
 export interface ProfileForm {
   username: string;
@@ -115,15 +116,18 @@ function DoctorProfileWithId({
   const [picmodalVisible, setpicModalVisible] = useState(false); // profile pic
   const [availabilitymodalVisible, setavailabilityModalVisible] =
     useState(false);
+  const [leaveDeleteModalVisible, setLeaveDeleteModalVisible] = useState(false);
 
   const [deleteavailability, setdeleteavailability] =
     useState<AvailabilityFE | null>();
+  const [deleteLeave, setDeleteLeave] = useState<LeaveDto | null>();
 
   const {data: leaves} = useGetLeaves({doctor_id: props.id});
   const {data: availability, isLoading} = useGetAvailabilityQuery({
     doctor_id: props.id,
   });
   const {mutate: removeAvailability} = useRemoveAvailability();
+  const {mutate: removeLeave} = useRemoveLeave();
   const [textShown, setTextShown] = useState(false); //To show ur remaining Text
   const [lengthMore, setLengthMore] = useState(false); //to show the "Read more & Less Line"
   const [section, setSection] = useState<'About' | 'Availability' | 'Leaves'>(
@@ -177,10 +181,19 @@ function DoctorProfileWithId({
 
     setavailabilityModalVisible(true);
   }
+  function removeLeavefun(item: LeaveDto) {
+    setDeleteLeave(item);
+
+    setLeaveDeleteModalVisible(true);
+  }
 
   const removeAvailabilityHandler = () => {
-    removeAvailability(deleteavailability.entry_id);
+    removeAvailability(deleteavailability?.entry_id ?? '');
     setavailabilityModalVisible(false);
+  };
+  const removeLeaveHandler = () => {
+    removeLeave(deleteLeave?.id ?? '');
+    setLeaveDeleteModalVisible(false);
   };
 
   return (
@@ -262,14 +275,15 @@ function DoctorProfileWithId({
         )}
         {section === 'Availability' && (
           <View style={[{flex: 1}, style.profileSection]}>
-            <View style={{flexDirection: 'row'}}>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={[commonStyles.font16, commonStyles.weight600]}>
                 Availability
               </Text>
               {!!availability?.length && (
                 <Pressable
                   onPress={navigateToAddAvailability}
-                  style={{alignItems: 'flex-end', marginRight: 30}}>
+                  style={{marginRight: 30}}>
                   <Icon name="plus" size={24} color={Color.primary} />
                 </Pressable>
               )}
@@ -289,6 +303,7 @@ function DoctorProfileWithId({
             {!!availability?.length && (
               <SwipeListView
                 data={availability}
+                contentContainerStyle={{gap: 10}}
                 renderItem={(data, rowMap) => (
                   <AvailabilityCard availability={data.item} />
                 )}
@@ -313,19 +328,24 @@ function DoctorProfileWithId({
               {!!leaves?.length && (
                 <Pressable
                   onPress={navigateToLeaveAddPage}
-                  style={{alignItems: 'flex-end', marginRight: 30}}>
+                  style={{marginRight: 30}}>
                   <Icon name="plus" size={24} color={Color.primary} />
                 </Pressable>
               )}
             </View>
             {!!leaves?.length && (
-              <View>
-                <ScrollView contentContainerStyle={{gap: 10}}>
-                  {leaves?.map(i => (
-                    <LeaveCard details={i} />
-                  ))}
-                </ScrollView>
-              </View>
+              <SwipeListView
+                data={leaves}
+                contentContainerStyle={{gap: 10}}
+                renderItem={(data, rowMap) => <LeaveCard details={data.item} />}
+                renderHiddenItem={(data, rowMap) => (
+                  <SwipeDeleteButton
+                    onPress={removeLeavefun}
+                    item={data.item}
+                  />
+                )}
+                rightOpenValue={-75}
+              />
             )}
             {!leaves?.length && (
               <View
@@ -345,6 +365,13 @@ function DoctorProfileWithId({
         modalVisible={availabilitymodalVisible}
         setModalVisible={setavailabilityModalVisible}
         onsubmit={removeAvailabilityHandler}
+      />
+      <ConformationModel
+        title="Delete Leave?"
+        subtitle="Do you want to Delete this Leave?"
+        modalVisible={leaveDeleteModalVisible}
+        setModalVisible={setLeaveDeleteModalVisible}
+        onsubmit={removeLeaveHandler}
       />
       <Doctorprofilemodel
         editMode={editMode}

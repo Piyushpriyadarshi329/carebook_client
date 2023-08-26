@@ -17,6 +17,7 @@ export const GET_APPOINTMENTS_URL = BASE_URL + '/getAppointments';
 export const ADDADDRESS_URL = BASE_URL + '/addaddress';
 export const GET_ADDRESS_URL = BASE_URL + '/getaddress';
 export const ADD_LEAVE_URL = BASE_URL + '/addLeave';
+export const LEAVE = BASE_URL + '/leave';
 export const UPDATE_DOCTOR = BASE_URL + '/updateDoctor';
 export const GET_LEAVE_URL = BASE_URL + '/getLeaves';
 export const UPDATE_SLOTS_STATUS_URL = BASE_URL + '/updateSlotsStatus';
