@@ -41,8 +41,6 @@ export default function Doctorlist() {
         clinic_id: deleteddoctor?.clinic_id,
       };
 
-      console.log('payload', payload);
-
       let res = await removeDoctor(payload);
       setModalVisible(false);
     } catch (error) {

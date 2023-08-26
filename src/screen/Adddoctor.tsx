@@ -77,7 +77,6 @@ export default function Adddoctor() {
         speciality: formValues.speciality,
         about: '',
       };
-      console.log('payload; ', payload);
       addDoctor(payload);
     } catch (error) {
       console.log(error);

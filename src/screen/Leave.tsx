@@ -94,7 +94,6 @@ function LeaveById(props: {id: string}) {
         reason: reason,
       };
 
-      console.log('payload addleave', payload);
 
       addleave(payload);
     } catch (error) {

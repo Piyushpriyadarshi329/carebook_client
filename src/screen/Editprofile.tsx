@@ -33,8 +33,6 @@ export default function Editprofile() {
         lan: 0,
       };
 
-      console.log('payload', payload);
-
       let res: any = await useAddaddress(payload);
 
       console.log('res', res.data);

@@ -10,6 +10,7 @@ export const Pallet2 = {
 };
 
 const Color = {
+  success: '#0FC385ff',
   red: '#c1242a',
   primary: '#019CDFff',
   secondary: '#6CCCDDff',

@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import Color from '../asset/Color';
-import {usegetAppointments} from '../customhook/usegetAppointments';
+import {usegetAppointments} from '../screen/Appointment/useAppointmentsQuery';
 import {RootState} from '../redux/Store';
 
 export const UpcomingDateTile = (props: {
@@ -23,7 +23,7 @@ export const UpcomingDateTile = (props: {
       }}>
       <View
         style={{
-          backgroundColor: props.isSelected ? Color.primary : Color.secondary,
+          backgroundColor: props.isSelected ? Color.secondary : Color.greybgc,
           width: 60,
           height: 100,
           marginHorizontal: 5,

@@ -7,11 +7,23 @@ export function useUpdateSlotStatus(onSuccess: any) {
   const qc = useQueryClient();
 
   return useMutation(
-    (payload: updateSlotsStatusRequest) =>
-      axios.post(UPDATE_SLOTS_STATUS_URL, payload),
+    (
+      payload: updateSlotsStatusRequest & {
+        doctorId: string;
+        appointmentDate: number;
+      },
+    ) =>
+      axios.post(UPDATE_SLOTS_STATUS_URL, {
+        id: payload.id,
+        status: payload.status,
+      }),
     {
       onSuccess: (data, variables) => {
-        qc.invalidateQueries(['APPOINTMENTS']);
+        qc.invalidateQueries([
+          'APPOINTMENTS',
+          variables.doctorId,
+          variables.appointmentDate,
+        ]);
         // onSuccess();
       },
     },
