@@ -82,7 +82,7 @@ export const useRemoveAvailability = (p?: () => void) => {
 
 export function useAddAvailability(props?: {onSuccess?: any}) {
   const qc = useQueryClient();
-  const {successAlert} = useAlert();
+  const {successAlert, axiosAlert} = useAlert();
   return useMutation(
     (payload: AddAvailabilityRequest) =>
       axios.post<any>(ADD_AVAILABILITY_URL, payload),
@@ -93,6 +93,7 @@ export function useAddAvailability(props?: {onSuccess?: any}) {
         successAlert('Added Availability.');
         props?.onSuccess?.();
       },
+      onError: axiosAlert,
     },
   );
 }

@@ -10,7 +10,7 @@ export const useAlert = () => {
     try {
       if (e.response) {
         if (e.response.data) {
-          errorAlert(e.response.data.data.message || e.response.data.Message);
+          errorAlert(e.response.data.data?.message || e.response.data.Message);
         } else {
           errorAlert(texts.SomethingWentWrong);
         }
