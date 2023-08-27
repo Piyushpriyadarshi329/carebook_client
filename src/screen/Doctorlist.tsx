@@ -1,93 +1,149 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
-import {Text, TouchableOpacity, View, StyleSheet} from 'react-native';
-import {SwipeListView} from 'react-native-swipe-list-view';
-import Icon from 'react-native-vector-icons/Ionicons';
+import {FAB} from '@rneui/base';
+import {Icon} from '@rneui/themed';
+import React, {useRef, useState} from 'react';
+import {Animated, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {Swipeable} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
 import Color from '../asset/Color';
+import {commonStyles} from '../asset/styles';
 import ConformationModel from '../components/ConformationModel';
 import Doctorcard from '../components/Doctorcard';
-import SwipeDeleteButton from '../components/SwipeDeleteButton';
 import {useremoveDoctorMapping} from '../customhook/useremoveDoctorMapping';
 import type {RootState} from '../redux/Store';
 import {DoctorDto} from '../types';
+import {getCloser} from './helper';
 import {useGetDoctorsList} from './useDoctorQuery';
-import {commonStyles} from '../asset/styles';
-import {FAB} from '@rneui/base';
+
+const {diffClamp} = Animated;
+const headerHeight = 100 * 2;
+const target = headerHeight;
+
+const DeleteDoctorButton = ({onClick}: {onClick: () => void}) => {
+  return (
+    <TouchableOpacity
+      style={{
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+      }}
+      onPress={onClick}>
+      <Icon
+        name="delete"
+        color={Color.red}
+        style={{paddingHorizontal: 40}}
+        size={30}
+      />
+    </TouchableOpacity>
+  );
+};
 
 export default function Doctorlist() {
   const [modalVisible, setModalVisible] = useState(false);
   const [deleteddoctor, setdeleteddoctor] = useState<DoctorDto | null>();
-
   const navigation = useNavigation<any>();
-  const {userid: userId, username} = useSelector(
-    (state: RootState) => state.Appdata,
-  );
-
   const {mutate: removeDoctor} = useremoveDoctorMapping(() => {});
-  const {data: doctorlist} = useGetDoctorsList({
-    clinic_id: userId ?? '',
+  const {userid, username} = useSelector((state: RootState) => state.Appdata);
+  const {data: doctorlist} = useGetDoctorsList({clinic_id: userid ?? ''});
+  const scrollY = useRef(new Animated.Value(0));
+  const handleScroll = Animated.event(
+    [
+      {
+        nativeEvent: {
+          contentOffset: {y: scrollY.current},
+        },
+      },
+    ],
+    {
+      useNativeDriver: true,
+    },
+  );
+  const scrollYClamped = diffClamp(scrollY.current, 0, headerHeight);
+  const ref = useRef<any>();
+  const translateYNumber = useRef();
+  const translateY = scrollYClamped.interpolate({
+    inputRange: [0, headerHeight],
+    outputRange: [0, -target],
   });
 
-  async function onclick(doctor: DoctorDto) {
+  translateY.addListener(({value}) => {
+    translateYNumber.current = value;
+  });
+
+  function onclick(doctor: DoctorDto) {
     setdeleteddoctor(doctor);
     setModalVisible(true);
   }
 
-  async function deletehandler(doctor: DoctorDto) {
-    try {
-      let payload = {
-        doctor_id: deleteddoctor?.id,
-        clinic_id: deleteddoctor?.clinic_id,
-      };
-
-      let res = await removeDoctor(payload);
-      setModalVisible(false);
-    } catch (error) {
-      setModalVisible(false);
-
-      console.log(error);
-    }
+  function deleteHandler(doctor: DoctorDto) {
+    removeDoctor({
+      doctor_id: deleteddoctor?.id ?? '',
+      clinic_id: deleteddoctor?.clinic_id,
+    });
+    setModalVisible(false);
   }
+
+  const handleSnap = ({nativeEvent}: any) => {
+    const offsetY = nativeEvent.contentOffset.y;
+    if (
+      !(translateYNumber.current === 0 || translateYNumber.current === -target)
+    ) {
+      if (ref.current) {
+        ref.current.scrollToOffset({
+          offset:
+            getCloser(translateYNumber.current ?? 0, -target, 0) === -target
+              ? offsetY + target
+              : offsetY - target,
+        });
+      }
+    }
+  };
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
-      <View style={styles.welcomeContainer}>
+      <Animated.View
+        style={[styles.welcomeContainer, {transform: [{translateY}]}]}>
         <Text style={[commonStyles.font24, commonStyles.weight700]}>
           Welcome!
         </Text>
         <Text style={[commonStyles.font20, commonStyles.weight400]}>
           {username}
         </Text>
-      </View>
-      <View style={styles.doctorListContainer}>
-        {doctorlist?.length == 0 ? (
+      </Animated.View>
+      <Animated.FlatList
+        data={doctorlist}
+        renderItem={({item}) => (
+          <Swipeable
+            renderRightActions={() => (
+              <DeleteDoctorButton onClick={() => onclick(item)} />
+            )}>
+            <Doctorcard doctor={item} />
+          </Swipeable>
+        )}
+        onScroll={handleScroll}
+        ref={ref}
+        onMomentumScrollEnd={handleSnap}
+        ListEmptyComponent={
           <View style={{justifyContent: 'center', alignItems: 'center'}}>
             <Text style={{color: 'black'}}>No Doctor FOund</Text>
           </View>
-        ) : (
-          <SwipeListView
-            data={doctorlist}
-            renderItem={(data, rowMap) => <Doctorcard doctor={data.item} />}
-            renderHiddenItem={(data, rowMap) => (
-              <SwipeDeleteButton onPress={onclick} item={data.item} />
-            )}
-            rightOpenValue={-75}
-          />
-        )}
-        <FAB
-          placement="right"
-          onPress={() => navigation.navigate('Adddoctor')}
-          icon={{name: 'add', color: 'white'}}
-          color={Color.primary}
-        />
-      </View>
+        }
+        contentContainerStyle={styles.doctorListContainer}
+      />
+      <FAB
+        placement="right"
+        onPress={() => {
+          navigation.navigate('Adddoctor');
+        }}
+        icon={{name: 'add', color: 'white'}}
+        color={Color.primary}
+        style={{zIndex: 100}}
+      />
       <ConformationModel
         title="Doctor Delete?"
         subtitle="Do you want to delete Doctor?"
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        onsubmit={deletehandler}
+        onsubmit={deleteHandler}
       />
     </View>
   );
@@ -95,18 +151,23 @@ export default function Doctorlist() {
 
 const styles = StyleSheet.create({
   welcomeContainer: {
-    flex: 1,
     backgroundColor: Color.secondary,
     paddingHorizontal: 30,
     paddingTop: 30,
+    paddingBottom: 80,
+    height: headerHeight,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    width: '100%',
+    zIndex: 1,
   },
   doctorListContainer: {
-    flex: 4,
     borderTopStartRadius: 20,
     borderTopEndRadius: 20,
-    marginTop: -20,
-    paddingTop: 40,
     backgroundColor: Color.greybgc,
-    gap: 20,
+    gap: 15,
+    zIndex: 2,
+    paddingTop: headerHeight,
   },
 });

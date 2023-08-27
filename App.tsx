@@ -15,6 +15,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 import Splashscreen from './src/auth/Splashscreen';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 const queryClient = new QueryClient();
 
 export default function App() {
@@ -27,22 +28,21 @@ export default function App() {
   }, []);
 
   return (
-    <>
-      <QueryClientProvider client={queryClient}>
-        <Provider store={store}>
-          <Fragment>
-            <SafeAreaView style={{flex: 1, backgroundColor: Color.secondary}}>
-              <StatusBar
-                backgroundColor={Color.secondary}
-                barStyle="dark-content"
-              />
-
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <Fragment>
+          <SafeAreaView style={{flex: 1, backgroundColor: Color.secondary}}>
+            <StatusBar
+              backgroundColor={Color.secondary}
+              barStyle="dark-content"
+            />
+            <GestureHandlerRootView style={{flex: 1}}>
               <Auth />
-            </SafeAreaView>
-          </Fragment>
-          <Toast />
-        </Provider>
-      </QueryClientProvider>
-    </>
+            </GestureHandlerRootView>
+          </SafeAreaView>
+        </Fragment>
+        <Toast />
+      </Provider>
+    </QueryClientProvider>
   );
 }

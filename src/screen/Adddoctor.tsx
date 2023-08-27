@@ -110,6 +110,10 @@ export default function Adddoctor() {
         <ScrollView>
           <View style={styles.formContainer}>
             <View style={styles.rowItem}>
+              <Icon name="user" size={20} color="black" />
+              <RHFTextInput name="name" placeholder="Full Name" required />
+            </View>
+            <View style={styles.rowItem}>
               <Icon name="mobile1" size={20} color="black" />
               <RHFTextInput
                 name="mobile"
@@ -121,11 +125,6 @@ export default function Adddoctor() {
             </View>
             {!existingDoctors?.length ? (
               <>
-                <View style={styles.rowItem}>
-                  <Icon name="user" size={20} color="black" />
-                  <RHFTextInput name="name" placeholder="Full Name" required />
-                </View>
-
                 <View style={styles.rowItem}>
                   <Icon name="tago" size={20} color="black" />
                   <RHFDropdown
