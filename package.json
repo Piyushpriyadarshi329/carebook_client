@@ -12,6 +12,7 @@
     "bundleLin": "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/; rm -r ./android/app/src/main/res/raw; rm -r ./android/app/src/main/res/drawable-*;cd android; ./gradlew bundleRelease;"
   },
   "dependencies": {
+    "@apolloeagle/loading-dots": "^3.0.0",
     "@react-native-async-storage/async-storage": "^1.19.1",
     "@react-native-community/datetimepicker": "^7.4.1",
     "@react-native-firebase/app": "^18.3.0",

@@ -10,6 +10,7 @@ import {Appointmentdto, BookingStatus} from '../../types';
 import {getTimeStringFromDBTime} from '../../utils/dateMethods';
 import {useAlert} from '../../utils/useShowAlert';
 import Status from './Status';
+import LoadingDots from '@apolloeagle/loading-dots';
 
 const AppointmentTimeline = ({
   appointments,
@@ -21,14 +22,14 @@ const AppointmentTimeline = ({
   appointmentDate: number;
 }) => {
   const {successAlert} = useAlert();
-  const {mutate: UpdateSlotStatus} = useUpdateSlotStatus(() => {
+  const {mutate: updateSlotStatus, isLoading} = useUpdateSlotStatus(() => {
     successAlert('Status updated Successfully');
   });
   const groupedAppointments = Object.values(
     _.groupBy(appointments, 'workingtime_id'),
   );
   function updateslot(bookingid: string, status: string) {
-    UpdateSlotStatus({
+    updateSlotStatus({
       id: bookingid,
       status: status,
       doctorId,
@@ -114,11 +115,21 @@ const AppointmentTimeline = ({
               </Text>
               <Text style={commonStyles.caption}>{rowData.description}</Text>
             </View>
-            <Status
-              id={rowData.id}
-              status={rowData.status}
-              updateslot={updateslot}
-            />
+
+            {isLoading ? (
+              <LoadingDots
+                animation="pulse"
+                dots={3}
+                color={Color.primary}
+                size={5}
+              />
+            ) : (
+              <Status
+                id={rowData.id}
+                status={rowData.status}
+                updateslot={updateslot}
+              />
+            )}
           </View>
         ) : (
           <View>
