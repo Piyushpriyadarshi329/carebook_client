@@ -16,7 +16,19 @@ import {
 } from '@tanstack/react-query';
 import Splashscreen from './src/auth/Splashscreen';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {ThemeProvider, Button, createTheme} from '@rneui/themed';
+
 const queryClient = new QueryClient();
+
+const theme = createTheme({
+  components: {
+    Text: {
+      style: {
+        fontFamily: 'Poppins-Medium',
+      },
+    },
+  },
+});
 
 export default function App() {
   const [showsplash, setshowsplash] = useState(true);
@@ -37,7 +49,9 @@ export default function App() {
               barStyle="dark-content"
             />
             <GestureHandlerRootView style={{flex: 1}}>
-              <Auth />
+              <ThemeProvider theme={theme}>
+                <Auth />
+              </ThemeProvider>
             </GestureHandlerRootView>
           </SafeAreaView>
         </Fragment>
