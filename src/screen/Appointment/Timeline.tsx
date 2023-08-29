@@ -108,28 +108,33 @@ const AppointmentTimeline = ({
       innerCircle={'icon'}
       renderDetail={(rowData, rowId) => {
         return rowData.type == 'SLOT' ? (
-          <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+          <View
+            style={{
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+            }}>
             <View>
               <Text style={[commonStyles.font16, commonStyles.weight400]}>
                 {rowData.title}
               </Text>
               <Text style={commonStyles.caption}>{rowData.description}</Text>
             </View>
-
-            {isLoading ? (
-              <LoadingDots
-                animation="pulse"
-                dots={3}
-                color={Color.primary}
-                size={5}
-              />
-            ) : (
-              <Status
-                id={rowData.id}
-                status={rowData.status}
-                updateslot={updateslot}
-              />
-            )}
+            <View style={{paddingRight: 20}}>
+              {isLoading ? (
+                <LoadingDots
+                  animation="pulse"
+                  dots={3}
+                  color={Color.primary}
+                  size={5}
+                />
+              ) : (
+                <Status
+                  id={rowData.id}
+                  status={rowData.status}
+                  updateslot={updateslot}
+                />
+              )}
+            </View>
           </View>
         ) : (
           <View>

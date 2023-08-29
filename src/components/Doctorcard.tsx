@@ -44,7 +44,7 @@ export default function Doctorcard({doctor}: {doctor: DoctorDto}) {
             source={
               doctor.profile_image
                 ? {uri: doctor.profile_image}
-                : require('./../asset/image/profile.png')
+                : require('./../asset/image/doctor.png')
             }
           />
         </View>
@@ -53,7 +53,7 @@ export default function Doctorcard({doctor}: {doctor: DoctorDto}) {
             <Text style={commonStyles.caption}>{doctor.speciality}</Text>
           )}
           <Text style={[commonStyles.font20, commonStyles.weight600]}>
-            {doctor.name}
+            Dr. {doctor.name}
           </Text>
           <Text style={{color: 'black'}}>{doctor.mobile}</Text>
           {doctor.email && <Text style={{color: 'black'}}>{doctor.email}</Text>}

@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import {FAB} from '@rneui/base';
+import {FAB, Image} from '@rneui/base';
 import {Icon} from '@rneui/themed';
 import React, {useRef, useState} from 'react';
 import {Animated, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
@@ -16,7 +16,7 @@ import {getCloser} from './helper';
 import {useGetDoctorsList} from './useDoctorQuery';
 
 const {diffClamp} = Animated;
-const headerHeight = 100 * 2;
+const headerHeight = 80 * 2;
 const target = headerHeight;
 
 const DeleteDoctorButton = ({onClick}: {onClick: () => void}) => {
@@ -102,12 +102,24 @@ export default function Doctorlist() {
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <Animated.View
         style={[styles.welcomeContainer, {transform: [{translateY}]}]}>
-        <Text style={[commonStyles.font24, commonStyles.weight700]}>
-          Welcome!
-        </Text>
-        <Text style={[commonStyles.font20, commonStyles.weight400]}>
-          {username}
-        </Text>
+        <View style={[commonStyles.flexRowAlignCenter, {gap: 10}]}>
+          <Image
+            source={require('../asset/image/logoImg_rmbg.png')}
+            style={{
+              width: 80,
+              height: 80,
+            }}
+            resizeMode="contain"
+          />
+          <View>
+            <Text style={[commonStyles.font24, commonStyles.weight700]}>
+              Welcome!
+            </Text>
+            <Text style={[commonStyles.font20, commonStyles.weight400]}>
+              {username}
+            </Text>
+          </View>
+        </View>
       </Animated.View>
       <Animated.FlatList
         data={doctorlist}
