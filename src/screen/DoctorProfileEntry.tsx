@@ -1,5 +1,6 @@
+import {Text} from '@rneui/themed';
 import React from 'react';
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
 import {commonStyles} from '../asset/styles';
 
 const DoctorProfileEntry = ({

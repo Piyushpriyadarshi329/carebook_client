@@ -1,16 +1,10 @@
+import {Text} from '@rneui/themed';
 import React, {useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
 import CheckBox from 'react-native-check-box';
+import {useSelector} from 'react-redux';
 import Color from '../../../asset/Color';
 import Navbar from '../../../components/Navbar';
-
-import {useSelector} from 'react-redux';
 import {useAddleave} from '../../../customhook/useAddleave';
 import {RootState} from '../../../redux/Store';
 import {AddLeaveRequest} from '../../../types';
@@ -24,7 +18,6 @@ import {useAlert} from '../../../utils/useShowAlert';
 import {Availability} from '../../Availability/useGetAvailability';
 import AvailabilityCard from '../Profile/AvailabilityCard';
 import SlotModal from './SlotModal';
-import {showtime} from '../../../AppFunction';
 
 export function LoggedInUserLeave() {
   const userId = useSelector((state: RootState) => state.Appdata.userid);

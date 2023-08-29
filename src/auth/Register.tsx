@@ -1,12 +1,12 @@
-import {View, Text, TextInput, TouchableOpacity, Pressable} from 'react-native';
-import React, {useState} from 'react';
-import Color from '../asset/Color';
 import {useNavigation} from '@react-navigation/native';
-import type {RootState} from '../redux/Store';
-import {useSelector, useDispatch} from 'react-redux';
-import {updateappstate} from './../redux/reducer/Authreducer';
+import {Text} from '@rneui/themed';
+import React, {useState} from 'react';
+import {Pressable, TextInput, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useDispatch} from 'react-redux';
+import Color from '../asset/Color';
+import {updateappstate} from './../redux/reducer/Authreducer';
 
 export default function Register() {
   const dispatch = useDispatch();

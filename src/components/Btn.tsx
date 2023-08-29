@@ -1,5 +1,6 @@
+import {Text} from '@rneui/themed';
 import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import Color from '../asset/Color';
 
 const Btn = (props: {title: string; onPress: () => void}) => {

@@ -1,5 +1,6 @@
+import {Text} from '@rneui/themed';
 import {default as React} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {commonStyles} from '../../../asset/styles';
 import {DoctorDto} from '../../../types';
 

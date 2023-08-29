@@ -1,31 +1,23 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
-import {
-  Button,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  ScrollView,
-} from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
+import {Text} from '@rneui/themed';
+import React from 'react';
+import {FormProvider, useForm} from 'react-hook-form';
+import {Button, ScrollView, StyleSheet, View} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {useSelector} from 'react-redux';
 import Color from '../asset/Color';
 import {commonStyles} from '../asset/styles';
+import Btn from '../components/Btn';
+import {RHFDropdown} from '../components/RHFInputs/RHFDropdown';
+import {RHFTextInput} from '../components/RHFInputs/RHFTextInput';
 import type {RootState} from '../redux/Store';
 import {AddDoctorRequest} from '../types';
+import {validatePhone} from '../utils/validations';
 import {
   useAddDoctor,
   useGetDoctorsList,
   useLinkDoctorMutation,
 } from './useDoctorQuery';
-import Btn from '../components/Btn';
-import {FormProvider, useForm} from 'react-hook-form';
-import {RHFTextInput} from '../components/RHFInputs/RHFTextInput';
-import {RHFDropdown} from '../components/RHFInputs/RHFDropdown';
-import {validateEmail, validatePhone} from '../utils/validations';
-import Navbar from '../components/Navbar';
 
 const specialitylist = [
   {

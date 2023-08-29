@@ -1,9 +1,10 @@
+import {Text} from '@rneui/themed';
 import React from 'react';
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import MenuOptionsComponent from '../../../components/MenuOptionsComponent';
-import {commonStyles} from '../../../asset/styles';
 import Color from '../../../asset/Color';
+import {commonStyles} from '../../../asset/styles';
+import MenuOptionsComponent from '../../../components/MenuOptionsComponent';
 
 const AboutMenuOptions = ({
   onLogout,

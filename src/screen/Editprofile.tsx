@@ -1,15 +1,14 @@
-import {useNavigation} from '@react-navigation/native';
+import {Text} from '@rneui/themed';
 import React, {useState} from 'react';
-import {Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {TextInput, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import Color from '../asset/Color';
-import {useAddaddress} from './Clinic/Profile/useAddaddress';
 import type {RootState} from '../redux/Store';
 import {AddAdressRequest} from '../types';
-import {useAddDoctor} from './useDoctorQuery';
+import {useAddaddressMutation} from './Clinic/Profile/useAddaddress';
 
 export default function Editprofile() {
   const userId = useSelector((state: RootState) => state.Appdata.userid);
@@ -33,7 +32,7 @@ export default function Editprofile() {
         lan: 0,
       };
 
-      let res: any = await useAddaddress(payload);
+      let res: any = await useAddaddressMutation(payload);
 
       console.log('res', res.data);
     } catch (error) {

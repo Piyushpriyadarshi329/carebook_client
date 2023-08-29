@@ -1,16 +1,17 @@
+import {Text} from '@rneui/themed';
 import React, {useEffect, useState} from 'react';
-import Color from './../asset/Color';
 import {FormProvider, useForm} from 'react-hook-form';
-import {Modal, ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {Modal, ScrollView, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import {ProfileForm} from '../screen/Doctor/Profile';
-import {RHFDropdown} from './RHFInputs/RHFDropdown';
 import {usegetSpeciality} from '../customhook/usegetSpeciality';
+import {ProfileForm} from '../screen/Doctor/Profile';
+import ModalCloseOnEscape from '../utils/ModalCloseOnEscape';
+import Color from './../asset/Color';
 import {DoctorDto} from './../types';
 import {AddressStyles} from './Address/styles';
 import Btn from './Btn';
+import {RHFDropdown} from './RHFInputs/RHFDropdown';
 import {RHFTextInput} from './RHFInputs/RHFTextInput';
-import ModalCloseOnEscape from '../utils/ModalCloseOnEscape';
 
 export const Doctorprofilemodel = ({
   editMode,

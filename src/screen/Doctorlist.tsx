@@ -1,8 +1,8 @@
 import {useNavigation} from '@react-navigation/native';
 import {FAB, Image} from '@rneui/base';
-import {Icon} from '@rneui/themed';
+import {Icon, Text} from '@rneui/themed';
 import React, {useRef, useState} from 'react';
-import {Animated, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {Animated, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Swipeable} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
 import Color from '../asset/Color';

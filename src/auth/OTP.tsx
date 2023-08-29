@@ -1,9 +1,9 @@
-import {View, Text, TextInput, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
-import Color from '../asset/Color';
 import {useNavigation} from '@react-navigation/native';
-import type {RootState} from '../redux/Store';
-import {useSelector, useDispatch} from 'react-redux';
+import React, {useState} from 'react';
+import {TextInput, TouchableOpacity, View} from 'react-native';
+import {Text} from '@rneui/themed';
+import {useDispatch} from 'react-redux';
+import Color from '../asset/Color';
 import {updateappstate} from './../redux/reducer/Authreducer';
 
 export default function OTP() {

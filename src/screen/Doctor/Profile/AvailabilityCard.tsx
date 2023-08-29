@@ -1,12 +1,9 @@
+import {Text} from '@rneui/themed';
 import React from 'react';
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
 import {showtimefromstring} from '../../../AppFunction';
 import Color from '../../../asset/Color';
-import {
-  AvailabilityFE,
-  Availability,
-} from '../../Availability/useGetAvailability';
-import {commonStyles} from '../../../asset/styles';
+import {AvailabilityFE} from '../../Availability/useGetAvailability';
 
 const AvailabilityCard = ({availability}: {availability: AvailabilityFE}) => {
   return (

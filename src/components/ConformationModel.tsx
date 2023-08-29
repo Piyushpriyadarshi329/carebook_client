@@ -1,5 +1,6 @@
-import {View, Text, Modal, Button} from 'react-native';
-import React, {useState} from 'react';
+import {Text} from '@rneui/themed';
+import React from 'react';
+import {Button, Modal, View} from 'react-native';
 import Color from '../asset/Color';
 import ModalCloseOnEscape from '../utils/ModalCloseOnEscape';
 

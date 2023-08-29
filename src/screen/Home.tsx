@@ -1,25 +1,16 @@
-import {View, Text, Dimensions, ScrollView} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from 'react-native-chart-kit';
-
+import {Text} from '@rneui/themed';
+import React from 'react';
+import {Dimensions, ScrollView, View} from 'react-native';
+import {BarChart} from 'react-native-chart-kit';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {useSelector} from 'react-redux';
 import Color from '../asset/Color';
 import Appointmentcard from '../components/Appointmentcard';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import type {RootState} from '../redux/Store';
-import {useSelector, useDispatch} from 'react-redux';
-import {useGetAppointments} from './Appointment/useAppointmentsQuery';
-
-import {monthlist, daylist} from './../Appconstant';
 import {usegetBookingsSummary} from '../customhook/usegetBookingsSummary';
+import type {RootState} from '../redux/Store';
 import {BookingStatus} from '../types';
 import {getToday} from '../utils/dateMethods';
+import {useGetAppointments} from './Appointment/useAppointmentsQuery';
 
 const screenWidth = Dimensions.get('window').width;
 

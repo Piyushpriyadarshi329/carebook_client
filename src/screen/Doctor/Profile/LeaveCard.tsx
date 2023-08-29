@@ -1,5 +1,6 @@
+import {Text} from '@rneui/themed';
 import React from 'react';
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
 import Color from '../../../asset/Color';
 import {LeaveDto} from '../../../types';
 

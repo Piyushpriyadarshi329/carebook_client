@@ -1,11 +1,10 @@
 import {useNavigation} from '@react-navigation/native';
+import {Text} from '@rneui/themed';
 import React, {useCallback, useState} from 'react';
 import {
   Image,
   Pressable,
-  ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -28,6 +27,7 @@ import AvailabilityCard from './AvailabilityCard';
 
 import {MenuProvider} from 'react-native-popup-menu';
 import ConformationModel from '../../../components/ConformationModel';
+import {useAlert} from '../../../utils/useShowAlert';
 import {
   AvailabilityFE,
   useGetAvailabilityQuery,
@@ -36,9 +36,8 @@ import {
 import AboutMenuOptions from '../../Clinic/Profile/MenuOptions';
 import DoctorProfileEntry from '../../DoctorProfileEntry';
 import {useGetDoctor, useMutateDoctorProfile} from '../../useDoctorQuery';
-import LeaveCard from './LeaveCard';
 import {useRemoveLeave} from '../Leave/useLeaveQuery';
-import {useAlert} from '../../../utils/useShowAlert';
+import LeaveCard from './LeaveCard';
 
 export interface ProfileForm {
   username: string;

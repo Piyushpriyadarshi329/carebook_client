@@ -1,9 +1,9 @@
+import {Text} from '@rneui/themed';
 import React from 'react';
-import {Modal, ScrollView, Text, TouchableOpacity, View} from 'react-native';
-import Color from '../../../asset/Color';
-
+import {Modal, ScrollView, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {showtime} from '../../../AppFunction';
+import Color from '../../../asset/Color';
 import ModalCloseOnEscape from '../../../utils/ModalCloseOnEscape';
 import {useGetAvailabilityQuery} from '../../Availability/useGetAvailability';
 

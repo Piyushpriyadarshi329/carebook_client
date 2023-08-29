@@ -1,5 +1,6 @@
+import {Text} from '@rneui/themed';
 import React from 'react';
-import {Image, Text, View} from 'react-native';
+import {Image, View} from 'react-native';
 import Color from '../asset/Color';
 
 export default function Appointmentcard({data}: {data: any}) {

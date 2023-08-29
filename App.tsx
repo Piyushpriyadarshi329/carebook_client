@@ -1,22 +1,15 @@
-import {View, Text, StatusBar} from 'react-native';
 import React, {Fragment, useEffect, useState} from 'react';
+import {StatusBar} from 'react-native';
 import Auth from './src/Auth';
 
-import {store} from './src/redux/Store';
-import {Provider} from 'react-redux';
+import {ThemeProvider, createTheme} from '@rneui/themed';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import {Provider} from 'react-redux';
 import Color from './src/asset/Color';
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
-import Splashscreen from './src/auth/Splashscreen';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {ThemeProvider, Button, createTheme} from '@rneui/themed';
+import {store} from './src/redux/Store';
 
 const queryClient = new QueryClient();
 
