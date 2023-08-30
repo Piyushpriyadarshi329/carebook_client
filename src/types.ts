@@ -27,6 +27,11 @@ export interface SpecialityDto {
   name: string;
   doc_key: string;
 }
+export interface LocationDto {
+  id: string;
+  name: string;
+}
+export type GetLocationListResponse = DataResponse<(LocationDto & {})[]>;
 
 export interface GetDotcorsListRequest {
   clinic_id?: string;
@@ -48,7 +53,7 @@ export type AddDoctorRequest = Omit<DoctorDto, 'id'> & {
   password: string;
   clinic_id: string;
 };
-export type AddDoctorResponse = DataResponse<any>;
+export type AddDoctorResponse = DataResponse<{id: string}>;
 
 export interface LinkDoctorRequest {
   clinic_id: string;
@@ -278,7 +283,6 @@ export interface Appointmentdto extends BookingDto {
 }
 
 export interface ShowAddress {
-  id: string;
   address_line1: string;
   address_line2: string;
   city: string;
@@ -287,15 +291,8 @@ export interface ShowAddress {
   lat?: number;
   lan?: number;
 }
-export interface AddressDto {
+export interface AddressDto extends ShowAddress {
   id: string;
-  address_line1: string;
-  address_line2: string;
-  city: string;
-  state: string;
-  pincode: string;
-  lat?: number;
-  lan?: number;
 }
 export interface AddAdressRequest {
   id?: string;

@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import Color from '../../asset/Color';
 import Clinicdoctorliststack from './Stack/ClinicdoctorlistStack';
 import Clinicprofilestack from './Stack/ClinicprofileStack';
-import {AppPages} from '../../appPages';
+import {AppPages} from '../appPages';
 
 const Tab = createBottomTabNavigator();
 

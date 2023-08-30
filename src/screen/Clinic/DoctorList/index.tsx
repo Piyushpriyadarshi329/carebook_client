@@ -5,15 +5,16 @@ import React, {useRef, useState} from 'react';
 import {Animated, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Swipeable} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
-import Color from '../asset/Color';
-import {commonStyles} from '../asset/styles';
-import ConformationModel from '../components/ConformationModel';
-import Doctorcard from '../components/Doctorcard';
-import {useremoveDoctorMapping} from '../customhook/useremoveDoctorMapping';
-import type {RootState} from '../redux/Store';
-import {DoctorDto} from '../types';
-import {getCloser} from './helper';
-import {useGetDoctorsList} from './useDoctorQuery';
+import Color from '../../../asset/Color';
+import {commonStyles} from '../../../asset/styles';
+import ConformationModel from '../../../components/ConformationModel';
+import Doctorcard from './Doctorcard';
+import {useremoveDoctorMapping} from '../../../customhook/useremoveDoctorMapping';
+import type {RootState} from '../../../redux/Store';
+import {DoctorDto} from '../../../types';
+import {getCloser} from '../../helper';
+import {useGetDoctorsList} from '../../useDoctorQuery';
+import {AppPages} from '../../../Routes/appPages';
 
 const {diffClamp} = Animated;
 const headerHeight = 80 * 2;
@@ -104,7 +105,7 @@ export default function Doctorlist() {
         style={[styles.welcomeContainer, {transform: [{translateY}]}]}>
         <View style={[commonStyles.flexRowAlignCenter, {gap: 10}]}>
           <Image
-            source={require('../asset/image/logoImg_rmbg.png')}
+            source={require('../../../asset/image/logoImg_rmbg.png')}
             style={{
               width: 80,
               height: 80,
@@ -144,7 +145,7 @@ export default function Doctorlist() {
       <FAB
         placement="right"
         onPress={() => {
-          navigation.navigate('Adddoctor');
+          navigation.navigate(AppPages.AddDoctor);
         }}
         icon={{name: 'add', color: 'white'}}
         color={Color.primary}

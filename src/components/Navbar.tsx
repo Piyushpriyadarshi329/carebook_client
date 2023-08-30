@@ -6,6 +6,8 @@ import {useNavigation} from '@react-navigation/native';
 
 const Navbar = (props: {
   title: string;
+  onBack?: () => void;
+  blockBack?: boolean;
   asFullScreenModal?: boolean;
   endAdornment?: JSX.Element;
   bgc?: string;
@@ -22,9 +24,9 @@ const Navbar = (props: {
         gap: 20,
         backgroundColor: props.bgc,
       }}>
-      {!props.asFullScreenModal && (
+      {!props.asFullScreenModal && !props.blockBack && (
         <View
-          onTouchEnd={() => navigation.goBack()}
+          onTouchEnd={props.onBack ?? (() => navigation.goBack())}
           style={{position: 'absolute', left: 10, top: 10}}>
           <Icon
             name="keyboard-arrow-left"

@@ -20,7 +20,6 @@ export const RHFDropdown = (props: {
 }) => {
   const {control, getValues} = useFormContext();
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(getValues(props.name));
   return (
     <Controller
       control={control}
@@ -29,7 +28,7 @@ export const RHFDropdown = (props: {
           style={{
             flexDirection: 'column',
             width: '100%',
-            paddingHorizontal: 10,
+            paddingHorizontal: 5,
             gap: 10,
             zIndex: props.zIndex,
           }}>
@@ -50,7 +49,14 @@ export const RHFDropdown = (props: {
             onSelectItem={item => {
               field.onChange(item.value);
             }}
-            style={props.style}
+            style={[
+              props.style,
+              {
+                borderWidth: 0,
+                borderBottomWidth: 1,
+                marginVertical: 10,
+              },
+            ]}
             items={props.options}
             placeholder={props.placeholder}
             {...props.componentProps}

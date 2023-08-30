@@ -104,7 +104,11 @@ export default function Clinicprofile() {
           <TouchableOpacity onPress={() => setpicModalVisible(true)}>
             <Image
               style={styles.image}
-              source={{uri: clinicDetails?.profile_image}}
+              source={
+                clinicDetails?.profile_image
+                  ? {uri: clinicDetails?.profile_image}
+                  : require('../../../asset/image/hospital.png')
+              }
             />
           </TouchableOpacity>
           <View style={{marginTop: 20, alignItems: 'center'}}>

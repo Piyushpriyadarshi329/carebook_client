@@ -4,14 +4,14 @@ import React from 'react';
 import {Image, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import {useSelector} from 'react-redux';
-import {AppPages} from '../appPages';
-import Color from '../asset/Color';
-import {commonStyles} from '../asset/styles';
-import {RootState} from '../redux/Store';
-import {DoctorDto} from '../types';
+import {AppPages} from '../../../Routes/appPages';
+import Color from '../../../asset/Color';
+import {commonStyles} from '../../../asset/styles';
+import {RootState} from '../../../redux/Store';
+import {DoctorDto} from '../../../types';
 
 export default function Doctorcard({doctor}: {doctor: DoctorDto}) {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const userId = useSelector((state: RootState) => state.Appdata.userid);
   const navigateToAppointments = () =>
     navigation.navigate(AppPages.Appointments, {
@@ -45,7 +45,7 @@ export default function Doctorcard({doctor}: {doctor: DoctorDto}) {
             source={
               doctor.profile_image
                 ? {uri: doctor.profile_image}
-                : require('./../asset/image/doctor.png')
+                : require('../../../asset/image/doctor.png')
             }
           />
         </View>

@@ -11,11 +11,11 @@ import {
 import {SwipeListView} from 'react-native-swipe-list-view';
 import Icon from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
-import {AppPages} from '../../../appPages';
+import {AppPages} from '../../../Routes/appPages';
 import Color from '../../../asset/Color';
 import {commonStyles} from '../../../asset/styles';
 import Btn from '../../../components/Btn';
-import {Doctorprofilemodel} from '../../../components/Doctorprofilemodel';
+import {DoctorProfileModal} from './Edit/Modal';
 import Navbar from '../../../components/Navbar';
 import Profilepicuploadmodel from '../../../components/Profilepicuploadmodel';
 import SwipeDeleteButton from '../../../components/SwipeDeleteButton';
@@ -83,11 +83,15 @@ export default function LoggedInDoctorProfile() {
 }
 export const DoctorProfile = (props: any) => {
   const [editMode, setEditMode] = useState(false);
+  const navigation = useNavigation<any>();
   return (
     <MenuProvider>
       <View style={{flex: 1, backgroundColor: 'white'}}>
         <Navbar
           title="Doctor Details"
+          onBack={() => {
+            navigation.navigate(AppPages.DoctorList);
+          }}
           endAdornment={
             <AboutMenuOptions setEditMode={() => setEditMode(true)} />
           }
@@ -142,25 +146,6 @@ function DoctorProfileWithId({
   const {mutate: updateDoctor} = useMutateDoctorProfile(props.id, () => {
     setEditMode(false);
   });
-  const toggleNumberOfLines = () => {
-    setTextShown(!textShown);
-  };
-
-  const onTextLayout = useCallback((e: any) => {
-    setLengthMore(e.nativeEvent.lines.length >= 4);
-  }, []);
-
-  const updateProfileHandler = (formValues: ProfileForm) => {
-    updateDoctor({
-      name: formValues.username,
-      appointment_time: Number(formValues.consultationTime),
-      fees: Number(formValues.fees),
-      about: formValues.about,
-      speciality: formValues.speciality,
-      experience: formValues.experience,
-      degree: formValues.degree,
-    });
-  };
 
   function uploadprofilpicfun(data: VisibleDocument | undefined) {
     updateDoctor({
@@ -208,7 +193,11 @@ function DoctorProfileWithId({
           <TouchableOpacity onPress={() => setpicModalVisible(true)}>
             <Image
               style={style.image}
-              source={{uri: doctorDetails?.profile_image}}
+              source={
+                doctorDetails?.profile_image
+                  ? {uri: doctorDetails?.profile_image}
+                  : require('../../../asset/image/doctor.png')
+              }
             />
           </TouchableOpacity>
           <View style={{marginTop: 20, alignItems: 'center'}}>
@@ -264,10 +253,6 @@ function DoctorProfileWithId({
               <DoctorProfileEntry
                 label="Experience"
                 value={`${doctorDetails?.experience ?? '- -'} Yrs`}
-              />
-              <DoctorProfileEntry
-                label="Appointment Time"
-                value={doctorDetails?.appointment_time}
               />
             </View>
             <View style={style.aboutContainer}>
@@ -378,11 +363,10 @@ function DoctorProfileWithId({
         setModalVisible={setLeaveDeleteModalVisible}
         onsubmit={removeLeaveHandler}
       />
-      <Doctorprofilemodel
+      <DoctorProfileModal
         editMode={editMode}
         setEditMode={setEditMode}
         doctorDetails={doctorDetails}
-        onSubmit={updateProfileHandler}
       />
       <Profilepicuploadmodel
         modalVisible={picmodalVisible}
