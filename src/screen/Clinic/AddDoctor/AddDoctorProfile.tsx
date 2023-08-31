@@ -23,7 +23,8 @@ const AddDoctorProfile = (props: any) => {
       fees: doctorDetails?.fees?.toString(),
       username: doctorDetails?.name ?? '',
       degree: doctorDetails?.degree ?? '',
-      experience: doctorDetails?.experience ?? 0,
+      experience: doctorDetails?.experience?.toString(),
+      speciality: doctorDetails?.speciality ?? '',
     },
   });
 
@@ -35,7 +36,8 @@ const AddDoctorProfile = (props: any) => {
         fees: doctorDetails?.fees?.toString(),
         username: doctorDetails?.name ?? '',
         degree: doctorDetails.degree ?? '',
-        experience: doctorDetails.experience ?? 0,
+        experience: doctorDetails.experience?.toString(),
+        speciality: doctorDetails.speciality ?? '',
       });
     }
   }, [doctorDetails]);
@@ -49,7 +51,7 @@ const AddDoctorProfile = (props: any) => {
       fees: Number(formValues.fees),
       about: formValues.about,
       speciality: formValues.speciality,
-      experience: formValues.experience,
+      experience: Number(formValues.experience),
       degree: formValues.degree,
       clinic_id: userId,
     });

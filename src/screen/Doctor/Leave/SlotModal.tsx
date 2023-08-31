@@ -13,12 +13,14 @@ const SlotModal = ({
   modalVisible,
   setModalVisible,
   doctorId,
+  clinicId,
 }: {
   value: any;
   setValue: (p: any) => void;
   modalVisible: boolean;
   setModalVisible: any;
   doctorId: string;
+  clinicId: string | undefined;
 }) => {
   const {data: availabilityList} = useGetAvailabilityQuery({
     doctor_id: doctorId,

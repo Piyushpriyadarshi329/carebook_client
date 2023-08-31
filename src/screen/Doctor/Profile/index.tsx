@@ -130,6 +130,7 @@ function DoctorProfileWithId({
   const {data: leaves} = useGetLeaves({doctor_id: props.id});
   const {data: availability, isLoading} = useGetAvailabilityQuery({
     doctor_id: props.id,
+    clinic_id: props.clinic_id
   });
   const {mutate: removeAvailability} = useRemoveAvailability(() =>
     successAlert('Removed Availability.'),

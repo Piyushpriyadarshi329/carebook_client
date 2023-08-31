@@ -24,10 +24,11 @@ export function LoggedInUserLeave() {
   return <LeaveById id={userId} />;
 }
 export const Leave = (props: any) => {
-  return <LeaveById id={props.route.params.id} />;
+  const userId = useSelector((state: RootState) => state.Appdata.userid);
+  return <LeaveById id={props.route.params.id} clinic_id={userId} />;
 };
 
-function LeaveById(props: {id: string}) {
+function LeaveById(props: {id: string; clinic_id?: string}) {
   const navigation = useNavigation();
   const {errorAlert, successAlert} = useAlert();
   const [multipledate, setmultipledate] = useState(false);
@@ -201,6 +202,7 @@ function LeaveById(props: {id: string}) {
         modalVisible={modalVisiblework_time}
         setModalVisible={setModalVisiblework_time}
         doctorId={props.id}
+        clinicId={props.clinic_id}
       />
 
       <CalendarModal
