@@ -63,6 +63,7 @@ export interface LinkDoctorRequest {
 export type UpdateDoctorReqParams = {id: string};
 
 export type UpdateDoctorRequest = {
+  clinic_id?: string;
   name?: string;
   active?: boolean;
   profile_image_key?: string;
@@ -135,6 +136,7 @@ export interface ClinicWithAddress extends ClinicDto {
 export type ClinicWithAddressAndImage = ClinicWithAddress & {
   profile_image: string;
   clinic_doctor_id?: string;
+  fees?: number;
 };
 export type GetClinicsResponse = DataResponse<ClinicWithAddressAndImage[]>;
 

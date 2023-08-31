@@ -9,16 +9,17 @@ import ModalCloseOnEscape from '../../../../utils/ModalCloseOnEscape';
 import DoctorEditForm from './Form';
 import {ProfileForm} from '..';
 import {useMutateDoctorProfile} from '../../../useDoctorQuery';
-import Profilepicuploadmodel from '../../../../components/Profilepicuploadmodel';
 
 export const DoctorProfileModal = ({
   editMode,
   setEditMode,
   doctorDetails,
+  clinic_id,
 }: {
   editMode: boolean;
   setEditMode: any;
   doctorDetails?: DoctorDto;
+  clinic_id?: string;
 }) => {
   const formMethods = useForm<ProfileForm>({
     defaultValues: {
@@ -50,6 +51,7 @@ export const DoctorProfileModal = ({
   const updateProfileHandler = (formValues: ProfileForm) => {
     updateDoctor({
       name: formValues.username,
+      clinic_id: clinic_id ?? '',
       appointment_time: Number(formValues.consultationTime),
       fees: Number(formValues.fees),
       about: formValues.about,

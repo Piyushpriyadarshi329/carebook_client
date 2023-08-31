@@ -137,8 +137,6 @@ function DoctorProfileWithId({
   const {mutate: removeLeave} = useRemoveLeave({
     onSuccess: () => successAlert('Removed Leave.'),
   });
-  const [textShown, setTextShown] = useState(false); //To show ur remaining Text
-  const [lengthMore, setLengthMore] = useState(false); //to show the "Read more & Less Line"
   const [section, setSection] = useState<'About' | 'Availability' | 'Leaves'>(
     'About',
   );
@@ -367,6 +365,7 @@ function DoctorProfileWithId({
         editMode={editMode}
         setEditMode={setEditMode}
         doctorDetails={doctorDetails}
+        clinic_id={props.clinic_id}
       />
       <Profilepicuploadmodel
         modalVisible={picmodalVisible}
