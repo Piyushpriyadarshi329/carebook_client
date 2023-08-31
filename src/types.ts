@@ -101,12 +101,17 @@ export interface LeaveDto {
   active: boolean;
   fullday: boolean;
   reason?: string;
+  clinic_id: string;
 }
 export type AddLeaveRequest = Omit<
   LeaveDto,
   'id' | 'created_datetime' | 'active'
 >;
-export type GetLeaveRequest = {doctor_id: string};
+export type GetLeaveRequest = {
+  doctor_id: string;
+  clinic_id?: string;
+  fromDate: number;
+};
 
 /** CusotmerController */
 export interface CustomerDto {

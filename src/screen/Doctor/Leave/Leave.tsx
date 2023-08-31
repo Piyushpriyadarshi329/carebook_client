@@ -5,10 +5,8 @@ import CheckBox from 'react-native-check-box';
 import {useSelector} from 'react-redux';
 import Color from '../../../asset/Color';
 import Navbar from '../../../components/Navbar';
-import {useAddleave} from '../../../customhook/useAddleave';
 import {RootState} from '../../../redux/Store';
 import {AddLeaveRequest} from '../../../types';
-
 import {useNavigation} from '@react-navigation/native';
 import moment from 'moment';
 import {commonStyles} from '../../../asset/styles';
@@ -18,6 +16,7 @@ import {useAlert} from '../../../utils/useShowAlert';
 import {Availability} from '../../Availability/useGetAvailability';
 import AvailabilityCard from '../Profile/AvailabilityCard';
 import SlotModal from './SlotModal';
+import {useAddLeave} from './useLeaveQuery';
 
 export function LoggedInUserLeave() {
   const userId = useSelector((state: RootState) => state.Appdata.userid);
@@ -42,7 +41,7 @@ function LeaveById(props: {id: string; clinic_id?: string}) {
   const [selectedAvailability, setSelectedAvailability] =
     useState<Availability | null>(null);
 
-  const {mutate: addleave} = useAddleave(() => {
+  const {mutate: addleave} = useAddLeave(() => {
     successAlert('Added Leave.');
     navigation.goBack();
   });
@@ -70,6 +69,7 @@ function LeaveById(props: {id: string; clinic_id?: string}) {
         worktime_id: fullday ? '' : selectedAvailability?.id ?? '',
         fullday: fullday,
         reason: reason,
+        clinic_id: props.clinic_id ?? '',
       };
 
       addleave(payload);

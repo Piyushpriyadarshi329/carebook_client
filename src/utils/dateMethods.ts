@@ -9,13 +9,11 @@ export const getTimeStringFromDBTime = (time?: string) => {
   return hour + ' : ' + time.slice(2) + ' ' + ampm;
 };
 
-export const getToday = (): number =>
-  new Date(
-    `${
-      new Date().getFullYear() +
-      '-' +
-      ('0' + (new Date().getMonth() + 1)).slice(-2) +
-      '-' +
-      ('0' + new Date().getDate()).slice(-2)
-    }T00:00:00Z`,
-  ).getTime();
+export const getToday = (): number => {
+  const date = new Date();
+  date.setHours(0);
+  date.setMinutes(0);
+  date.setSeconds(0);
+  date.setMilliseconds(0);
+  return date.getTime();
+};

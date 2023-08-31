@@ -19,7 +19,6 @@ import {DoctorProfileModal} from './Edit/Modal';
 import Navbar from '../../../components/Navbar';
 import Profilepicuploadmodel from '../../../components/Profilepicuploadmodel';
 import SwipeDeleteButton from '../../../components/SwipeDeleteButton';
-import {useGetLeaves} from '../../../customhook/useGetLeaves';
 import type {RootState} from '../../../redux/Store';
 import {updateappstate} from '../../../redux/reducer/Authreducer';
 import {LeaveDto, VisibleDocument} from '../../../types';
@@ -36,8 +35,9 @@ import {
 import AboutMenuOptions from '../../Clinic/Profile/MenuOptions';
 import DoctorProfileEntry from '../../DoctorProfileEntry';
 import {useGetDoctor, useMutateDoctorProfile} from '../../useDoctorQuery';
-import {useRemoveLeave} from '../Leave/useLeaveQuery';
+import {useGetLeaves, useRemoveLeave} from '../Leave/useLeaveQuery';
 import LeaveCard from './LeaveCard';
+import {getToday} from '../../../utils/dateMethods';
 
 export interface ProfileForm {
   username: string;
@@ -127,10 +127,14 @@ function DoctorProfileWithId({
     useState<AvailabilityFE | null>();
   const [deleteLeave, setDeleteLeave] = useState<LeaveDto | null>();
 
-  const {data: leaves} = useGetLeaves({doctor_id: props.id});
+  const {data: leaves} = useGetLeaves({
+    doctor_id: props.id,
+    clinic_id: props.clinic_id,
+    fromDate: getToday(),
+  });
   const {data: availability, isLoading} = useGetAvailabilityQuery({
     doctor_id: props.id,
-    clinic_id: props.clinic_id
+    clinic_id: props.clinic_id,
   });
   const {mutate: removeAvailability} = useRemoveAvailability(() =>
     successAlert('Removed Availability.'),
