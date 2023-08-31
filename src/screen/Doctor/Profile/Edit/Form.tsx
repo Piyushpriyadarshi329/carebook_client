@@ -49,6 +49,7 @@ const DoctorEditForm = ({
           name="fees"
           placeholder={'Enter Consultation Fees'}
           label={'Consultation Fees'}
+          keyboardType="decimal-pad"
           style={AddressStyles.textInput}
           required
         />
@@ -66,14 +67,14 @@ const DoctorEditForm = ({
           keyboardType="number-pad"
         />
         <RHFDropdown
-          name="Enter specialty"
+          name="speciality"
           options={specialtyOptions ?? []}
           label="Specialty"
+          placeholder="Enter specialty"
           style={{backGroundColor: bgColor}}
           zIndex={100}
           componentProps={{
             style: {backgroundColor: bgColor},
-            containerStyle: {backgroundColor: bgColor},
             dropDownContainerStyle: {backgroundColor: bgColor},
           }}
         />

@@ -28,7 +28,8 @@ export const DoctorProfileModal = ({
       fees: doctorDetails?.fees?.toString(),
       username: doctorDetails?.name ?? '',
       degree: doctorDetails?.degree ?? '',
-      experience: doctorDetails?.experience ?? 0,
+      experience: doctorDetails?.experience?.toString(),
+      speciality: doctorDetails?.speciality,
     },
   });
 
@@ -40,7 +41,8 @@ export const DoctorProfileModal = ({
         fees: doctorDetails?.fees?.toString(),
         username: doctorDetails?.name ?? '',
         degree: doctorDetails.degree ?? '',
-        experience: doctorDetails.experience ?? 0,
+        experience: doctorDetails.experience?.toString(),
+        speciality: doctorDetails.speciality,
       });
     }
   }, [doctorDetails]);
@@ -51,13 +53,13 @@ export const DoctorProfileModal = ({
   const updateProfileHandler = (formValues: ProfileForm) => {
     updateDoctor({
       name: formValues.username,
-      clinic_id: clinic_id ?? '',
       appointment_time: Number(formValues.consultationTime),
       fees: Number(formValues.fees),
       about: formValues.about,
       speciality: formValues.speciality,
-      experience: formValues.experience,
+      experience: Number(formValues.experience),
       degree: formValues.degree,
+      clinic_id: clinic_id ?? '',
     });
   };
   return (
@@ -103,7 +105,7 @@ export const DoctorProfileModal = ({
           </View>
           <DoctorEditForm
             onSubmit={formMethods.handleSubmit(updateProfileHandler)}
-            bgColor={Color.secondary}
+            bgColor={Color.tertiary}
           />
         </View>
       </FormProvider>

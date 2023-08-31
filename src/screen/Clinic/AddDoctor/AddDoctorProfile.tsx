@@ -14,8 +14,8 @@ import Color from '../../../asset/Color';
 const AddDoctorProfile = (props: any) => {
   const navigation = useNavigation<any>();
   const userId = useSelector((state: RootState) => state.Appdata.userid);
-  const doctorId = props.route?.params?.id;
-  const {data: doctorDetails} = useGetDoctor(doctorId);
+  const doctorId = props.route?.params?.id as string;
+  const {data: doctorDetails} = useGetDoctor({id: doctorId, clinic_id: userId});
   const formMethods = useForm<ProfileForm>({
     defaultValues: {
       about: doctorDetails?.about,
@@ -51,6 +51,7 @@ const AddDoctorProfile = (props: any) => {
       speciality: formValues.speciality,
       experience: formValues.experience,
       degree: formValues.degree,
+      clinic_id: userId,
     });
   };
   const onSubmit = () => {

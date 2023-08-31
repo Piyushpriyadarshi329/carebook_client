@@ -44,7 +44,7 @@ export interface ProfileForm {
   about: string;
   consultationTime: string;
   fees: string;
-  experience: number;
+  experience: string;
   degree: string;
   speciality: string;
 }
@@ -140,7 +140,10 @@ function DoctorProfileWithId({
   const [section, setSection] = useState<'About' | 'Availability' | 'Leaves'>(
     'About',
   );
-  const {data: doctorDetails} = useGetDoctor(props.id);
+  const {data: doctorDetails} = useGetDoctor({
+    id: props.id,
+    clinic_id: props.clinic_id,
+  });
   const {mutate: updateDoctor} = useMutateDoctorProfile(props.id, () => {
     setEditMode(false);
   });

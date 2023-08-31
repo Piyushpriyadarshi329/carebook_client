@@ -45,7 +45,11 @@ export interface GetDotcorsListRequest {
 export type GetDoctorsListResponse = DataResponse<
   (DoctorDto & {
     profile_image: string;
+    fees?: number;
   })[]
+>;
+export type GetDoctorResponse = DataResponse<
+  DoctorDto & {profile_image: string; fees?: number}
 >;
 export type GetSpecialityListResponse = DataResponse<(SpecialityDto & {})[]>;
 
