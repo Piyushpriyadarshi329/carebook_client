@@ -110,7 +110,7 @@ export default function DoctorList() {
   const {data: profiles, isLoading} = useClinicsList({clinic_id: userid});
   const clinicDetails = profiles?.[0];
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: Color.tertiary}}>
       <ScrollView>
         <View style={styles.welcomeContainer}>
           <View style={{gap: 10}}>
