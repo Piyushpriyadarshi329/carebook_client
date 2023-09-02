@@ -100,7 +100,7 @@ export default function Doctorlist() {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{flex: 1}}>
       <Animated.View
         style={[styles.welcomeContainer, {transform: [{translateY}]}]}>
         <View style={[commonStyles.flexRowAlignCenter, {gap: 10}]}>

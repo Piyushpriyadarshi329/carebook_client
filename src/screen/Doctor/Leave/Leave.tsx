@@ -1,6 +1,12 @@
 import {Text} from '@rneui/themed';
 import React, {useState} from 'react';
-import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+  ScrollView,
+} from 'react-native';
 import CheckBox from 'react-native-check-box';
 import {useSelector} from 'react-redux';
 import Color from '../../../asset/Color';
@@ -13,10 +19,14 @@ import {commonStyles} from '../../../asset/styles';
 import Btn from '../../../components/Btn';
 import CalendarModal from '../../../components/CalendarModal';
 import {useAlert} from '../../../utils/useShowAlert';
-import {Availability} from '../../Availability/useGetAvailability';
+import {
+  Availability,
+  AvailabilityFE,
+} from '../../Availability/useGetAvailability';
 import AvailabilityCard from '../Profile/AvailabilityCard';
 import SlotModal from './SlotModal';
 import {useAddLeave} from './useLeaveQuery';
+import {getToday} from '../../../utils/dateMethods';
 
 export function LoggedInUserLeave() {
   const userId = useSelector((state: RootState) => state.Appdata.userid);
@@ -30,66 +40,63 @@ export const Leave = (props: any) => {
 function LeaveById(props: {id: string; clinic_id?: string}) {
   const navigation = useNavigation();
   const {errorAlert, successAlert} = useAlert();
-  const [multipledate, setmultipledate] = useState(false);
-  const [fullday, setfullday] = useState(false);
-  const [reason, setreason] = useState('');
-  const [fromdate, setfromdate] = useState<Date | null>(null);
-  const [todate, settodate] = useState<Date | null>(null);
+  const [multipleDate, setMultipleDate] = useState(false);
+  const [fullDay, setFullDay] = useState(false);
+  const [reason, setReason] = useState('');
+  const [fromDate, setFromDate] = useState<Date>(getToday());
+  const tomorrow = getToday();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const [toDate, setToDate] = useState<Date>(tomorrow);
   const [modalVisible, setModalVisible] = useState(false);
-  const [modalVisiblework_time, setModalVisiblework_time] = useState(false);
-  const [modalVisibleto, setModalVisibleto] = useState(false);
+  const [modalVisibleWorkTime, setModalVisibleWorkTime] = useState(false);
+  const [modalVisibleTo, setModalVisibleTo] = useState(false);
   const [selectedAvailability, setSelectedAvailability] =
-    useState<Availability | null>(null);
-
-  const {mutate: addleave} = useAddLeave(() => {
+    useState<AvailabilityFE | null>(null);
+  const {mutate: addLeave} = useAddLeave(() => {
     successAlert('Added Leave.');
     navigation.goBack();
   });
-  async function markunavailablefun() {
-    try {
-      if (!fromdate) {
-        errorAlert('please Select From Date');
-        return;
-      }
-
-      if (multipledate && !todate) {
-        errorAlert('please Select To Date');
-        return;
-      }
-
-      if (!fullday && !selectedAvailability) {
-        errorAlert('please Select Slot');
-        return;
-      }
-
-      let payload: AddLeaveRequest = {
-        doctor_id: props.id,
-        fromdate: new Date(fromdate).getTime(),
-        todate: (multipledate ? todate?.getTime() : fromdate?.getTime()) ?? 0,
-        worktime_id: fullday ? '' : selectedAvailability?.id ?? '',
-        fullday: fullday,
-        reason: reason,
-        clinic_id: props.clinic_id ?? '',
-      };
-
-      addleave(payload);
-    } catch (error) {
-      console.log(error);
+  function onSubmit() {
+    if (!fromDate) {
+      errorAlert('please Select From Date');
+      return;
     }
+
+    if (multipleDate && !toDate) {
+      errorAlert('please Select To Date');
+      return;
+    }
+
+    if (!fullDay && !selectedAvailability) {
+      errorAlert('please Select Slot');
+      return;
+    }
+
+    let payload: AddLeaveRequest = {
+      doctor_id: props.id,
+      fromdate: new Date(fromDate).getTime(),
+      todate: (multipleDate ? toDate?.getTime() : fromDate?.getTime()) ?? 0,
+      worktime_id: fullDay ? '' : selectedAvailability?.id ?? '',
+      fullday: fullDay,
+      reason: reason,
+      clinic_id: props.clinic_id ?? '',
+    };
+
+    addLeave(payload);
   }
 
   return (
     <>
       <Navbar title="Leave" asFullScreenModal />
-      <View style={styles.formContainer}>
+      <ScrollView style={styles.formContainer}>
         <View style={commonStyles.flexRowAlignCenter}>
           <CheckBox
             checkBoxColor={Color.primary}
             onClick={() => {
-              setmultipledate(!multipledate);
+              setMultipleDate(!multipleDate);
             }}
             style={{flex: 1, padding: 10}}
-            isChecked={multipledate}
+            isChecked={multipleDate}
             rightText="Multiples Dates"
             rightTextStyle={commonStyles.font18}
           />
@@ -97,13 +104,13 @@ function LeaveById(props: {id: string; clinic_id?: string}) {
 
         <View style={styles.fieldRow}>
           <Text style={commonStyles.font16}>Dates: </Text>
-          {!multipledate ? (
+          {!multipleDate ? (
             <TouchableOpacity
               style={styles.fromToContainer}
               onPress={() => setModalVisible(true)}>
               <View style={styles.from}>
                 <Text style={commonStyles.font16}>
-                  {moment(fromdate).format('ll') || 'Select Date'}
+                  {moment(fromDate).format('ll') || 'Select Date'}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -113,7 +120,7 @@ function LeaveById(props: {id: string; clinic_id?: string}) {
                 style={styles.from}
                 onPress={() => setModalVisible(true)}>
                 <Text style={commonStyles.font16}>
-                  {moment(fromdate).format('ll') || 'From Date'}
+                  {moment(fromDate).format('ll') || 'From Date'}
                 </Text>
               </TouchableOpacity>
               <Text style={[commonStyles.font24, commonStyles.weight800]}>
@@ -121,9 +128,9 @@ function LeaveById(props: {id: string; clinic_id?: string}) {
               </Text>
               <TouchableOpacity
                 style={styles.to}
-                onPress={() => setModalVisibleto(true)}>
+                onPress={() => setModalVisibleTo(true)}>
                 <Text style={commonStyles.font16}>
-                  {moment(todate).format('ll') || 'To Date'}
+                  {moment(toDate).format('ll') || 'To Date'}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -135,15 +142,15 @@ function LeaveById(props: {id: string; clinic_id?: string}) {
             style={{flex: 1, padding: 10}}
             checkBoxColor={Color.primary}
             onClick={() => {
-              setfullday(!fullday);
+              setFullDay(!fullDay);
             }}
-            isChecked={fullday}
+            isChecked={fullDay}
             rightText="Full Days"
             rightTextStyle={commonStyles.font18}
           />
         </View>
 
-        {!fullday && (
+        {!fullDay && (
           <View>
             <TouchableOpacity
               style={{
@@ -154,7 +161,7 @@ function LeaveById(props: {id: string; clinic_id?: string}) {
                 borderRadius: 5,
               }}
               onPress={() => {
-                setModalVisiblework_time(!modalVisiblework_time);
+                setModalVisibleWorkTime(!modalVisibleWorkTime);
               }}>
               <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
                 Select Slot
@@ -179,7 +186,7 @@ function LeaveById(props: {id: string; clinic_id?: string}) {
               backgroundColor: 'white',
             }}
             onChangeText={text => {
-              setreason(text);
+              setReason(text);
             }}></TextInput>
         </View>
 
@@ -189,26 +196,26 @@ function LeaveById(props: {id: string; clinic_id?: string}) {
             alignItems: 'center',
             marginTop: 100,
           }}>
-          <Btn title="Mark Unavailable" onPress={markunavailablefun} />
+          <Btn title="Mark Unavailable" onPress={onSubmit} />
         </View>
-      </View>
+      </ScrollView>
 
       <SlotModal
         value={selectedAvailability}
         setValue={p => {
           setSelectedAvailability(p);
-          setModalVisiblework_time(false);
+          setModalVisibleWorkTime(false);
         }}
-        modalVisible={modalVisiblework_time}
-        setModalVisible={setModalVisiblework_time}
+        modalVisible={modalVisibleWorkTime}
+        setModalVisible={setModalVisibleWorkTime}
         doctorId={props.id}
         clinicId={props.clinic_id}
       />
 
       <CalendarModal
-        date={fromdate}
+        date={fromDate}
         setDate={date => {
-          setfromdate(date);
+          setFromDate(date);
         }}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
@@ -216,13 +223,13 @@ function LeaveById(props: {id: string; clinic_id?: string}) {
       />
 
       <CalendarModal
-        date={todate}
+        date={toDate}
         setDate={date => {
-          settodate(date);
+          setToDate(date);
         }}
-        modalVisible={modalVisibleto}
-        setModalVisible={setModalVisibleto}
-        minDate={moment(fromdate || new Date()).format('YYYY-MM-DD')}
+        modalVisible={modalVisibleTo}
+        setModalVisible={setModalVisibleTo}
+        minDate={moment(fromDate || new Date()).format('YYYY-MM-DD')}
       />
     </>
   );
@@ -230,7 +237,6 @@ function LeaveById(props: {id: string; clinic_id?: string}) {
 
 const styles = StyleSheet.create({
   formContainer: {
-    flex: 1,
     gap: 20,
     color: 'black',
     marginHorizontal: 20,

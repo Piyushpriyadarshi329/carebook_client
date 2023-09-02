@@ -5,7 +5,13 @@ import {showtimefromstring} from '../../../AppFunction';
 import Color from '../../../asset/Color';
 import {AvailabilityFE} from '../../Availability/useGetAvailability';
 
-const AvailabilityCard = ({availability}: {availability: AvailabilityFE}) => {
+const AvailabilityCard = ({
+  availability,
+  hideDays,
+}: {
+  availability: AvailabilityFE;
+  hideDays?: boolean;
+}) => {
   return (
     <View
       style={{
@@ -15,31 +21,29 @@ const AvailabilityCard = ({availability}: {availability: AvailabilityFE}) => {
       }}>
       <View style={{flexDirection: 'row'}}>
         <View style={{flex: 1, alignItems: 'flex-start'}}>
-          <Text style={{color: 'black'}}>{availability.clinic_name}</Text>
+          <Text>{availability.clinic_name}</Text>
         </View>
         <View style={{flex: 2, alignItems: 'center'}}>
-          <Text style={{color: 'black'}}>
-            {showtimefromstring(availability.from_time)}
-          </Text>
-          <Text style={{color: 'black'}}>
-            {showtimefromstring(availability.to_time)}
-          </Text>
+          <Text>{showtimefromstring(availability.from_time)}</Text>
+          <Text>{showtimefromstring(availability.to_time)}</Text>
         </View>
         <View style={{flex: 1, alignItems: 'center'}}>
-          <Text style={{color: 'black'}}>Slots: {availability.no_of_slot}</Text>
+          <Text>Slots: {availability.no_of_slot}</Text>
         </View>
       </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginTop: 10,
-        }}>
-        <View style={{flex: 1}}>
-          <Text style={{color: 'black'}}>{availability.week_day}</Text>
-          <Text style={{color: 'black'}}>{availability.week}</Text>
+      {!hideDays && (
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginTop: 10,
+          }}>
+          <View style={{flex: 1}}>
+            <Text>{availability.week_day}</Text>
+            <Text>{availability.week}</Text>
+          </View>
         </View>
-      </View>
+      )}
     </View>
   );
 };

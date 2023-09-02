@@ -46,7 +46,7 @@ function Appointments({
 }) {
   const [centerdate, setcenterdate] = useState<Date>(new Date());
   const [modalVisible, setModalVisible] = useState(false);
-  const [selecteddate, setselecteddate] = useState(getToday());
+  const [selecteddate, setselecteddate] = useState(getToday().getTime());
   const {data: doctorDetails} = useGetDoctor({id: doctorId, clinic_id});
   const upcomingDates = useMemo(() => {
     let localdate = [];

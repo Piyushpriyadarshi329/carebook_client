@@ -130,7 +130,7 @@ function DoctorProfileWithId({
   const {data: leaves} = useGetLeaves({
     doctor_id: props.id,
     clinic_id: props.clinic_id,
-    fromDate: getToday(),
+    fromDate: getToday().getTime(),
   });
   const {data: availability, isLoading} = useGetAvailabilityQuery({
     doctor_id: props.id,
