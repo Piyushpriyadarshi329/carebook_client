@@ -11,6 +11,7 @@ import type {RootState} from '../redux/Store';
 import {BookingStatus} from '../types';
 import {getToday} from '../utils/dateMethods';
 import {useGetAppointments} from './Appointment/useAppointmentsQuery';
+import {FlatList} from 'react-native-gesture-handler';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -81,33 +82,27 @@ export default function Home() {
             Dr. {Appdata.username}
           </Text>
         </View>
-
-        <View
-          style={{
-            alignItems: 'flex-end',
-            flex: 1,
-            marginTop: 20,
-            marginLeft: 10,
-          }}>
-          <Icon name="bell" size={30} color={Color.primary} />
-        </View>
       </View>
       <View style={{flex: 4, marginHorizontal: 10}}>
         <Text style={{color: 'black', fontWeight: '500'}}>
-          Upcomming Appointments
+          Upcoming Appointments
         </Text>
 
-        <View style={{flex: 1}}>
-          <ScrollView horizontal={true}>
-            {Appointmentdata?.map(i => {
-              return (
-                <View style={{marginHorizontal: 10}}>
-                  <Appointmentcard data={i} />
-                </View>
-              );
-            })}
-          </ScrollView>
-        </View>
+        <FlatList
+          horizontal
+          data={Appointmentdata}
+          contentContainerStyle={{gap: 10, flex: 1}}
+          renderItem={({item}) => <Appointmentcard data={item} />}
+          ListEmptyComponent={
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'center',
+              }}>
+              <Text>Nothing here yet.</Text>
+            </View>
+          }
+        />
       </View>
       <View style={{flex: 5, marginHorizontal: 5, marginRight: 20}}>
         <View style={{marginTop: 10, flex: 1}}>
