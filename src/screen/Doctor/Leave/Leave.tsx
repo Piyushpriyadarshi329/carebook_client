@@ -21,7 +21,7 @@ import {commonStyles} from '../../../asset/styles';
 import Btn from '../../../components/Btn';
 import CalendarModal from '../../../components/CalendarModal';
 import {useAlert} from '../../../utils/useShowAlert';
-import {Availability} from '../../Availability/useGetAvailability';
+import {Availability} from '../../Availability/useGetavailability';
 import AvailabilityCard from '../Profile/AvailabilityCard';
 import SlotModal from './SlotModal';
 import {showtime} from '../../../AppFunction';

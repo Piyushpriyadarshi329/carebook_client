@@ -5,7 +5,7 @@ import Color from '../../../asset/Color';
 import {
   AvailabilityFE,
   Availability,
-} from '../../Availability/useGetAvailability';
+} from '../../Availability/useGetavailability';
 import {commonStyles} from '../../../asset/styles';
 
 const AvailabilityCard = ({availability}: {availability: AvailabilityFE}) => {

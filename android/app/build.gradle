@@ -83,7 +83,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.4"
+        versionName "1.0"
     }
     signingConfigs {
         debug {
@@ -94,13 +94,13 @@ android {
         }
           release { 
 
-    storeFile file('your_key_name.keystore') 
+    storeFile file('carebook.keystore') 
 
-    storePassword 'reddrop' 
+    storePassword 'carebook' 
 
     keyAlias 'your_key_alias' 
 
-    keyPassword 'reddrop' 
+    keyPassword 'carebook' 
 
     } 
     }
@@ -112,7 +112,7 @@ android {
                 signingConfig signingConfigs.release 
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            // signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }

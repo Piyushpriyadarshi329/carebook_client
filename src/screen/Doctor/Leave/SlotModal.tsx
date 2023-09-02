@@ -5,7 +5,7 @@ import Color from '../../../asset/Color';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {showtime} from '../../../AppFunction';
 import ModalCloseOnEscape from '../../../utils/ModalCloseOnEscape';
-import {useGetAvailabilityQuery} from '../../Availability/useGetAvailability';
+import {useGetAvailabilityQuery} from '../../Availability/useGetavailability';
 
 const SlotModal = ({
   value,
