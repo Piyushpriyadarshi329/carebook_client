@@ -69,6 +69,7 @@ export function useGetAvailabilityQuery(payload: GetAvailabilityRequest) {
 
 export const useRemoveAvailability = (p?: () => void) => {
   const qc = useQueryClient();
+  const {axiosAlert} = useAlert();
   return useMutation(
     (id: string) => axios.delete(`${AVAILABILITY_URL}/${id}`),
     {
@@ -76,6 +77,7 @@ export const useRemoveAvailability = (p?: () => void) => {
         qc.invalidateQueries(['AVAILABILITY']);
         p?.();
       },
+      onError: axiosAlert,
     },
   );
 };

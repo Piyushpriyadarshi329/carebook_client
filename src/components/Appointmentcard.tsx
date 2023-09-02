@@ -2,6 +2,8 @@ import {Text} from '@rneui/themed';
 import React from 'react';
 import {Image, View} from 'react-native';
 import Color from '../asset/Color';
+import moment from 'moment';
+import {commonStyles} from '../asset/styles';
 
 export default function Appointmentcard({data}: {data: any}) {
   return (
@@ -42,9 +44,15 @@ export default function Appointmentcard({data}: {data: any}) {
           color: 'black',
           marginLeft: 10,
           marginTop: 5,
-          marginBottom: 10,
         }}>
-        {new Date(Number(data.appointment_date)).toLocaleDateString('en-In')}
+        {moment(Number(data.appointment_date)).format('ll')}
+      </Text>
+      <Text
+        style={{
+          color: 'black',
+          marginLeft: 10,
+        }}>
+        Slot: {data.slot_index}
       </Text>
     </View>
   );

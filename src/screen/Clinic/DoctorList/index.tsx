@@ -1,9 +1,16 @@
 import {useNavigation} from '@react-navigation/native';
-import {FAB, Image} from '@rneui/base';
+import {FAB} from '@rneui/base';
 import {Icon, Text} from '@rneui/themed';
 import React, {useRef, useState} from 'react';
-import {Animated, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Swipeable} from 'react-native-gesture-handler';
+import {
+  Animated,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  FlatList,
+  Image,
+} from 'react-native';
+import {ScrollView, Swipeable} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
 import Color from '../../../asset/Color';
 import {commonStyles} from '../../../asset/styles';
@@ -15,6 +22,7 @@ import {DoctorDto} from '../../../types';
 import {getCloser} from '../../helper';
 import {useGetDoctorsList} from '../../useDoctorQuery';
 import {AppPages} from '../../../Routes/appPages';
+import {useClinicsList} from '../Profile/useGetcliniclist';
 
 const {diffClamp} = Animated;
 const headerHeight = 80 * 2;
@@ -38,7 +46,7 @@ const DeleteDoctorButton = ({onClick}: {onClick: () => void}) => {
   );
 };
 
-export default function Doctorlist() {
+export default function DoctorList() {
   const [modalVisible, setModalVisible] = useState(false);
   const [deleteddoctor, setdeleteddoctor] = useState<DoctorDto | null>();
   const navigation = useNavigation<any>();
@@ -99,49 +107,66 @@ export default function Doctorlist() {
     }
   };
 
+  const {data: profiles, isLoading} = useClinicsList({clinic_id: userid});
+  const clinicDetails = profiles?.[0];
   return (
     <View style={{flex: 1}}>
-      <Animated.View
-        style={[styles.welcomeContainer, {transform: [{translateY}]}]}>
-        <View style={[commonStyles.flexRowAlignCenter, {gap: 10}]}>
-          <Image
-            source={require('../../../asset/image/logoImg_rmbg.png')}
-            style={{
-              width: 80,
-              height: 80,
-            }}
-            resizeMode="contain"
-          />
-          <View>
-            <Text style={[commonStyles.font24, commonStyles.weight700]}>
-              Welcome!
-            </Text>
-            <Text style={[commonStyles.font20, commonStyles.weight400]}>
-              {username}
-            </Text>
+      <ScrollView>
+        <View style={styles.welcomeContainer}>
+          <View style={{gap: 10}}>
+            <Image
+              source={require('../../../asset/image/logo.jpeg')}
+              style={{
+                width: 200,
+                height: 80,
+              }}
+              resizeMode="cover"
+            />
+            <View>
+              <Text style={{fontSize: 36}}>Welcome!</Text>
+              <Text style={{fontSize: 18, fontFamily: 'Poppins-Regular'}}>
+                {username}
+              </Text>
+            </View>
+          </View>
+          <View style={{justifyContent: 'flex-end'}}>
+            <Image
+              style={{
+                height: 100,
+                width: 100,
+                borderRadius: 50,
+              }}
+              resizeMode="cover"
+              source={
+                clinicDetails?.profile_image
+                  ? {uri: clinicDetails?.profile_image}
+                  : require('../../../asset/image/hospital.png')
+              }
+            />
           </View>
         </View>
-      </Animated.View>
-      <Animated.FlatList
-        data={doctorlist}
-        renderItem={({item}) => (
-          <Swipeable
-            renderRightActions={() => (
-              <DeleteDoctorButton onClick={() => onclick(item)} />
-            )}>
-            <Doctorcard doctor={item} />
-          </Swipeable>
-        )}
-        onScroll={handleScroll}
-        ref={ref}
-        onMomentumScrollEnd={handleSnap}
-        ListEmptyComponent={
-          <View style={{justifyContent: 'center', alignItems: 'center'}}>
-            <Text style={{color: 'black'}}>No Doctor FOund</Text>
-          </View>
-        }
-        contentContainerStyle={styles.doctorListContainer}
-      />
+        <View style={styles.doctorListContainer}>
+          <FlatList
+            data={doctorlist}
+            renderItem={({item}) => (
+              <Swipeable
+                renderRightActions={() => (
+                  <DeleteDoctorButton onClick={() => onclick(item)} />
+                )}>
+                <Doctorcard doctor={item} />
+              </Swipeable>
+            )}
+            ref={ref}
+            ListEmptyComponent={
+              <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                <Text style={{color: 'black'}}>No Doctor FOund</Text>
+              </View>
+            }
+            contentContainerStyle={{gap: 15}}
+            ListFooterComponent={<View style={{height: 100}}></View>}
+          />
+        </View>
+      </ScrollView>
       <FAB
         placement="right"
         onPress={() => {
@@ -167,20 +192,19 @@ const styles = StyleSheet.create({
     backgroundColor: Color.secondary,
     paddingHorizontal: 30,
     paddingTop: 30,
-    paddingBottom: 80,
-    height: headerHeight,
-    position: 'absolute',
-    left: 0,
-    right: 0,
+    paddingBottom: 40,
     width: '100%',
     zIndex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   doctorListContainer: {
     borderTopStartRadius: 20,
     borderTopEndRadius: 20,
-    backgroundColor: Color.greybgc,
+    backgroundColor: Color.tertiary,
     gap: 15,
-    zIndex: 2,
-    paddingTop: headerHeight,
+    marginTop: -20,
+    paddingTop: 20,
+    zIndex: 50,
   },
 });

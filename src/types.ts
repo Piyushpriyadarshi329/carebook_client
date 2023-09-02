@@ -125,7 +125,7 @@ export interface CustomerDto {
   address: string;
   is_agent: boolean;
   gender: string;
-  age: number;
+  dob: string;
 }
 
 /** Clinic Controller */
