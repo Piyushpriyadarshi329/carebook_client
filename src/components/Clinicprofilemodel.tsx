@@ -1,20 +1,13 @@
+import {Text} from '@rneui/themed';
 import React, {useEffect} from 'react';
-import {
-  Modal,
-  Text,
-  TouchableOpacity,
-  View,
-  Button,
-  ScrollView,
-  KeyboardAvoidingView,
-} from 'react-native';
-import Color from './../asset/Color';
 import {FormProvider, useForm} from 'react-hook-form';
-import {RHFTextInput} from './RHFInputs/RHFTextInput';
+import {Modal, ScrollView, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import Btn from './Btn';
-import {AddressDto, ClinicWithAddress} from './../types';
+import Color from './../asset/Color';
+import {ClinicWithAddress} from './../types';
 import {AddressStyles} from './Address/styles';
+import Btn from './Btn';
+import {RHFTextInput} from './RHFInputs/RHFTextInput';
 
 export interface ClinicProfile {
   name: string;

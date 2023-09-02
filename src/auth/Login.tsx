@@ -1,20 +1,19 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useState, useEffect} from 'react';
-import {Button, Text, TextInput, View} from 'react-native';
+import messaging from '@react-native-firebase/messaging';
+import React, {useEffect, useState} from 'react';
+import {FormProvider, useForm} from 'react-hook-form';
+import {Image, View} from 'react-native';
+import {Text} from '@rneui/themed';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {useDispatch} from 'react-redux';
 import Color from '../asset/Color';
+import {commonStyles} from '../asset/styles';
+import Btn from '../components/Btn';
+import {RHFTextInput} from '../components/RHFInputs/RHFTextInput';
 import {useLogin} from '../customhook/useLogin';
+import {useAlert} from '../utils/useShowAlert';
+import {validateEmailOrPhone} from '../utils/validations';
 import {updateappstate} from './../redux/reducer/Authreducer';
 import {AuthStyles} from './authStyles';
-import {useAlert} from '../utils/useShowAlert';
-import {Image} from 'react-native';
-import Btn from '../components/Btn';
-import {FormProvider, useForm} from 'react-hook-form';
-import {RHFTextInput} from '../components/RHFInputs/RHFTextInput';
-import {commonStyles} from '../asset/styles';
-import {validateEmailOrPhone} from '../utils/validations';
-import messaging from '@react-native-firebase/messaging';
 
 interface LoginForm {
   username: string;

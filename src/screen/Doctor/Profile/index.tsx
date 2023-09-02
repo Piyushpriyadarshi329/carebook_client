@@ -1,26 +1,24 @@
 import {useNavigation} from '@react-navigation/native';
+import {Text} from '@rneui/themed';
 import React, {useCallback, useState} from 'react';
 import {
   Image,
   Pressable,
-  ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import Icon from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
-import {AppPages} from '../../../appPages';
+import {AppPages} from '../../../Routes/appPages';
 import Color from '../../../asset/Color';
 import {commonStyles} from '../../../asset/styles';
 import Btn from '../../../components/Btn';
-import {Doctorprofilemodel} from '../../../components/Doctorprofilemodel';
+import {DoctorProfileModal} from './Edit/Modal';
 import Navbar from '../../../components/Navbar';
 import Profilepicuploadmodel from '../../../components/Profilepicuploadmodel';
 import SwipeDeleteButton from '../../../components/SwipeDeleteButton';
-import {useGetLeaves} from '../../../customhook/useGetLeaves';
 import type {RootState} from '../../../redux/Store';
 import {updateappstate} from '../../../redux/reducer/Authreducer';
 import {LeaveDto, VisibleDocument} from '../../../types';
@@ -28,6 +26,7 @@ import AvailabilityCard from './AvailabilityCard';
 
 import {MenuProvider} from 'react-native-popup-menu';
 import ConformationModel from '../../../components/ConformationModel';
+import {useAlert} from '../../../utils/useShowAlert';
 import {
   AvailabilityFE,
   useGetAvailabilityQuery,
@@ -36,16 +35,16 @@ import {
 import AboutMenuOptions from '../../Clinic/Profile/MenuOptions';
 import DoctorProfileEntry from '../../DoctorProfileEntry';
 import {useGetDoctor, useMutateDoctorProfile} from '../../useDoctorQuery';
+import {useGetLeaves, useRemoveLeave} from '../Leave/useLeaveQuery';
 import LeaveCard from './LeaveCard';
-import {useRemoveLeave} from '../Leave/useLeaveQuery';
-import {useAlert} from '../../../utils/useShowAlert';
+import {getToday} from '../../../utils/dateMethods';
 
 export interface ProfileForm {
   username: string;
   about: string;
   consultationTime: string;
   fees: string;
-  experience: number;
+  experience: string;
   degree: string;
   speciality: string;
 }
@@ -84,11 +83,15 @@ export default function LoggedInDoctorProfile() {
 }
 export const DoctorProfile = (props: any) => {
   const [editMode, setEditMode] = useState(false);
+  const navigation = useNavigation<any>();
   return (
     <MenuProvider>
       <View style={{flex: 1, backgroundColor: 'white'}}>
         <Navbar
           title="Doctor Details"
+          onBack={() => {
+            navigation.navigate(AppPages.DoctorList);
+          }}
           endAdornment={
             <AboutMenuOptions setEditMode={() => setEditMode(true)} />
           }
@@ -124,9 +127,14 @@ function DoctorProfileWithId({
     useState<AvailabilityFE | null>();
   const [deleteLeave, setDeleteLeave] = useState<LeaveDto | null>();
 
-  const {data: leaves} = useGetLeaves({doctor_id: props.id});
+  const {data: leaves} = useGetLeaves({
+    doctor_id: props.id,
+    clinic_id: props.clinic_id,
+    fromDate: getToday().getTime(),
+  });
   const {data: availability, isLoading} = useGetAvailabilityQuery({
     doctor_id: props.id,
+    clinic_id: props.clinic_id,
   });
   const {mutate: removeAvailability} = useRemoveAvailability(() =>
     successAlert('Removed Availability.'),
@@ -134,34 +142,16 @@ function DoctorProfileWithId({
   const {mutate: removeLeave} = useRemoveLeave({
     onSuccess: () => successAlert('Removed Leave.'),
   });
-  const [textShown, setTextShown] = useState(false); //To show ur remaining Text
-  const [lengthMore, setLengthMore] = useState(false); //to show the "Read more & Less Line"
   const [section, setSection] = useState<'About' | 'Availability' | 'Leaves'>(
     'About',
   );
-  const {data: doctorDetails} = useGetDoctor(props.id);
+  const {data: doctorDetails} = useGetDoctor({
+    id: props.id,
+    clinic_id: props.clinic_id,
+  });
   const {mutate: updateDoctor} = useMutateDoctorProfile(props.id, () => {
     setEditMode(false);
   });
-  const toggleNumberOfLines = () => {
-    setTextShown(!textShown);
-  };
-
-  const onTextLayout = useCallback((e: any) => {
-    setLengthMore(e.nativeEvent.lines.length >= 4);
-  }, []);
-
-  const updateProfileHandler = (formValues: ProfileForm) => {
-    updateDoctor({
-      name: formValues.username,
-      appointment_time: Number(formValues.consultationTime),
-      fees: Number(formValues.fees),
-      about: formValues.about,
-      speciality: formValues.speciality,
-      experience: formValues.experience,
-      degree: formValues.degree,
-    });
-  };
 
   function uploadprofilpicfun(data: VisibleDocument | undefined) {
     updateDoctor({
@@ -209,7 +199,11 @@ function DoctorProfileWithId({
           <TouchableOpacity onPress={() => setpicModalVisible(true)}>
             <Image
               style={style.image}
-              source={{uri: doctorDetails?.profile_image}}
+              source={
+                doctorDetails?.profile_image
+                  ? {uri: doctorDetails?.profile_image}
+                  : require('../../../asset/image/doctor.png')
+              }
             />
           </TouchableOpacity>
           <View style={{marginTop: 20, alignItems: 'center'}}>
@@ -265,10 +259,6 @@ function DoctorProfileWithId({
               <DoctorProfileEntry
                 label="Experience"
                 value={`${doctorDetails?.experience ?? '- -'} Yrs`}
-              />
-              <DoctorProfileEntry
-                label="Appointment Time"
-                value={doctorDetails?.appointment_time}
               />
             </View>
             <View style={style.aboutContainer}>
@@ -379,11 +369,11 @@ function DoctorProfileWithId({
         setModalVisible={setLeaveDeleteModalVisible}
         onsubmit={removeLeaveHandler}
       />
-      <Doctorprofilemodel
+      <DoctorProfileModal
         editMode={editMode}
         setEditMode={setEditMode}
         doctorDetails={doctorDetails}
-        onSubmit={updateProfileHandler}
+        clinic_id={props.clinic_id}
       />
       <Profilepicuploadmodel
         modalVisible={picmodalVisible}

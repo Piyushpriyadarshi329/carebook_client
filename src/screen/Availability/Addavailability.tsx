@@ -1,10 +1,10 @@
 import {DateTimePickerAndroid} from '@react-native-community/datetimepicker';
 import {useNavigation} from '@react-navigation/native';
+import {Text} from '@rneui/themed';
 import React, {useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,

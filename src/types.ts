@@ -27,6 +27,11 @@ export interface SpecialityDto {
   name: string;
   doc_key: string;
 }
+export interface LocationDto {
+  id: string;
+  name: string;
+}
+export type GetLocationListResponse = DataResponse<(LocationDto & {})[]>;
 
 export interface GetDotcorsListRequest {
   clinic_id?: string;
@@ -40,7 +45,11 @@ export interface GetDotcorsListRequest {
 export type GetDoctorsListResponse = DataResponse<
   (DoctorDto & {
     profile_image: string;
+    fees?: number;
   })[]
+>;
+export type GetDoctorResponse = DataResponse<
+  DoctorDto & {profile_image: string; fees?: number}
 >;
 export type GetSpecialityListResponse = DataResponse<(SpecialityDto & {})[]>;
 
@@ -48,7 +57,7 @@ export type AddDoctorRequest = Omit<DoctorDto, 'id'> & {
   password: string;
   clinic_id: string;
 };
-export type AddDoctorResponse = DataResponse<any>;
+export type AddDoctorResponse = DataResponse<{id: string}>;
 
 export interface LinkDoctorRequest {
   clinic_id: string;
@@ -58,6 +67,7 @@ export interface LinkDoctorRequest {
 export type UpdateDoctorReqParams = {id: string};
 
 export type UpdateDoctorRequest = {
+  clinic_id?: string;
   name?: string;
   active?: boolean;
   profile_image_key?: string;
@@ -91,12 +101,17 @@ export interface LeaveDto {
   active: boolean;
   fullday: boolean;
   reason?: string;
+  clinic_id: string;
 }
 export type AddLeaveRequest = Omit<
   LeaveDto,
   'id' | 'created_datetime' | 'active'
 >;
-export type GetLeaveRequest = {doctor_id: string};
+export type GetLeaveRequest = {
+  doctor_id: string;
+  clinic_id?: string;
+  fromDate: number;
+};
 
 /** CusotmerController */
 export interface CustomerDto {
@@ -130,6 +145,7 @@ export interface ClinicWithAddress extends ClinicDto {
 export type ClinicWithAddressAndImage = ClinicWithAddress & {
   profile_image: string;
   clinic_doctor_id?: string;
+  fees?: number;
 };
 export type GetClinicsResponse = DataResponse<ClinicWithAddressAndImage[]>;
 
@@ -278,7 +294,6 @@ export interface Appointmentdto extends BookingDto {
 }
 
 export interface ShowAddress {
-  id: string;
   address_line1: string;
   address_line2: string;
   city: string;
@@ -287,15 +302,8 @@ export interface ShowAddress {
   lat?: number;
   lan?: number;
 }
-export interface AddressDto {
+export interface AddressDto extends ShowAddress {
   id: string;
-  address_line1: string;
-  address_line2: string;
-  city: string;
-  state: string;
-  pincode: string;
-  lat?: number;
-  lan?: number;
 }
 export interface AddAdressRequest {
   id?: string;

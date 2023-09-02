@@ -1,9 +1,8 @@
+import {Text} from '@rneui/themed';
 import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
-import {useSelector} from 'react-redux';
+import {TouchableOpacity, View} from 'react-native';
 import Color from '../asset/Color';
 import {useGetAppointments} from '../screen/Appointment/useAppointmentsQuery';
-import {RootState} from '../redux/Store';
 
 export const UpcomingDateTile = (props: {
   date: any;

@@ -1,12 +1,13 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import {DoctorAvaiability} from '../../../screen/Availability/Addavailability';
-import Adddoctor from '../../../screen/Adddoctor';
-import Doctorlist from '../../../screen/Doctorlist';
+import Adddoctor from '../../../screen/Clinic/AddDoctor';
+import Doctorlist from '../../../screen/Clinic/DoctorList';
 import {DoctorProfile} from '../../../screen/Doctor/Profile';
 import {Leave} from '../../../screen/Doctor/Leave/Leave';
-import {AppPages} from '../../../appPages';
+import {AppPages} from '../../appPages';
 import {AppointmentForDoctor} from '../../../screen/Appointment/Appointments';
+import AddDoctorProfile from '../../../screen/Clinic/AddDoctor/AddDoctorProfile';
 
 export default function Clinicdoctorliststack() {
   const Stack = createNativeStackNavigator();
@@ -19,8 +20,13 @@ export default function Clinicdoctorliststack() {
         options={{headerShown: false, headerTitle: 'Doctors'}}
       />
       <Stack.Screen
-        name="Adddoctor"
+        name={AppPages.AddDoctor}
         component={Adddoctor}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name={AppPages.AddDoctorProfile}
+        component={AddDoctorProfile}
         options={{headerShown: false}}
       />
       <Stack.Screen

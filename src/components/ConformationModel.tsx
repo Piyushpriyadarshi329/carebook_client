@@ -1,5 +1,7 @@
-import {View, Text, Modal, Button} from 'react-native';
-import React, {useState} from 'react';
+import {Text} from '@rneui/themed';
+import React from 'react';
+import {Modal, View} from 'react-native';
+import {Button} from '@rneui/themed';
 import Color from '../asset/Color';
 import ModalCloseOnEscape from '../utils/ModalCloseOnEscape';
 
@@ -30,7 +32,7 @@ export default function ConformationModel({
           backgroundColor: 'white',
           marginTop: 250,
           padding: 30,
-          marginHorizontal: 70,
+          marginHorizontal: 50,
           borderRadius: 20,
           borderColor: 'black',
           borderWidth: 1,
@@ -59,16 +61,23 @@ export default function ConformationModel({
           </Text>
         </View>
 
-        <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
+            gap: 20,
+          }}>
           <Button
             title="Cancel"
             color={Color.primary}
+            buttonStyle={{paddingHorizontal: 20}}
             onPress={() => {
               setModalVisible(!modalVisible);
             }}></Button>
           <Button
             title="Yes"
             color={Color.red}
+            buttonStyle={{paddingHorizontal: 40}}
             onPress={() => {
               onsubmit();
             }}></Button>

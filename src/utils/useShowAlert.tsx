@@ -10,7 +10,11 @@ export const useAlert = () => {
     try {
       if (e.response) {
         if (e.response.data) {
-          errorAlert(e.response.data.data?.message || e.response.data.Message);
+          errorAlert(
+            errorCodeToReason[e.response.data.data?.errno as number] ||
+              e.response.data.data?.message ||
+              e.response.data.Message,
+          );
         } else {
           errorAlert(texts.SomethingWentWrong);
         }
@@ -22,7 +26,7 @@ export const useAlert = () => {
   return {errorAlert, successAlert, axiosAlert};
 };
 
-export const errorCodeToReason = {
-  1064: 'SQL Error',
-  1062: 'Duplicate Entry',
+export const errorCodeToReason: {[key in number]: string} = {
+  1062: 'Entry Already Exists',
 };
+// 1064: 'SQL Error',

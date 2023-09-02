@@ -1,50 +1,25 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
-import {
-  Button,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  ScrollView,
-} from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
+import {Text} from '@rneui/themed';
+import React, {useMemo} from 'react';
+import {FormProvider, useForm} from 'react-hook-form';
+import {Button, ScrollView, StyleSheet, View} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {useSelector} from 'react-redux';
-import Color from '../asset/Color';
-import {commonStyles} from '../asset/styles';
-import type {RootState} from '../redux/Store';
-import {AddDoctorRequest} from '../types';
+import Color from '../../../asset/Color';
+import {commonStyles} from '../../../asset/styles';
+import Btn from '../../../components/Btn';
+import {RHFDropdown} from '../../../components/RHFInputs/RHFDropdown';
+import {RHFTextInput} from '../../../components/RHFInputs/RHFTextInput';
+import type {RootState} from '../../../redux/Store';
+import {AddDoctorRequest} from '../../../types';
+import {validatePhone} from '../../../utils/validations';
 import {
   useAddDoctor,
   useGetDoctorsList,
   useLinkDoctorMutation,
-} from './useDoctorQuery';
-import Btn from '../components/Btn';
-import {FormProvider, useForm} from 'react-hook-form';
-import {RHFTextInput} from '../components/RHFInputs/RHFTextInput';
-import {RHFDropdown} from '../components/RHFInputs/RHFDropdown';
-import {validateEmail, validatePhone} from '../utils/validations';
-import Navbar from '../components/Navbar';
+} from '../../useDoctorQuery';
+import {useGetSpecialtiesQuery} from '../../../customhook/useSpecialty';
 
-const specialitylist = [
-  {
-    value: 'Neurology',
-    label: 'Neurology',
-  },
-  {
-    value: 'Radiology',
-    label: 'Radiology',
-  },
-  {
-    value: 'Cardiology',
-    label: 'Cardiology',
-  },
-  {
-    value: 'Otorhinolaryngology',
-    label: 'Otorhinolaryngology',
-  },
-];
 interface DoctorAddForm {
   name: string;
   mobile: string;
@@ -53,41 +28,43 @@ interface DoctorAddForm {
   speciality: string;
 }
 export default function Adddoctor() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const userId = useSelector((state: RootState) => state.Appdata.userid);
+  const {data: specialties} = useGetSpecialtiesQuery();
   const {mutate: addDoctor} = useAddDoctor({
-    onSuccess: () => {
-      console.log('success.');
-      navigation.goBack();
+    onSuccess: data => {
+      navigation.navigate('AddDoctorProfile', {id: data?.id});
     },
   });
-  const {mutate: linkDoctorMutate} = useLinkDoctorMutation(() => {
-    navigation.goBack();
-  });
+  const {mutate: linkDoctorMutate} = useLinkDoctorMutation(
+    (data, variables) => {
+      navigation.navigate('AddDoctorProfile', {id: variables.doctor_id});
+    },
+  );
   const formMethods = useForm<DoctorAddForm>();
   const mobile = formMethods.watch('mobile');
   const {data: existingDoctors} = useGetDoctorsList(
     {mobile: mobile},
     mobile?.length === 10,
   );
-  async function submithandler(formValues: DoctorAddForm) {
-    try {
-      let payload: AddDoctorRequest = {
-        mobile: formValues.mobile,
-        email: formValues.email,
-        name: formValues.name,
-        password: formValues.password,
-        clinic_id: userId ?? '',
-        degree: '',
-        active: true,
-        profile_image_key: '',
-        speciality: formValues.speciality,
-        about: '',
-      };
-      addDoctor(payload);
-    } catch (error) {
-      console.log(error);
-    }
+  const specialtyOptions = useMemo(
+    () => specialties?.map(s => ({label: s.name, value: s.name})),
+    [specialties],
+  );
+  function submithandler(formValues: DoctorAddForm) {
+    let payload: AddDoctorRequest = {
+      mobile: formValues.mobile,
+      email: formValues.email,
+      name: formValues.name,
+      password: formValues.password,
+      clinic_id: userId ?? '',
+      degree: '',
+      active: true,
+      profile_image_key: '',
+      speciality: formValues.speciality,
+      about: '',
+    };
+    addDoctor(payload);
   }
   const linkDoctor = () => {
     linkDoctorMutate({
@@ -129,8 +106,8 @@ export default function Adddoctor() {
                   <Icon name="tago" size={20} color="black" />
                   <RHFDropdown
                     name={'speciality'}
-                    options={specialitylist}
-                    placeholder="Select speciality"
+                    options={specialtyOptions ?? []}
+                    placeholder="Select specialty"
                     required
                   />
                 </View>
@@ -208,6 +185,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     marginHorizontal: 40,
     marginRight: 60,
+    gap: 5,
   },
   rowItem: {
     ...commonStyles.flexRowAlignCenter,

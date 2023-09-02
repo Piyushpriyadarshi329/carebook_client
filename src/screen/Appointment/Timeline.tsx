@@ -1,6 +1,8 @@
+import LoadingDots from '@apolloeagle/loading-dots';
+import {Text} from '@rneui/themed';
 import _ from 'lodash';
 import React from 'react';
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
 import Timeline from 'react-native-timeline-flatlist';
 import uuid from 'react-native-uuid';
 import Color from '../../asset/Color';
@@ -10,7 +12,6 @@ import {Appointmentdto, BookingStatus} from '../../types';
 import {getTimeStringFromDBTime} from '../../utils/dateMethods';
 import {useAlert} from '../../utils/useShowAlert';
 import Status from './Status';
-import LoadingDots from '@apolloeagle/loading-dots';
 
 const AppointmentTimeline = ({
   appointments,

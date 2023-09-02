@@ -4,10 +4,10 @@ import {
   Modal,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import {Text} from '@rneui/themed';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Color from '../../asset/Color';
 import {AddressDto} from '../../types';

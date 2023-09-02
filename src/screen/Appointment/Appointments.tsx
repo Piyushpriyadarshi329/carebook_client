@@ -25,20 +25,29 @@ export const LoggedInUserAppointments = () => {
   return <Appointments doctorId={userId} />;
 };
 export const AppointmentForDoctor = (props: any) => {
-  return <Appointments doctorId={props.route.params.id} view={'CLINIC'} />;
+  const userId = useSelector((state: RootState) => state.Appdata.userid);
+  return (
+    <Appointments
+      doctorId={props.route.params.id}
+      view={'CLINIC'}
+      clinic_id={userId}
+    />
+  );
 };
 
 function Appointments({
   doctorId,
   view = 'DOCTOR',
+  clinic_id,
 }: {
   doctorId: string;
   view?: 'CLINIC' | 'DOCTOR';
+  clinic_id?: string;
 }) {
   const [centerdate, setcenterdate] = useState<Date>(new Date());
   const [modalVisible, setModalVisible] = useState(false);
-  const [selecteddate, setselecteddate] = useState(getToday());
-  const {data: doctorDetails} = useGetDoctor(doctorId);
+  const [selecteddate, setselecteddate] = useState(getToday().getTime());
+  const {data: doctorDetails} = useGetDoctor({id: doctorId, clinic_id});
   const upcomingDates = useMemo(() => {
     let localdate = [];
 

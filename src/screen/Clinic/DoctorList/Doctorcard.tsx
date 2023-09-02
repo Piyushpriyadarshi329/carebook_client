@@ -1,16 +1,17 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
-import Color from '../asset/Color';
 import {useNavigation} from '@react-navigation/native';
+import {Text} from '@rneui/themed';
+import React from 'react';
+import {Image, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import {useSelector} from 'react-redux';
-import {RootState} from '../redux/Store';
-import {AppPages} from '../appPages';
-import {DoctorDto} from '../types';
-import {commonStyles} from '../asset/styles';
+import {AppPages} from '../../../Routes/appPages';
+import Color from '../../../asset/Color';
+import {commonStyles} from '../../../asset/styles';
+import {RootState} from '../../../redux/Store';
+import {DoctorDto} from '../../../types';
 
 export default function Doctorcard({doctor}: {doctor: DoctorDto}) {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const userId = useSelector((state: RootState) => state.Appdata.userid);
   const navigateToAppointments = () =>
     navigation.navigate(AppPages.Appointments, {
@@ -44,7 +45,7 @@ export default function Doctorcard({doctor}: {doctor: DoctorDto}) {
             source={
               doctor.profile_image
                 ? {uri: doctor.profile_image}
-                : require('./../asset/image/doctor.png')
+                : require('../../../asset/image/doctor.png')
             }
           />
         </View>

@@ -11,6 +11,7 @@ import {
   AddDoctorRequest,
   AddDoctorResponse,
   DoctorDto,
+  GetDoctorResponse,
   GetDoctorsListResponse,
   GetDotcorsListRequest,
   LinkDoctorRequest,
@@ -33,20 +34,25 @@ export const useGetDoctorsList = (
   );
 };
 
-export const useGetDoctor = (
-  id: string,
+export const useGetDoctor = ({
+  id,
+  onSuccess,
+  clinic_id,
+}: {
+  id: string;
   onSuccess?: (
     p?: DoctorDto & {
       profile_image: string;
     },
-  ) => void,
-) => {
+  ) => void;
+  clinic_id?: string;
+}) => {
   const {axiosAlert} = useAlert();
   return useQuery(
     ['DOCTOR', id],
-    () => axios.post<GetDoctorsListResponse>(GET_DOCTOR, {id}),
+    () => axios.post<GetDoctorResponse>(GET_DOCTOR, {id, clinic_id}),
     {
-      select: data => data.data.data?.[0],
+      select: data => data.data.data,
       onSuccess: onSuccess,
       onError: e => {
         axiosAlert(e);
@@ -75,15 +81,17 @@ export const useMutateDoctorProfile = (doctor_id: string, onSuccess?: any) => {
   );
 };
 
-export const useLinkDoctorMutation = (onSuccess: any) => {
+export const useLinkDoctorMutation = (
+  onSuccess?: (data: any, vars: LinkDoctorRequest) => void,
+) => {
   const {axiosAlert} = useAlert();
   const qc = useQueryClient();
   return useMutation(
     (payload: LinkDoctorRequest) => axios.post(LINK_DOCTOR_URL, payload),
     {
-      onSuccess: () => {
+      onSuccess: (data, variables) => {
         qc.invalidateQueries(['DOCTORS']);
-        onSuccess();
+        onSuccess?.(data, variables);
       },
       onError: e => {
         axiosAlert(e);
@@ -92,7 +100,11 @@ export const useLinkDoctorMutation = (onSuccess: any) => {
   );
 };
 
-export const useAddDoctor = ({onSuccess}: {onSuccess: () => void}) => {
+export const useAddDoctor = ({
+  onSuccess,
+}: {
+  onSuccess: (doctor?: {id: string}) => void;
+}) => {
   const {axiosAlert} = useAlert();
   const qc = useQueryClient();
   return useMutation(
@@ -100,9 +112,9 @@ export const useAddDoctor = ({onSuccess}: {onSuccess: () => void}) => {
       return axios.post<AddDoctorResponse>(ADD_DOCTOR_URL, payload);
     },
     {
-      onSuccess: () => {
+      onSuccess: data => {
         qc.invalidateQueries(['DOCTORS']);
-        onSuccess();
+        onSuccess(data.data.data);
       },
       onError: (e: any) => {
         axiosAlert(e);
