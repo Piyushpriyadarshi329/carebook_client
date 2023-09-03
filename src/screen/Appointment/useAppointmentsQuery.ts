@@ -11,6 +11,7 @@ export function useGetAppointments(payload: GetAppointmentsRequest) {
       payload.appointment_date,
       payload.status,
       payload.from_date,
+      payload.clinicId,
     ],
     () => axios.post<GetAppointmentResponse>(GET_APPOINTMENTS_URL, payload),
     {select: data => data.data.data, staleTime: 1000},

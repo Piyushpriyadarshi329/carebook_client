@@ -17,10 +17,12 @@ const AppointmentTimeline = ({
   appointments,
   doctorId,
   appointmentDate,
+  isForClinic,
 }: {
   appointments: Appointmentdto[] | undefined;
   doctorId: string;
   appointmentDate: number;
+  isForClinic: boolean;
 }) => {
   const {successAlert} = useAlert();
   const {mutate: updateSlotStatus, isLoading} = useUpdateSlotStatus(() => {
@@ -56,6 +58,7 @@ const AppointmentTimeline = ({
           appointment.status === BookingStatus.COMPLETED;
         const isNextCompleted =
           appointments[index + 1]?.status === BookingStatus.COMPLETED;
+        console.log(appointment.clinic_name);
         return {
           id: appointment.id,
           type: 'SLOT',
@@ -65,6 +68,7 @@ const AppointmentTimeline = ({
           circleColor: isCurrentCompleted ? 'white' : undefined,
           lineColor: isNextCompleted ? Color.success : undefined,
           status: appointment.status,
+          clinic: appointment.clinic_name,
         };
       });
 
@@ -119,6 +123,9 @@ const AppointmentTimeline = ({
                 {rowData.title}
               </Text>
               <Text style={commonStyles.caption}>{rowData.description}</Text>
+              {!isForClinic && (
+                <Text style={commonStyles.caption}>{rowData.clinic}</Text>
+              )}
             </View>
             <View style={{paddingRight: 20}}>
               {isLoading ? (

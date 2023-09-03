@@ -9,10 +9,12 @@ export const UpcomingDateTile = (props: {
   setselecteddate: any;
   isSelected: boolean;
   doctorId: string;
+  clinicId: string | undefined;
 }) => {
   const {data: appointmentdata} = useGetAppointments({
     doctorId: props.doctorId,
     appointment_date: props.date.value,
+    clinicId: props.clinicId,
   });
   return (
     <TouchableOpacity

@@ -17,6 +17,7 @@ export const RHFDropdown = (props: {
   label?: string;
   zIndex?: number;
   componentProps?: any;
+  value?: 'value' | 'label' | 'object';
 }) => {
   const {control, getValues} = useFormContext();
   const [open, setOpen] = useState(false);

@@ -79,10 +79,11 @@ function Appointments({
 
     return localdate;
   }, [centerdate]);
-
+  console.log(clinic_id);
   const {data: appointments, isLoading} = useGetAppointments({
     doctorId: doctorId,
     appointment_date: selecteddate,
+    clinicId: clinic_id,
   });
 
   return (
@@ -113,6 +114,7 @@ function Appointments({
                 {...{date, setselecteddate}}
                 isSelected={date.value === selecteddate}
                 doctorId={doctorId}
+                clinicId={clinic_id}
               />
             );
           })}
@@ -132,6 +134,7 @@ function Appointments({
           appointments={appointments}
           doctorId={doctorId}
           appointmentDate={selecteddate}
+          isForClinic={!!clinic_id}
         />
       </View>
     </View>

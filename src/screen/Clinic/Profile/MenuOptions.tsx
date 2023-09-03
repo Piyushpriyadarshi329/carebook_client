@@ -9,8 +9,14 @@ import MenuOptionsComponent from '../../../components/MenuOptionsComponent';
 const AboutMenuOptions = ({
   onLogout,
   setEditMode,
+  setEditMode2,
+  edit1Title,
+  edit2Title,
 }: {
   setEditMode: () => void;
+  setEditMode2?: () => void;
+  edit1Title?: string;
+  edit2Title?: string;
   onLogout?: () => void;
 }) => {
   const options = [
@@ -18,12 +24,23 @@ const AboutMenuOptions = ({
       item: (
         <View style={[commonStyles.flexRowAlignCenter, {gap: 20}]}>
           <Icon name="edit" size={17} color={Color.primary} />
-          <Text style={commonStyles.font18}>Edit</Text>
+          <Text style={commonStyles.font18}>{edit1Title ?? 'Edit'}</Text>
         </View>
       ),
       onPress: setEditMode,
     },
   ];
+  if (setEditMode2) {
+    options.push({
+      item: (
+        <View style={[commonStyles.flexRowAlignCenter, {gap: 20}]}>
+          <Icon name="edit" size={17} color={Color.primary} />
+          <Text style={commonStyles.font18}>{edit2Title ?? 'Edit 2'}</Text>
+        </View>
+      ),
+      onPress: setEditMode2,
+    });
+  }
   if (onLogout) {
     options.push({
       item: (

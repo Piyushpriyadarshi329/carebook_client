@@ -289,6 +289,7 @@ export interface OccupiedDto {
 export interface GetAppointmentsRequest {
   customerId?: string;
   doctorId?: string;
+  clinicId?: string;
   status?: BookingStatus[];
   appointment_date?: number;
   from_date?: number;
@@ -306,6 +307,7 @@ export interface Appointmentdto extends BookingDto {
 }
 
 export interface ShowAddress {
+  id?: string;
   address_line1: string;
   address_line2: string;
   city: string;
@@ -315,7 +317,7 @@ export interface ShowAddress {
   lan?: number;
 }
 export interface AddressDto extends ShowAddress {
-  id: string;
+  id?: string;
 }
 export interface AddAdressRequest {
   id?: string;

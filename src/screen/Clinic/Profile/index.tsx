@@ -27,11 +27,12 @@ import AboutMenuOptions from './MenuOptions';
 import {useAddaddressMutation} from './useAddaddress';
 import {useUpdateClinic} from './useClinicQuery';
 import {useClinicsList} from './useGetcliniclist';
+import {useGetLocation} from './useLocationQuery';
 
 export default function Clinicprofile() {
   const dispatch = useDispatch();
   const userId = useSelector((state: RootState) => state.Appdata.userid);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [addressModal, setAddressModal] = useState(false);
   const [picmodalVisible, setpicModalVisible] = useState(false); // profile pic
   const [clinicModalVisible, setClinicModalVisible] = useState(false);
 
@@ -46,17 +47,18 @@ export default function Clinicprofile() {
   );
   const {mutate: mutateAddress} = useAddaddressMutation({
     onSuccess: data => {
-      setModalVisible(false);
+      setAddressModal(false);
       qc.invalidateQueries(['CLINICS', {clinic_id: userId}]);
     },
   });
-  function submithandler(formValues: AddressDto) {
+  const {data: locations} = useGetLocation();
+  function onAddress(formValues: AddressDto) {
     mutateAddress({
       id: clinicDetails?.address.id,
       user_id: userId,
       address_line1: formValues.address_line1,
       address_line2: formValues.address_line2,
-      city: formValues.city,
+      city: locations?.find(l => l.id == formValues.city)?.name ?? '',
       state: formValues.state,
       pincode: Number(formValues.pincode),
       lat: Number(formValues.lat),
@@ -97,6 +99,9 @@ export default function Clinicprofile() {
             <AboutMenuOptions
               onLogout={logOutHandler}
               setEditMode={() => setClinicModalVisible(true)}
+              setEditMode2={() => setAddressModal(true)}
+              edit2Title="Edit Address"
+              edit1Title="Edit Profile"
             />
           }
         />
@@ -143,9 +148,9 @@ export default function Clinicprofile() {
           </View>
         </View>
         <AddressModal
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          onSubmit={submithandler}
+          modalVisible={addressModal}
+          setModalVisible={setAddressModal}
+          onSubmit={onAddress}
           defaultValues={clinicDetails?.address}
         />
         <Clinicprofilemodel

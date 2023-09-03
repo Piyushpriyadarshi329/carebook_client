@@ -27,3 +27,4 @@ export const GET_BOOKING_SUMMARY_Url = BASE_URL + '/getBookingsSummary';
 export const DOCUMENT = BASE_URL + '/document';
 export const GET_SPECIALTY_URL = BASE_URL + '/getSpeciality';
 export const REMOVE_DOCTOR_MAPPING_URL = BASE_URL + '/removeDoctorMapping';
+export const GETLOCATION_URL = BASE_URL + '/getLocation';

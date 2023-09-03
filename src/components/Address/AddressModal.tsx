@@ -15,6 +15,8 @@ import Btn from '../Btn';
 import {RHFTextInput} from '../RHFInputs/RHFTextInput';
 import {AddressStyles} from './styles';
 import GetLocation from 'react-native-get-location';
+import {useGetLocation} from '../../screen/Clinic/Profile/useLocationQuery';
+import {RHFDropdown} from '../RHFInputs/RHFDropdown';
 
 export const AddressModal = ({
   modalVisible,
@@ -31,8 +33,7 @@ export const AddressModal = ({
     defaultValues: defaultValues,
     mode: 'onSubmit',
   });
-  const [location, setlocation] = useState(null);
-
+  const {data: locations} = useGetLocation();
   useEffect(() => {
     formMethods.reset(defaultValues);
   }, [defaultValues]);
@@ -50,7 +51,6 @@ export const AddressModal = ({
     })
       .then(location => {
         console.log(location);
-        setlocation(location);
       })
       .catch(error => {
         const {code, message} = error;
@@ -119,10 +119,16 @@ export const AddressModal = ({
                 placeholder={'Address line2'}
                 style={AddressStyles.textInput}
               />
-              <RHFTextInput
+              <RHFDropdown
                 name="city"
+                options={
+                  locations?.map(l => ({
+                    label: l.name,
+                    value: l.id,
+                  })) ?? []
+                }
                 placeholder={'City'}
-                style={AddressStyles.textInput}
+                style={AddressStyles.cityTextInput}
                 required={true}
               />
               <RHFTextInput
@@ -136,6 +142,7 @@ export const AddressModal = ({
                 placeholder={'Pincode'}
                 style={AddressStyles.textInput}
                 required={true}
+                keyboardType={'number-pad'}
               />
             </View>
             <View
