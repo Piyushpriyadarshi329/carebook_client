@@ -63,7 +63,7 @@ export default function Home() {
   };
   const {data: Appointmentdata} = useGetAppointments({
     doctorId: Appdata.userid,
-    status: BookingStatus.BOOKED,
+    status: [BookingStatus.BOOKED],
     from_date: getToday().getTime(),
   });
 

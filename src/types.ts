@@ -40,6 +40,7 @@ export interface GetDotcorsListRequest {
   city?: string;
   mobile?: string;
   orderBy?: 'BOOKINGS' | 'NAME';
+  doctor_name_search_string?: string;
 }
 
 export type GetDoctorsListResponse = DataResponse<
@@ -127,6 +128,16 @@ export interface CustomerDto {
   gender: string;
   dob: string;
 }
+export type UpdateCustomerRequest = {
+  name?: string;
+  email?: string;
+  mobile?: string;
+  profile_image_key?: string;
+  address?: string;
+  is_agent?: boolean;
+  gender?: string;
+  dob?: string;
+};
 
 /** Clinic Controller */
 export interface ClinicDto {
@@ -278,9 +289,10 @@ export interface OccupiedDto {
 export interface GetAppointmentsRequest {
   customerId?: string;
   doctorId?: string;
-  status?: BookingStatus;
+  status?: BookingStatus[];
   appointment_date?: number;
   from_date?: number;
+  to_date?: number;
 }
 export interface Appointmentdto extends BookingDto {
   customerName?: string;
