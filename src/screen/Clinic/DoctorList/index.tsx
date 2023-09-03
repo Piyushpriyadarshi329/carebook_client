@@ -86,7 +86,7 @@ export default function DoctorList() {
   function deleteHandler(doctor: DoctorDto) {
     removeDoctor({
       doctor_id: deleteddoctor?.id ?? '',
-      clinic_id: deleteddoctor?.clinic_id,
+      clinic_id: userid,
     });
     setModalVisible(false);
   }
@@ -115,12 +115,12 @@ export default function DoctorList() {
         <View style={styles.welcomeContainer}>
           <View style={{gap: 10}}>
             <Image
-              source={require('../../../asset/image/logo.jpeg')}
+              source={require('../../../asset/image/Carebook.png')}
               style={{
-                width: 200,
-                height: 80,
+                width: 150,
+                height: 50,
               }}
-              resizeMode="cover"
+              resizeMode="contain"
             />
             <View>
               <Text style={{fontSize: 36}}>Welcome!</Text>
@@ -159,7 +159,7 @@ export default function DoctorList() {
             ref={ref}
             ListEmptyComponent={
               <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                <Text style={{color: 'black'}}>No Doctor FOund</Text>
+                <Text style={{color: 'black'}}>No Doctors listed</Text>
               </View>
             }
             contentContainerStyle={{gap: 15}}
