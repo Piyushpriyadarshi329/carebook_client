@@ -3,6 +3,7 @@ import React from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import Color from '../asset/Color';
 import {useGetAppointments} from '../screen/Appointment/useAppointmentsQuery';
+import {BookingStatus} from '../types';
 
 export const UpcomingDateTile = (props: {
   date: any;
@@ -15,7 +16,9 @@ export const UpcomingDateTile = (props: {
     doctorId: props.doctorId,
     appointment_date: props.date.value,
     clinicId: props.clinicId,
+    status: [BookingStatus.BOOKED],
   });
+
   return (
     <TouchableOpacity
       onPress={() => {

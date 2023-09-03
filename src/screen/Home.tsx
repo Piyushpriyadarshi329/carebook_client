@@ -92,7 +92,7 @@ export default function Home() {
           horizontal
           data={Appointmentdata}
           contentContainerStyle={{gap: 10, flex: 1}}
-          renderItem={({item}) => <Appointmentcard data={item} />}
+          renderItem={({item}) => <Appointmentcard appointment={item} />}
           ListEmptyComponent={
             <View
               style={{

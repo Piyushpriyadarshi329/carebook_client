@@ -19,6 +19,7 @@ import {useGetDoctor} from '../useDoctorQuery';
 import AppointmentTimeline from './Timeline';
 import {useGetAppointments} from './useAppointmentsQuery';
 import CalendarModal from '../../components/CalendarModal';
+import {BookingStatus} from '../../types';
 
 export const LoggedInUserAppointments = () => {
   const userId = useSelector((state: RootState) => state.Appdata.userid);
@@ -84,6 +85,7 @@ function Appointments({
     doctorId: doctorId,
     appointment_date: selecteddate,
     clinicId: clinic_id,
+    status: [BookingStatus.BOOKED],
   });
 
   return (

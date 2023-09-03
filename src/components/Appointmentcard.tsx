@@ -1,18 +1,22 @@
 import {Text} from '@rneui/themed';
+import moment from 'moment';
 import React from 'react';
 import {Image, View} from 'react-native';
+import {showtimefromstring} from '../AppFunction';
 import Color from '../asset/Color';
-import moment from 'moment';
-import {commonStyles} from '../asset/styles';
+import {Appointmentdto} from '../types';
 
-export default function Appointmentcard({data}: {data: any}) {
+export default function Appointmentcard({
+  appointment,
+}: {
+  appointment: Appointmentdto;
+}) {
   return (
     <View
       style={{
         backgroundColor: Color.secondary,
-        width: 120,
-        marginTop: 10,
         borderRadius: 5,
+        padding: 10,
       }}>
       <View style={{flexDirection: 'row'}}>
         <Text
@@ -22,7 +26,7 @@ export default function Appointmentcard({data}: {data: any}) {
             paddingHorizontal: 5,
             paddingVertical: 2,
           }}>
-          {data.slot_index + 1}
+          {appointment.slot_index + 1}
         </Text>
         <Image
           style={{
@@ -36,23 +40,27 @@ export default function Appointmentcard({data}: {data: any}) {
         />
       </View>
 
-      <Text style={{color: 'black', marginLeft: 10, marginTop: 10}}>
-        {data.customerName}
+      <Text style={{color: 'black', marginTop: 10}}>
+        {appointment.customerName}
       </Text>
       <Text
         style={{
           color: 'black',
-          marginLeft: 10,
           marginTop: 5,
         }}>
-        {moment(Number(data.appointment_date)).format('ll')}
+        {moment(Number(appointment.appointment_date)).format('ll')}
       </Text>
       <Text
         style={{
           color: 'black',
-          marginLeft: 10,
         }}>
-        Slot: {data.slot_index}
+        Slot: {appointment.slot_index}
+      </Text>
+      <Text
+        style={{
+          color: 'black',
+        }}>
+        Slot time: {showtimefromstring(appointment.from_working_time ?? '')}
       </Text>
     </View>
   );
