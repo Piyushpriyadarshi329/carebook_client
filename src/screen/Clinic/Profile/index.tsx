@@ -3,6 +3,7 @@ import {useQueryClient} from '@tanstack/react-query';
 import React, {useState} from 'react';
 import {
   Image,
+  KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
@@ -179,7 +180,6 @@ const styles = StyleSheet.create({
     height: '40%',
   },
   image: {
-    resizeMode: 'contain',
     borderRadius: 150,
     height: 150,
     width: 150,

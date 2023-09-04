@@ -91,7 +91,7 @@ export default function Home() {
         <FlatList
           horizontal
           data={Appointmentdata}
-          contentContainerStyle={{gap: 10, flex: 1}}
+          contentContainerStyle={{gap: 10}}
           renderItem={({item}) => <Appointmentcard appointment={item} />}
           ListEmptyComponent={
             <View

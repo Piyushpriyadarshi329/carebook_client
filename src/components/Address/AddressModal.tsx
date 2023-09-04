@@ -111,12 +111,14 @@ export const AddressModal = ({
               <RHFTextInput
                 name="address_line1"
                 placeholder={'Address line1'}
+                label={'Address line1'}
                 style={AddressStyles.textInput}
                 required={true}
               />
               <RHFTextInput
                 name="address_line2"
                 placeholder={'Address line2'}
+                label={'Address line2'}
                 style={AddressStyles.textInput}
               />
               <RHFDropdown
@@ -128,18 +130,21 @@ export const AddressModal = ({
                   })) ?? []
                 }
                 placeholder={'City'}
+                label={'City'}
                 style={AddressStyles.cityTextInput}
                 required={true}
               />
               <RHFTextInput
                 name="state"
                 placeholder={'State'}
+                label={'State'}
                 style={AddressStyles.textInput}
                 required={true}
               />
               <RHFTextInput
                 name="pincode"
                 placeholder={'Pincode'}
+                label={'Pincode'}
                 style={AddressStyles.textInput}
                 required={true}
                 keyboardType={'number-pad'}
