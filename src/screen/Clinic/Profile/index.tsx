@@ -183,6 +183,7 @@ const styles = StyleSheet.create({
     borderRadius: 150,
     height: 150,
     width: 150,
+    marginTop: 20,
   },
   contentContainer: {
     paddingHorizontal: 30,

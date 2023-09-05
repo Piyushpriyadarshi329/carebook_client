@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Calendar} from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {useSelector} from 'react-redux';
 import {daylist, monthlist} from '../../Appconstant';
