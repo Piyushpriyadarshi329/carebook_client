@@ -34,6 +34,8 @@ const CalendarModal = ({
           borderRadius: 15,
           borderWidth: 1,
           borderColor: 'white',
+          backgroundColor: 'white',
+          padding: 10,
         }}>
         <Calendar
           onDayPress={day => {
