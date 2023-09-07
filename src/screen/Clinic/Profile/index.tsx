@@ -106,48 +106,50 @@ export default function Clinicprofile() {
             />
           }
         />
-        <View style={styles.imageContainer}>
-          <TouchableOpacity onPress={() => setpicModalVisible(true)}>
-            <Image
-              style={styles.image}
-              source={
-                clinicDetails?.profile_image
-                  ? {uri: clinicDetails?.profile_image}
-                  : require('../../../asset/image/hospital.png')
-              }
-            />
-          </TouchableOpacity>
-          <View style={{marginTop: 20, alignItems: 'center'}}>
-            <Text style={[commonStyles.font24, commonStyles.weight700]}>
-              {clinicDetails?.name}
-            </Text>
-            <Text style={commonStyles.caption}>
-              {clinicDetails?.address.address_line1}
-            </Text>
-            <Text style={commonStyles.caption}>
-              {clinicDetails?.address.address_line2}
-            </Text>
+        <ScrollView contentContainerStyle={{flex: 1}}>
+          <View style={styles.imageContainer}>
+            <TouchableOpacity onPress={() => setpicModalVisible(true)}>
+              <Image
+                style={styles.image}
+                source={
+                  clinicDetails?.profile_image
+                    ? {uri: clinicDetails?.profile_image}
+                    : require('../../../asset/image/hospital.png')
+                }
+              />
+            </TouchableOpacity>
+            <View style={{marginTop: 20, alignItems: 'center'}}>
+              <Text style={[commonStyles.font24, commonStyles.weight700]}>
+                {clinicDetails?.name}
+              </Text>
+              <Text style={commonStyles.caption}>
+                {clinicDetails?.address.address_line1}
+              </Text>
+              <Text style={commonStyles.caption}>
+                {clinicDetails?.address.address_line2}
+              </Text>
+            </View>
           </View>
-        </View>
-        <View style={styles.contentContainer}>
-          <ClinicProfileEntry
-            label="Total Doctors"
-            value={doctorlist?.length ?? '- -'}
-          />
-          {/* // TODO get actual Values */}
-          {/* <ClinicProfileEntry label="Total Bookings" value={'85'} />
+          <View style={styles.contentContainer}>
+            <ClinicProfileEntry
+              label="Total Doctors"
+              value={doctorlist?.length ?? '- -'}
+            />
+            {/* // TODO get actual Values */}
+            {/* <ClinicProfileEntry label="Total Bookings" value={'85'} />
           <ClinicProfileEntry label="Average Bookings" value={'24/month'} />
           <ClinicProfileEntry label="Partner Since" value={'Apr 12 2023'} /> */}
 
-          <View style={styles.aboutContainer}>
-            <ScrollView>
-              <Text style={[commonStyles.font18, commonStyles.weight600]}>
-                About
-              </Text>
-              <Text style={commonStyles.font16}>{clinicDetails?.about}</Text>
-            </ScrollView>
+            <View style={styles.aboutContainer}>
+              <ScrollView>
+                <Text style={[commonStyles.font18, commonStyles.weight600]}>
+                  About
+                </Text>
+                <Text style={commonStyles.font16}>{clinicDetails?.about}</Text>
+              </ScrollView>
+            </View>
           </View>
-        </View>
+        </ScrollView>
         <AddressModal
           modalVisible={addressModal}
           setModalVisible={setAddressModal}
