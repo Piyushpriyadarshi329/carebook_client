@@ -158,6 +158,11 @@ export type ClinicWithAddressAndImage = ClinicWithAddress & {
   clinic_doctor_id?: string;
   fees?: number;
 };
+export type GetClinicsRequest = {
+  doctor_id?: string;
+  clinic_id?: string;
+  city?: string;
+};
 export type GetClinicsResponse = DataResponse<ClinicWithAddressAndImage[]>;
 
 /** UserController */
@@ -194,6 +199,12 @@ export enum BookingStatus {
   STARTED = 'STARTED',
   NA = 'NA',
 }
+export enum Gender {
+  MALE = 'Male',
+  FEMALE = 'Female',
+  OTHERS = 'Others',
+}
+
 export interface BookingDto {
   id: string;
   customer_id: string;
@@ -208,6 +219,9 @@ export interface BookingDto {
   agent_id?: string;
   appointment_date: number;
   existing_booking_id?: string;
+  dob: number;
+  name: string;
+  gender: Gender;
 }
 export type BookSlotRequest = Omit<
   BookingDto,
@@ -295,8 +309,26 @@ export interface GetAppointmentsRequest {
   from_date?: number;
   to_date?: number;
 }
+export interface GetCustomerAppointmentsRequest {
+  status?: BookingStatus[];
+  appointment_date?: number;
+  from_date?: number;
+  to_date?: number;
+}
+export type GetCustomerAppointmentResponse = DataResponse<
+  AppointmentWithLatestStatus[]
+>;
+
+export interface LatestBookingStatus {
+  slot_index: number;
+  status: BookingStatus;
+}
+
+export interface AppointmentWithLatestStatus extends Appointmentdto {
+  latestBookingStatus?: LatestBookingStatus;
+}
+
 export interface Appointmentdto extends BookingDto {
-  customerName?: string;
   customer_image_key?: string;
   doctorsName?: string;
   doctorSpeciality?: string;
@@ -307,7 +339,6 @@ export interface Appointmentdto extends BookingDto {
 }
 
 export interface ShowAddress {
-  id?: string;
   address_line1: string;
   address_line2: string;
   city: string;
@@ -317,7 +348,7 @@ export interface ShowAddress {
   lan?: number;
 }
 export interface AddressDto extends ShowAddress {
-  id?: string;
+  id: string;
 }
 export interface AddAdressRequest {
   id?: string;
