@@ -220,11 +220,13 @@ function LeaveById(props: {id: string; clinic_id?: string}) {
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         minDate={moment(new Date()).format('YYYY-MM-DD')}
+        maxDate={toDate ? moment(toDate).format('YYYY-MM-DD') : '2999-10-10'}
       />
 
       <CalendarModal
         date={toDate}
         setDate={date => {
+          console.log('todate', date);
           setToDate(date);
         }}
         modalVisible={modalVisibleTo}

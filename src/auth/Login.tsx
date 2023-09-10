@@ -43,7 +43,7 @@ export default function Login() {
   async function submithandler(formValues: LoginForm) {
     try {
       let payload = {
-        email: formValues.username,
+        userName: formValues.username,
         password: formValues.password,
         userType: 2,
         fcm_token: fcm_token,

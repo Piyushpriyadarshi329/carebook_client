@@ -19,15 +19,6 @@ export default function Appointmentcard({
         padding: 10,
       }}>
       <View style={{flexDirection: 'row'}}>
-        <Text
-          style={{
-            color: 'black',
-            fontSize: 20,
-            paddingHorizontal: 5,
-            paddingVertical: 2,
-          }}>
-          {appointment.slot_index + 1}
-        </Text>
         <Image
           style={{
             width: 75,

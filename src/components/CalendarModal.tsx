@@ -11,12 +11,14 @@ const CalendarModal = ({
   modalVisible,
   setModalVisible,
   minDate,
+  maxDate = '2999-10-10',
 }: {
   date: Date | null;
   setDate: (p: Date) => void;
   modalVisible: boolean;
   setModalVisible: any;
   minDate?: string;
+  maxDate?: string;
 }) => {
   return (
     <Modal
@@ -34,6 +36,7 @@ const CalendarModal = ({
           borderRadius: 15,
           borderWidth: 1,
           borderColor: 'white',
+          padding: 10,
         }}>
         <Calendar
           onDayPress={day => {
@@ -61,6 +64,7 @@ const CalendarModal = ({
             },
           }}
           minDate={minDate}
+          maxDate={maxDate}
         />
       </View>
     </Modal>

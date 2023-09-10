@@ -29,14 +29,17 @@ export const AddressModal = ({
   onSubmit: (p: AddressDto) => void;
   defaultValues: AddressDto | undefined;
 }) => {
+  console.log('defaultValues', defaultValues);
+
   const formMethods = useForm<AddressDto>({
     defaultValues: defaultValues,
     mode: 'onSubmit',
   });
   const {data: locations} = useGetLocation();
+
   useEffect(() => {
     formMethods.reset(defaultValues);
-  }, [defaultValues]);
+  }, [defaultValues, locations]);
 
   useEffect(() => {
     if (!modalVisible) {
@@ -126,7 +129,7 @@ export const AddressModal = ({
                 options={
                   locations?.map(l => ({
                     label: l.name,
-                    value: l.id,
+                    value: l.name,
                   })) ?? []
                 }
                 placeholder={'City'}
