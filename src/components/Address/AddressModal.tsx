@@ -7,16 +7,18 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Text} from '@rneui/themed';
+import {Text, CheckBox} from '@rneui/themed';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Color from '../../asset/Color';
 import {AddressDto} from '../../types';
 import Btn from '../Btn';
 import {RHFTextInput} from '../RHFInputs/RHFTextInput';
 import {AddressStyles} from './styles';
-import GetLocation from 'react-native-get-location';
+import GetLocation, {Location} from 'react-native-get-location';
 import {useGetLocation} from '../../screen/Clinic/Profile/useLocationQuery';
 import {RHFDropdown} from '../RHFInputs/RHFDropdown';
+// import CheckBox from 'react-native-check-box';
+import {commonStyles} from '../../asset/styles';
 
 export const AddressModal = ({
   modalVisible,
@@ -35,6 +37,12 @@ export const AddressModal = ({
     defaultValues: defaultValues,
     mode: 'onSubmit',
   });
+
+  const [geolocation, setGeolocation] = useState<Location>();
+  const [updateLocation, setUpdateLocation] = useState(true);
+
+  // {"accuracy": 20, "altitude": 537.2000122070312, "bearing": 0, "latitude": 18.4742972, "longitude": 73.797143, "provider": "fused", "speed": 0, "time": 1694377557659}
+
   const {data: locations} = useGetLocation();
 
   useEffect(() => {
@@ -53,6 +61,7 @@ export const AddressModal = ({
       timeout: 60000,
     })
       .then(location => {
+        setGeolocation(location);
         console.log(location);
       })
       .catch(error => {
@@ -152,6 +161,27 @@ export const AddressModal = ({
                 required={true}
                 keyboardType={'number-pad'}
               />
+
+              {geolocation && (
+                <CheckBox
+                  onPress={() => {
+                    setUpdateLocation(p => {
+                      if (p) {
+                        formMethods.resetField('lan');
+                        formMethods.resetField('lat');
+                      } else {
+                        formMethods.setValue('lan', geolocation?.longitude);
+                        formMethods.setValue('lat', geolocation?.latitude);
+                      }
+
+                      return !p;
+                    });
+                  }}
+                  checked={updateLocation}
+                  title="Set current location as clinic location"
+                  containerStyle={{backgroundColor: Color.tertiary}}
+                />
+              )}
             </View>
             <View
               style={{

@@ -150,12 +150,14 @@ export default function Clinicprofile() {
             </View>
           </View>
         </ScrollView>
-        <AddressModal
-          modalVisible={addressModal}
-          setModalVisible={setAddressModal}
-          onSubmit={onAddress}
-          defaultValues={clinicDetails?.address}
-        />
+        {addressModal && (
+          <AddressModal
+            modalVisible={addressModal}
+            setModalVisible={setAddressModal}
+            onSubmit={onAddress}
+            defaultValues={clinicDetails?.address}
+          />
+        )}
         <Clinicprofilemodel
           editMode={clinicModalVisible}
           setEditMode={setClinicModalVisible}
