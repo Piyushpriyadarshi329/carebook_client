@@ -31,9 +31,7 @@ export default function Appointmentcard({
         />
       </View>
 
-      <Text style={{color: 'black', marginTop: 10}}>
-        {appointment.customerName}
-      </Text>
+      <Text style={{color: 'black', marginTop: 10}}>{appointment.name}</Text>
       <Text
         style={{
           color: 'black',

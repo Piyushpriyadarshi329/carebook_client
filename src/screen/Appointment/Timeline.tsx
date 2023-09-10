@@ -62,7 +62,7 @@ const AppointmentTimeline = ({
         return {
           id: appointment.id,
           type: 'SLOT',
-          title: appointment.customerName,
+          title: appointment.name,
           description: `Slot Number: ${appointment.slot_index}`,
           icon: isCurrentCompleted ? require('./tick.png') : undefined,
           circleColor: isCurrentCompleted ? 'white' : undefined,
