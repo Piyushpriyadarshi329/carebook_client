@@ -81,7 +81,10 @@ function LeaveById(props: {id: string; clinic_id?: string}) {
       reason: reason,
       clinic_id: props.clinic_id ?? '',
     };
-
+    if (payload.fromdate > payload.todate) {
+      errorAlert('Please Select Valid Dates');
+      return;
+    }
     addLeave(payload);
   }
 
@@ -149,7 +152,6 @@ function LeaveById(props: {id: string; clinic_id?: string}) {
             rightTextStyle={commonStyles.font18}
           />
         </View>
-
         {!fullDay && (
           <View>
             <TouchableOpacity
@@ -220,7 +222,6 @@ function LeaveById(props: {id: string; clinic_id?: string}) {
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         minDate={moment(new Date()).format('YYYY-MM-DD')}
-        maxDate={toDate ? moment(toDate).format('YYYY-MM-DD') : '2999-10-10'}
       />
 
       <CalendarModal

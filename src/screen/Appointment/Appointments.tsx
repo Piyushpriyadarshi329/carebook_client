@@ -19,6 +19,7 @@ import AppointmentTimeline from './Timeline';
 import {useGetAppointments} from './useAppointmentsQuery';
 import CalendarModal from '../../components/CalendarModal';
 import {BookingStatus} from '../../types';
+import {Image} from '@rneui/themed';
 
 export const LoggedInUserAppointments = () => {
   const userId = useSelector((state: RootState) => state.Appdata.userid);
@@ -53,33 +54,24 @@ function Appointments({
 
     for (let i = -2; i < 7; i++) {
       let date = new Date(centerdate);
-
       date.setDate(date.getDate() + i);
-
+      date.setHours(0);
+      date.setMinutes(0);
+      date.setSeconds(0);
+      date.setMilliseconds(0);
       let month = date.getMonth();
-
       let d1 = date.getDate();
-
-      let Appointment_date = new Date(
-        `${
-          date.getFullYear() +
-          '-' +
-          ('0' + (date.getMonth() + 1)).slice(-2) +
-          '-' +
-          ('0' + date.getDate()).slice(-2)
-        }T00:00:00Z`,
-      ).getTime();
-
+      let Appointment_date = date.getTime();
       localdate.push({
         date: d1 + ' ' + monthlist[month],
         day: daylist[date.getDay()],
         value: Appointment_date,
       });
     }
-
     return localdate;
   }, [centerdate]);
-  console.log(clinic_id);
+
+  console.log(selecteddate);
   const {data: appointments, isLoading} = useGetAppointments({
     doctorId: doctorId,
     appointment_date: selecteddate,
@@ -130,6 +122,19 @@ function Appointments({
           </TouchableOpacity>
         </View>
       </View>
+      {isLoading && (
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingTop: 40,
+          }}>
+          <Image
+            source={require('../../asset/image/Carebook_loader.gif')}
+            style={{width: 100, height: 100}}
+          />
+        </View>
+      )}
       <View style={{marginTop: 20, flex: 1}}>
         <AppointmentTimeline
           appointments={appointments}

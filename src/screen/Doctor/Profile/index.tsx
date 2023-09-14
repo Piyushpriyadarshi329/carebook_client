@@ -369,12 +369,14 @@ function DoctorProfileWithId({
         setModalVisible={setLeaveDeleteModalVisible}
         onsubmit={removeLeaveHandler}
       />
-      <DoctorProfileModal
-        editMode={editMode}
-        setEditMode={setEditMode}
-        doctorDetails={doctorDetails}
-        clinic_id={props.clinic_id}
-      />
+      {editMode && (
+        <DoctorProfileModal
+          editMode={editMode}
+          setEditMode={setEditMode}
+          doctorDetails={doctorDetails}
+          clinic_id={props.clinic_id}
+        />
+      )}
       <Profilepicuploadmodel
         modalVisible={picmodalVisible}
         setModalVisible={setpicModalVisible}

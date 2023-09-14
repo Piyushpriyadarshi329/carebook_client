@@ -31,8 +31,6 @@ export const AddressModal = ({
   onSubmit: (p: AddressDto) => void;
   defaultValues: AddressDto | undefined;
 }) => {
-  console.log('defaultValues', defaultValues);
-
   const formMethods = useForm<AddressDto>({
     defaultValues: defaultValues,
     mode: 'onSubmit',

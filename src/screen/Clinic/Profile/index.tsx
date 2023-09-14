@@ -53,13 +53,14 @@ export default function Clinicprofile() {
     },
   });
   const {data: locations} = useGetLocation();
+
   function onAddress(formValues: AddressDto) {
     mutateAddress({
       id: clinicDetails?.address.id,
       user_id: userId,
       address_line1: formValues.address_line1,
       address_line2: formValues.address_line2,
-      city: locations?.find(l => l.id == formValues.city)?.name ?? '',
+      city: formValues.city,
       state: formValues.state,
       pincode: Number(formValues.pincode),
       lat: Number(formValues.lat),
