@@ -1,36 +1,45 @@
 {
   "project_info": {
-    "project_number": "819409374058",
-    "project_id": "carebook-client",
-    "storage_bucket": "carebook-client.appspot.com"
+    "project_number": "532135385988",
+    "project_id": "carebook-4cc5e",
+    "storage_bucket": "carebook-4cc5e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:819409374058:android:4f9efda16744986140f313",
+        "mobilesdk_app_id": "1:532135385988:android:9239bfc217efb1aa05dbd1",
         "android_client_info": {
           "package_name": "com.carebook_client"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "819409374058-ckbe1ajjptbj1b8vldu5osff04air88f.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCR43Coozd7M2SDE0Uefe-CsRfO1emrQVA"
+          "current_key": "AIzaSyDuQ8dqT_9Yw5_cgj7ilJZBgkPzXIOZbKI"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "819409374058-ckbe1ajjptbj1b8vldu5osff04air88f.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:532135385988:android:9dcaf01535733ae805dbd1",
+        "android_client_info": {
+          "package_name": "com.reddrop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuQ8dqT_9Yw5_cgj7ilJZBgkPzXIOZbKI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
         }
       }
     }
