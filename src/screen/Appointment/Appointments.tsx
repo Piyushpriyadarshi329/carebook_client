@@ -76,7 +76,11 @@ function Appointments({
     doctorId: doctorId,
     appointment_date: selecteddate,
     clinicId: clinic_id,
-    status: [BookingStatus.BOOKED],
+    status: [
+      BookingStatus.BOOKED,
+      BookingStatus.COMPLETED,
+      BookingStatus.STARTED,
+    ],
   });
 
   return (

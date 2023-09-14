@@ -16,7 +16,11 @@ export const UpcomingDateTile = (props: {
     doctorId: props.doctorId,
     appointment_date: props.date.value,
     clinicId: props.clinicId,
-    status: [BookingStatus.BOOKED],
+    status: [
+      BookingStatus.BOOKED,
+      BookingStatus.COMPLETED,
+      BookingStatus.STARTED,
+    ],
   });
 
   return (
