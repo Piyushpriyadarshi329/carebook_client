@@ -71,6 +71,7 @@ const AddDoctorProfile = (props: any) => {
       <Navbar title="Add Profile Details" blockBack />
       <FormProvider {...formMethods}>
         <DoctorEditForm
+          isClinic={true}
           onSubmit={formMethods.handleSubmit(updateProfileHandler)}
           onSkip={onSkip}
           bgColor={Color.greybgc}

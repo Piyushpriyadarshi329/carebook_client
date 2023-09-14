@@ -1,23 +1,19 @@
-import {Button, Text} from '@rneui/themed';
-import React, {useEffect, useMemo} from 'react';
-import {FormProvider, useForm} from 'react-hook-form';
-import {ScrollView, TouchableOpacity, View} from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
-import {ProfileForm} from '..';
+import {Button} from '@rneui/themed';
+import React, {useMemo} from 'react';
+import {ScrollView, View} from 'react-native';
 import Color from '../../../../asset/Color';
 import {AddressStyles} from '../../../../components/Address/styles';
-import Btn from '../../../../components/Btn';
 import {RHFDropdown} from '../../../../components/RHFInputs/RHFDropdown';
 import {RHFTextInput} from '../../../../components/RHFInputs/RHFTextInput';
 import {useGetSpecialtiesQuery} from '../../../../customhook/useSpecialty';
-import {DoctorDto} from '../../../../types';
-import {useMutateDoctorProfile} from '../../../useDoctorQuery';
 
 const DoctorEditForm = ({
+  isClinic,
   onSubmit,
   onSkip,
   bgColor,
 }: {
+  isClinic?: boolean;
   onSubmit: () => void;
   onSkip?: () => void;
   bgColor?: string;
@@ -45,14 +41,16 @@ const DoctorEditForm = ({
           style={AddressStyles.textInput}
           required
         />
-        <RHFTextInput
-          name="fees"
-          placeholder={'Enter Consultation Fees'}
-          label={'Consultation Fees'}
-          keyboardType="decimal-pad"
-          style={AddressStyles.textInput}
-          required
-        />
+        {isClinic && (
+          <RHFTextInput
+            name="fees"
+            placeholder={'Enter Consultation Fees'}
+            label={'Consultation Fees'}
+            keyboardType="decimal-pad"
+            style={AddressStyles.textInput}
+            required
+          />
+        )}
         <RHFTextInput
           name="degree"
           placeholder={'Enter Degree'}
