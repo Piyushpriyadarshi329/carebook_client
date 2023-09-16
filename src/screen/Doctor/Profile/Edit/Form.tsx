@@ -85,7 +85,6 @@ const DoctorEditForm = ({
             borderRadius: 10,
           }}
           multiline={true}
-          required
         />
       </View>
       <View

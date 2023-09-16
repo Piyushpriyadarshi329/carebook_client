@@ -118,7 +118,6 @@ export default function Adddoctor() {
                   <RHFTextInput
                     name={'email'}
                     placeholder="Email"
-                    required
                     keyboardType="email-address"
                   />
                 </View>

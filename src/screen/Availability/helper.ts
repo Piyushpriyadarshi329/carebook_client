@@ -30,23 +30,23 @@ export const days = [
 ];
 export const weeks = [
   {
-    value: 0,
+    value: 1,
     label: 'Week 1',
   },
   {
-    value: 1,
+    value: 2,
     label: 'Week 2',
   },
   {
-    value: 2,
+    value: 3,
     label: 'Week 3',
   },
   {
-    value: 3,
+    value: 4,
     label: 'Week 4',
   },
   {
-    value: 4,
+    value: 5,
     label: 'Week 5',
   },
 ];
