@@ -1,5 +1,5 @@
 const BASE_URL = 'http://43.204.45.2:5002/api/v1'; //dev
-
+//
 // var BASE_URL = 'http://43.204.45.2:5000/api/v1'; //QA
 // var BASE_URL = 'http://43.204.45.2:5001/api/v1'; //PROD
 

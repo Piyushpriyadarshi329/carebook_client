@@ -195,7 +195,11 @@ export function DoctorAvailabilityWithId(props: {
                 placeholder="Select Weeks"
                 multipleText={selectedweek
                   .sort()
-                  .reduce((a, c) => a + weeks[c].label + ', ', '')}
+                  .reduce(
+                    (a, c) =>
+                      a + (weeks.find(w => w.value == c)?.label ?? '') + ', ',
+                    '',
+                  )}
                 multiple
               />
             </View>
