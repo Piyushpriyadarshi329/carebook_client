@@ -1,32 +1,17 @@
-import axios from "axios";
-import { LOGIN_URL } from "../API_CONFIG";
+import axios from 'axios';
+import {LOGIN_URL} from '../API_CONFIG';
+import {useMutation} from '@tanstack/react-query';
+import {axiosAlert, errorAlert} from '../utils/useShowAlert';
 
-export async function useLogin(payload: any) {
-  console.log("Login_URL=============>", LOGIN_URL,payload);
-
-  // const config: any =  {
-  //     headers: {
-  //       Authorization: `Bearer ${rentalbikedetails.accessToken}`,
-  //     },
-  //   };
-
-  let myPromise = new Promise(async function (myResolve, myReject) {
-    try {
-      console.log("Login_URL=============>", LOGIN_URL,payload);
-
-      var res = await axios.post(LOGIN_URL, payload);
-
-      console.log("res", res.data);
-
-        myResolve(res);
-      
-    } catch (error: any) {
-
-      
-        myReject(error);
+export function useLoginQuery({onSuccess}: {onSuccess: any}) {
+  return useMutation((payload: any) => axios.post(LOGIN_URL, payload), {
+    onSuccess: data => {
+      if (data.data.Success) {
+        onSuccess(data.data.data);
+      } else {
+        errorAlert(data.data.Message);
       }
-    
+    },
+    onError: axiosAlert,
   });
-
-  return myPromise;
 }
