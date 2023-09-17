@@ -1,18 +1,16 @@
+import {Input, InputProps} from '@rneui/base';
 import {useFormContext, Controller} from 'react-hook-form';
-import {StyleSheet, KeyboardTypeOptions} from 'react-native';
 import {ValidationErrors} from '../../asset/constants';
-import {Input} from '@rneui/base';
 
-export const RHFTextInput = (props: {
+export const RHFTextInput = ({
+  name,
+  required,
+  rules,
+  ...props
+}: Omit<InputProps, 'ref'> & {
   name: string;
-  placeholder?: string;
   required?: boolean;
-  style?: any;
-  multiline?: boolean;
   rules?: any;
-  secureTextEntry?: boolean;
-  keyboardType?: KeyboardTypeOptions;
-  label?: string;
 }) => {
   const {control} = useFormContext();
   return (
@@ -20,21 +18,16 @@ export const RHFTextInput = (props: {
       control={control}
       render={({field, formState: {errors}}) => (
         <Input
-          label={props.label}
-          errorMessage={errors[props.name]?.message?.toString()}
-          {...field}
+          errorMessage={errors[name]?.message?.toString()}
           onChangeText={t => field.onChange(t)}
-          style={props.style}
-          multiline={props.multiline}
-          placeholder={props.placeholder}
-          secureTextEntry={props.secureTextEntry}
-          keyboardType={props.keyboardType}
+          {...field}
+          {...props}
         />
       )}
-      name={props.name}
+      name={name}
       rules={{
-        required: props.required ? ValidationErrors.Required : undefined,
-        ...props.rules,
+        required: required ? ValidationErrors.Required : undefined,
+        ...rules,
       }}
     />
   );

@@ -43,7 +43,7 @@ export const RHFDropdown = (props: {
             </Text>
           )}
           <DropDownPicker
-            {...field}
+            value={field.value}
             open={open}
             setOpen={setOpen}
             setValue={() => {}}

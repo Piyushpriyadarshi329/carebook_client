@@ -68,6 +68,7 @@ export default function Login() {
       console.log(error);
     }
   }
+  const [showPW, setShowPW] = useState(false);
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -109,10 +110,23 @@ export default function Login() {
             <Icon name="key" size={20} color="black" />
             <RHFTextInput
               name="password"
-              secureTextEntry
+              secureTextEntry={!showPW}
               placeholder="Password"
-              keyboardType="default"
+              label="Password"
               required
+              rightIcon={
+                <Icon
+                  name={showPW ? 'eye' : 'eye-off'}
+                  color={'#95e8ff'}
+                  style={{fontSize: 20, padding: 5}}
+                  onPressIn={() => {
+                    setShowPW(true);
+                  }}
+                  onPressOut={() => {
+                    setShowPW(false);
+                  }}
+                />
+              }
             />
           </View>
 

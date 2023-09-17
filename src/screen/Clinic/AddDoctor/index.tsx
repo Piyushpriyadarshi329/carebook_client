@@ -1,9 +1,8 @@
 import {useNavigation} from '@react-navigation/native';
-import {Text} from '@rneui/themed';
-import React, {useMemo} from 'react';
+import {Text, Icon} from '@rneui/themed';
+import React, {useMemo, useState} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import {Button, ScrollView, StyleSheet, View} from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
 import {useSelector} from 'react-redux';
 import Color from '../../../asset/Color';
 import {commonStyles} from '../../../asset/styles';
@@ -72,6 +71,7 @@ export default function Adddoctor() {
       doctor_id: existingDoctors?.[0].id ?? '',
     });
   };
+  const [showPW, setShowPW] = useState(false);
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -87,11 +87,11 @@ export default function Adddoctor() {
         <ScrollView>
           <View style={styles.formContainer}>
             <View style={styles.rowItem}>
-              <Icon name="user" size={20} color="black" />
+              <Icon name="account" size={20} color="black" />
               <RHFTextInput name="name" placeholder="Full Name" required />
             </View>
             <View style={styles.rowItem}>
-              <Icon name="mobile1" size={20} color="black" />
+              <Icon name="phone" size={20} color="black" />
               <RHFTextInput
                 name="mobile"
                 placeholder="Mobile No"
@@ -103,7 +103,7 @@ export default function Adddoctor() {
             {!existingDoctors?.length ? (
               <>
                 <View style={styles.rowItem}>
-                  <Icon name="tago" size={20} color="black" />
+                  <Icon name="tag" size={20} color="black" />
                   <RHFDropdown
                     name={'speciality'}
                     options={specialtyOptions ?? []}
@@ -113,7 +113,7 @@ export default function Adddoctor() {
                 </View>
 
                 <View style={styles.rowItem}>
-                  <Icon name="mail" size={20} color="black" />
+                  <Icon name="email" size={20} color="black" />
 
                   <RHFTextInput
                     name={'email'}
@@ -123,13 +123,27 @@ export default function Adddoctor() {
                 </View>
 
                 <View style={styles.rowItem}>
-                  <Icon name="key" size={20} color="black" />
+                  <Icon name="key-variant" size={20} color="black" />
 
                   <RHFTextInput
                     name="password"
+                    secureTextEntry={!showPW}
                     placeholder="Password"
-                    secureTextEntry
+                    label="Password"
                     required
+                    rightIcon={
+                      <Icon
+                        name={showPW ? 'eye' : 'eye-off'}
+                        color={'#95e8ff'}
+                        style={{fontSize: 20, padding: 5}}
+                        onPressIn={() => {
+                          setShowPW(true);
+                        }}
+                        onPressOut={() => {
+                          setShowPW(false);
+                        }}
+                      />
+                    }
                   />
                 </View>
 
