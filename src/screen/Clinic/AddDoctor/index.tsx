@@ -1,8 +1,8 @@
 import {useNavigation} from '@react-navigation/native';
-import {Text, Icon} from '@rneui/themed';
+import {Text, Icon, Button} from '@rneui/themed';
 import React, {useMemo, useState} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
-import {Button, ScrollView, StyleSheet, View} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import Color from '../../../asset/Color';
 import {commonStyles} from '../../../asset/styles';
@@ -30,16 +30,15 @@ export default function Adddoctor() {
   const navigation = useNavigation<any>();
   const userId = useSelector((state: RootState) => state.Appdata.userid);
   const {data: specialties} = useGetSpecialtiesQuery();
-  const {mutate: addDoctor} = useAddDoctor({
+  const {mutate: addDoctor, isLoading} = useAddDoctor({
     onSuccess: data => {
       navigation.navigate('AddDoctorProfile', {id: data?.id});
     },
   });
-  const {mutate: linkDoctorMutate} = useLinkDoctorMutation(
-    (data, variables) => {
+  const {mutate: linkDoctorMutate, isLoading: isLoadingLink} =
+    useLinkDoctorMutation((data, variables) => {
       navigation.navigate('AddDoctorProfile', {id: variables.doctor_id});
-    },
-  );
+    });
   const formMethods = useForm<DoctorAddForm>();
   const mobile = formMethods.watch('mobile');
   const {data: existingDoctors} = useGetDoctorsList(
@@ -129,7 +128,6 @@ export default function Adddoctor() {
                     name="password"
                     secureTextEntry={!showPW}
                     placeholder="Password"
-                    label="Password"
                     required
                     rightIcon={
                       <Icon
@@ -154,9 +152,15 @@ export default function Adddoctor() {
                     alignItems: 'center',
                     marginTop: 10,
                   }}>
-                  <Btn
-                    onPress={formMethods.handleSubmit(submithandler)}
+                  <Button
+                    loading={isLoading}
+                    onPress={
+                      !isLoading
+                        ? formMethods.handleSubmit(submithandler)
+                        : () => {}
+                    }
                     title={'Submit'}
+                    containerStyle={{width: '50%'}}
                   />
                 </View>
               </>
@@ -179,8 +183,10 @@ export default function Adddoctor() {
                 </Text>
                 <Button
                   title="Link"
-                  onPress={linkDoctor}
+                  loading={isLoadingLink}
+                  onPress={!isLoadingLink ? linkDoctor : () => {}}
                   color={Color.primary}
+                  containerStyle={{width: '50%'}}
                 />
               </View>
             )}

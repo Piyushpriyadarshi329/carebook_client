@@ -12,11 +12,13 @@ const DoctorEditForm = ({
   onSubmit,
   onSkip,
   bgColor,
+  isLoading,
 }: {
   isClinic?: boolean;
   onSubmit: () => void;
   onSkip?: () => void;
   bgColor?: string;
+  isLoading?: boolean;
 }) => {
   const {data: specialties} = useGetSpecialtiesQuery();
 
@@ -106,7 +108,8 @@ const DoctorEditForm = ({
         )}
         <Button
           title={'Save'}
-          onPress={() => onSubmit()}
+          loading={isLoading}
+          onPress={!isLoading ? onSubmit : () => {}}
           buttonStyle={{paddingHorizontal: 40}}
         />
       </View>
