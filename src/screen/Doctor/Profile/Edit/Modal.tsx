@@ -104,6 +104,7 @@ export const DoctorProfileModal = ({
             </View>
           </View>
           <DoctorEditForm
+            isClinic={!!clinic_id}
             onSubmit={formMethods.handleSubmit(updateProfileHandler)}
             bgColor={Color.tertiary}
           />
