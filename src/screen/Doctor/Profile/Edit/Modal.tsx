@@ -46,7 +46,7 @@ export const DoctorProfileModal = ({
       });
     }
   }, [doctorDetails]);
-  const {mutate: updateDoctor} = useMutateDoctorProfile(
+  const {mutate: updateDoctor, isLoading} = useMutateDoctorProfile(
     doctorDetails?.id ?? '',
     () => setEditMode(false),
   );
@@ -107,6 +107,7 @@ export const DoctorProfileModal = ({
             isClinic={!!clinic_id}
             onSubmit={formMethods.handleSubmit(updateProfileHandler)}
             bgColor={Color.tertiary}
+            isLoading={isLoading}
           />
         </View>
       </FormProvider>

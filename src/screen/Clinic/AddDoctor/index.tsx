@@ -1,9 +1,8 @@
 import {useNavigation} from '@react-navigation/native';
-import {Text} from '@rneui/themed';
-import React, {useMemo} from 'react';
+import {Text, Icon, Button} from '@rneui/themed';
+import React, {useMemo, useState} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
-import {Button, ScrollView, StyleSheet, View} from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import Color from '../../../asset/Color';
 import {commonStyles} from '../../../asset/styles';
@@ -31,16 +30,15 @@ export default function Adddoctor() {
   const navigation = useNavigation<any>();
   const userId = useSelector((state: RootState) => state.Appdata.userid);
   const {data: specialties} = useGetSpecialtiesQuery();
-  const {mutate: addDoctor} = useAddDoctor({
+  const {mutate: addDoctor, isLoading} = useAddDoctor({
     onSuccess: data => {
       navigation.navigate('AddDoctorProfile', {id: data?.id});
     },
   });
-  const {mutate: linkDoctorMutate} = useLinkDoctorMutation(
-    (data, variables) => {
+  const {mutate: linkDoctorMutate, isLoading: isLoadingLink} =
+    useLinkDoctorMutation((data, variables) => {
       navigation.navigate('AddDoctorProfile', {id: variables.doctor_id});
-    },
-  );
+    });
   const formMethods = useForm<DoctorAddForm>();
   const mobile = formMethods.watch('mobile');
   const {data: existingDoctors} = useGetDoctorsList(
@@ -72,6 +70,7 @@ export default function Adddoctor() {
       doctor_id: existingDoctors?.[0].id ?? '',
     });
   };
+  const [showPW, setShowPW] = useState(false);
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -87,11 +86,11 @@ export default function Adddoctor() {
         <ScrollView>
           <View style={styles.formContainer}>
             <View style={styles.rowItem}>
-              <Icon name="user" size={20} color="black" />
+              <Icon name="account" size={20} color="black" />
               <RHFTextInput name="name" placeholder="Full Name" required />
             </View>
             <View style={styles.rowItem}>
-              <Icon name="mobile1" size={20} color="black" />
+              <Icon name="phone" size={20} color="black" />
               <RHFTextInput
                 name="mobile"
                 placeholder="Mobile No"
@@ -103,7 +102,7 @@ export default function Adddoctor() {
             {!existingDoctors?.length ? (
               <>
                 <View style={styles.rowItem}>
-                  <Icon name="tago" size={20} color="black" />
+                  <Icon name="tag" size={20} color="black" />
                   <RHFDropdown
                     name={'speciality'}
                     options={specialtyOptions ?? []}
@@ -113,24 +112,36 @@ export default function Adddoctor() {
                 </View>
 
                 <View style={styles.rowItem}>
-                  <Icon name="mail" size={20} color="black" />
+                  <Icon name="email" size={20} color="black" />
 
                   <RHFTextInput
                     name={'email'}
                     placeholder="Email"
-                    required
                     keyboardType="email-address"
                   />
                 </View>
 
                 <View style={styles.rowItem}>
-                  <Icon name="key" size={20} color="black" />
+                  <Icon name="key-variant" size={20} color="black" />
 
                   <RHFTextInput
                     name="password"
+                    secureTextEntry={!showPW}
                     placeholder="Password"
-                    secureTextEntry
                     required
+                    rightIcon={
+                      <Icon
+                        name={showPW ? 'eye' : 'eye-off'}
+                        color={'#95e8ff'}
+                        style={{fontSize: 20, padding: 5}}
+                        onPressIn={() => {
+                          setShowPW(true);
+                        }}
+                        onPressOut={() => {
+                          setShowPW(false);
+                        }}
+                      />
+                    }
                   />
                 </View>
 
@@ -141,9 +152,15 @@ export default function Adddoctor() {
                     alignItems: 'center',
                     marginTop: 10,
                   }}>
-                  <Btn
-                    onPress={formMethods.handleSubmit(submithandler)}
+                  <Button
+                    loading={isLoading}
+                    onPress={
+                      !isLoading
+                        ? formMethods.handleSubmit(submithandler)
+                        : () => {}
+                    }
                     title={'Submit'}
+                    containerStyle={{width: '50%'}}
                   />
                 </View>
               </>
@@ -166,8 +183,10 @@ export default function Adddoctor() {
                 </Text>
                 <Button
                   title="Link"
-                  onPress={linkDoctor}
+                  loading={isLoadingLink}
+                  onPress={!isLoadingLink ? linkDoctor : () => {}}
                   color={Color.primary}
+                  containerStyle={{width: '50%'}}
                 />
               </View>
             )}

@@ -14,7 +14,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import uuid from 'react-native-uuid';
 import {useSelector} from 'react-redux';
-import {sendtime, showtime} from '../../AppFunction';
+import {sendtime} from '../../AppFunction';
 import Color from '../../asset/Color';
 import {commonStyles} from '../../asset/styles';
 import Btn from '../../components/Btn';
@@ -25,6 +25,7 @@ import {useAlert} from '../../utils/useShowAlert';
 import {useClinicsList} from '../Clinic/Profile/useGetcliniclist';
 import {days, weeks} from './helper';
 import {useAddAvailability} from './useGetAvailability';
+import moment from 'moment';
 
 export default function LoggedInDoctorAvailability() {
   const userId = useSelector((state: RootState) => state.Appdata.userid);
@@ -195,7 +196,11 @@ export function DoctorAvailabilityWithId(props: {
                 placeholder="Select Weeks"
                 multipleText={selectedweek
                   .sort()
-                  .reduce((a, c) => a + weeks[c].label + ', ', '')}
+                  .reduce(
+                    (a, c) =>
+                      a + (weeks.find(w => w.value == c)?.label ?? '') + ', ',
+                    '',
+                  )}
                 multiple
               />
             </View>
@@ -229,13 +234,13 @@ export function DoctorAvailabilityWithId(props: {
           <View style={styles.timeContainer}>
             <TouchableOpacity style={styles.fromTime} onPress={showModefrom}>
               <Text style={commonStyles.font16}>
-                {showtime(datefrom?.getTime()) || 'From Time'}
+                {moment(datefrom).format('LT') || 'From Time'}
               </Text>
             </TouchableOpacity>
             <Text style={[commonStyles.font24, commonStyles.weight800]}>:</Text>
             <TouchableOpacity style={styles.toTime} onPress={showModeto}>
               <Text style={commonStyles.font16}>
-                {showtime(dateto?.getTime()) || 'To Time'}
+                {moment(dateto).format('LT') || 'To Time'}
               </Text>
             </TouchableOpacity>
           </View>

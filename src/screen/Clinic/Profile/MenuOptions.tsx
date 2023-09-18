@@ -1,7 +1,6 @@
 import {Icon, Text} from '@rneui/themed';
 import React from 'react';
 import {View} from 'react-native';
-// import Icon from 'react-native-vector-icons/Feather';
 import Color from '../../../asset/Color';
 import {commonStyles} from '../../../asset/styles';
 import MenuOptionsComponent from '../../../components/MenuOptionsComponent';
@@ -22,8 +21,8 @@ const AboutMenuOptions = ({
   const options = [
     {
       item: (
-        <View style={[commonStyles.flexRowAlignCenter, {gap: 20}]}>
-          <Icon name="edit" size={17} color={Color.primary} />
+        <View style={[commonStyles.flexRowAlignCenter, {gap: 20}]} key="edit">
+          <Icon type={'material'} name="edit" size={17} color={Color.primary} />
           <Text>{edit1Title ?? 'Edit'}</Text>
         </View>
       ),
@@ -33,8 +32,8 @@ const AboutMenuOptions = ({
   if (setEditMode2) {
     options.push({
       item: (
-        <View style={[commonStyles.flexRowAlignCenter, {gap: 20}]}>
-          <Icon name="edit" size={17} color={Color.primary} />
+        <View style={[commonStyles.flexRowAlignCenter, {gap: 20}]} key="edit2">
+          <Icon type={'material'} name="edit" size={17} color={Color.primary} />
           <Text>{edit2Title ?? 'Edit 2'}</Text>
         </View>
       ),
@@ -44,7 +43,7 @@ const AboutMenuOptions = ({
   if (onLogout) {
     options.push({
       item: (
-        <View style={[commonStyles.flexRowAlignCenter, {gap: 20}]}>
+        <View style={[commonStyles.flexRowAlignCenter, {gap: 20}]} key="logout">
           <Icon name="power" size={17} color={Color.red} type="feather" />
           <Text style={{color: Color.red}}>Logout</Text>
         </View>
@@ -54,7 +53,7 @@ const AboutMenuOptions = ({
   }
   return (
     <MenuOptionsComponent options={options}>
-      <Icon name="menu" size={26} />
+      <Icon type={'material'} name="menu" size={26} />
     </MenuOptionsComponent>
   );
 };

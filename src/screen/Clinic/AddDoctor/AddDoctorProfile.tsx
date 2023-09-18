@@ -41,8 +41,9 @@ const AddDoctorProfile = (props: any) => {
       });
     }
   }, [doctorDetails]);
-  const {mutate: updateDoctor} = useMutateDoctorProfile(doctorId ?? '', () =>
-    onSubmit(),
+  const {mutate: updateDoctor, isLoading} = useMutateDoctorProfile(
+    doctorId ?? '',
+    () => onSubmit(),
   );
   const updateProfileHandler = (formValues: ProfileForm) => {
     updateDoctor({
@@ -75,6 +76,7 @@ const AddDoctorProfile = (props: any) => {
           onSubmit={formMethods.handleSubmit(updateProfileHandler)}
           onSkip={onSkip}
           bgColor={Color.greybgc}
+          isLoading={isLoading}
         />
       </FormProvider>
     </View>

@@ -57,7 +57,9 @@ export function useGetAvailabilityQuery(payload: GetAvailabilityRequest) {
                 av_weeks.length === 0 ||
                 (av_weeks.length === 1 && av_weeks[0] === null)
                   ? 'All Weeks'
-                  : av_weeks.map(e => weeks[e ?? 0].label).join(', '),
+                  : av_weeks
+                      .map(w => weeks.find(ww => ww.value == w)?.label ?? '')
+                      .join(', '),
             };
           },
         );

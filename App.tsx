@@ -20,6 +20,9 @@ const theme = createTheme({
         fontFamily: 'Poppins-Medium',
       },
     },
+    Icon: {
+      type: 'material-community',
+    },
   },
 });
 

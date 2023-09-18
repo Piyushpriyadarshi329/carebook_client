@@ -12,11 +12,13 @@ const DoctorEditForm = ({
   onSubmit,
   onSkip,
   bgColor,
+  isLoading,
 }: {
   isClinic?: boolean;
   onSubmit: () => void;
   onSkip?: () => void;
   bgColor?: string;
+  isLoading?: boolean;
 }) => {
   const {data: specialties} = useGetSpecialtiesQuery();
 
@@ -26,7 +28,7 @@ const DoctorEditForm = ({
   );
 
   return (
-    <ScrollView>
+    <ScrollView nestedScrollEnabled>
       <View
         style={{
           flex: 3,
@@ -71,6 +73,7 @@ const DoctorEditForm = ({
           placeholder="Enter specialty"
           style={{backGroundColor: bgColor}}
           zIndex={100}
+          mode="FlatList"
           componentProps={{
             style: {backgroundColor: bgColor},
             dropDownContainerStyle: {backgroundColor: bgColor},
@@ -85,7 +88,6 @@ const DoctorEditForm = ({
             borderRadius: 10,
           }}
           multiline={true}
-          required
         />
       </View>
       <View
@@ -107,7 +109,8 @@ const DoctorEditForm = ({
         )}
         <Button
           title={'Save'}
-          onPress={() => onSubmit()}
+          loading={isLoading}
+          onPress={!isLoading ? onSubmit : () => {}}
           buttonStyle={{paddingHorizontal: 40}}
         />
       </View>

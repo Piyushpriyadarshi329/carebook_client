@@ -5,7 +5,6 @@ import {Text} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {useState} from 'react';
 import {commonStyles} from '../../asset/styles';
-import Color from '../../asset/Color';
 
 export const RHFDropdown = (props: {
   name: string;
@@ -18,6 +17,7 @@ export const RHFDropdown = (props: {
   zIndex?: number;
   componentProps?: any;
   value?: 'value' | 'label' | 'object';
+  mode?: 'FlatList' | 'ScrollView' | 'Modal';
 }) => {
   const {control, getValues} = useFormContext();
   const [open, setOpen] = useState(false);
@@ -43,9 +43,19 @@ export const RHFDropdown = (props: {
             </Text>
           )}
           <DropDownPicker
-            {...field}
+            value={field.value}
             open={open}
             setOpen={setOpen}
+            modalContentContainerStyle={{
+              padding: 20,
+              margin: 20,
+            }}
+            modalTitle={`Select ${props.label || props.placeholder || ''}`}
+            modalProps={{
+              statusBarTranslucent: true,
+            }}
+            modalAnimationType="slide"
+            listMode={props.mode == 'FlatList' ? 'MODAL' : undefined}
             setValue={() => {}}
             onSelectItem={item => {
               field.onChange(item.value);
@@ -77,3 +87,43 @@ export const RHFDropdown = (props: {
     />
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    padding: 16,
+  },
+  dropdown: {
+    height: 50,
+    borderColor: 'gray',
+    borderWidth: 0.5,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+});
