@@ -1,7 +1,7 @@
 import {Text} from '@rneui/themed';
 import React from 'react';
 import {View} from 'react-native';
-import {showtimefromstring} from '../../../AppFunction';
+import {getTimeStringFromDBTime} from '../../../AppFunction';
 import Color from '../../../asset/Color';
 import {AvailabilityFE} from '../../Availability/useGetAvailability';
 
@@ -24,8 +24,8 @@ const AvailabilityCard = ({
           <Text>{availability.clinic_name}</Text>
         </View>
         <View style={{flex: 2, alignItems: 'center'}}>
-          <Text>{showtimefromstring(availability.from_time)}</Text>
-          <Text>{showtimefromstring(availability.to_time)}</Text>
+          <Text>{getTimeStringFromDBTime(availability.from_time)}</Text>
+          <Text>{getTimeStringFromDBTime(availability.to_time)}</Text>
         </View>
         <View style={{flex: 1, alignItems: 'center'}}>
           <Text>Slots: {availability.no_of_slot}</Text>

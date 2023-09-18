@@ -27,6 +27,8 @@ import AvailabilityCard from '../Profile/AvailabilityCard';
 import SlotModal from './SlotModal';
 import {useAddLeave} from './useLeaveQuery';
 import {getToday} from '../../../utils/dateMethods';
+import {useClinicsList} from '../../Clinic/Profile/useGetcliniclist';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 export function LoggedInUserLeave() {
   const userId = useSelector((state: RootState) => state.Appdata.userid);
@@ -50,8 +52,14 @@ function LeaveById(props: {id: string; clinic_id?: string}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleWorkTime, setModalVisibleWorkTime] = useState(false);
   const [modalVisibleTo, setModalVisibleTo] = useState(false);
+  const [open1, setOpen1] = useState(false);
+
   const [selectedAvailability, setSelectedAvailability] =
     useState<AvailabilityFE | null>(null);
+  const [selectedClinic, setSelectedClinic] = useState(props.clinic_id ?? null);
+
+  const {data: cliniclist} = useClinicsList({doctor_id: props.id});
+
   const {mutate: addLeave} = useAddLeave(() => {
     successAlert('Added Leave.');
     navigation.goBack();
@@ -79,7 +87,7 @@ function LeaveById(props: {id: string; clinic_id?: string}) {
       worktime_id: fullDay ? '' : selectedAvailability?.id ?? '',
       fullday: fullDay,
       reason: reason,
-      clinic_id: props.clinic_id ?? '',
+      clinic_id: selectedClinic ?? '',
     };
     if (payload.fromdate > payload.todate) {
       errorAlert('Please Select Valid Dates');
@@ -92,6 +100,24 @@ function LeaveById(props: {id: string; clinic_id?: string}) {
     <>
       <Navbar title="Leave" asFullScreenModal />
       <ScrollView style={styles.formContainer}>
+        {!props.clinic_id && (
+          <View style={{zIndex: 2000}}>
+            <Text style={{color: 'black', fontSize: 16, fontWeight: '600'}}>
+              Clinic
+            </Text>
+            <DropDownPicker
+              open={open1}
+              value={selectedClinic}
+              items={
+                cliniclist?.map?.(c => ({label: c.name, value: c.id})) ?? []
+              }
+              setOpen={setOpen1}
+              setValue={setSelectedClinic}
+              placeholder="Select Clinic"
+            />
+          </View>
+        )}
+
         <View style={commonStyles.flexRowAlignCenter}>
           <CheckBox
             checkBoxColor={Color.primary}

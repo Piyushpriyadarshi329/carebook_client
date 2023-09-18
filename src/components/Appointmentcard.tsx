@@ -2,7 +2,7 @@ import {Text} from '@rneui/themed';
 import moment from 'moment';
 import React from 'react';
 import {Image, View} from 'react-native';
-import {showtimefromstring} from '../AppFunction';
+import {getTimeStringFromDBTime} from '../AppFunction';
 import Color from '../asset/Color';
 import {Appointmentdto} from '../types';
 
@@ -49,7 +49,8 @@ export default function Appointmentcard({
         style={{
           color: 'black',
         }}>
-        Slot time: {showtimefromstring(appointment.from_working_time ?? '')}
+        Slot time:{' '}
+        {getTimeStringFromDBTime(appointment.from_working_time ?? '')}
       </Text>
     </View>
   );
