@@ -28,7 +28,7 @@ const DoctorEditForm = ({
   );
 
   return (
-    <ScrollView>
+    <ScrollView nestedScrollEnabled>
       <View
         style={{
           flex: 3,
@@ -73,6 +73,7 @@ const DoctorEditForm = ({
           placeholder="Enter specialty"
           style={{backGroundColor: bgColor}}
           zIndex={100}
+          mode="FlatList"
           componentProps={{
             style: {backgroundColor: bgColor},
             dropDownContainerStyle: {backgroundColor: bgColor},
