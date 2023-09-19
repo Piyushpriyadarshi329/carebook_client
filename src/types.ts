@@ -43,6 +43,16 @@ export interface GetDotcorsListRequest {
   doctor_name_search_string?: string;
 }
 
+export type SearchDoctor = DoctorDto & {
+  profile_image: string;
+  location: {
+    city: string;
+    lat: number;
+    lan: number;
+  }[];
+  fees?: number;
+};
+export type SearchDoctorsListResponse = DataResponse<SearchDoctor[]>;
 export type GetDoctorsListResponse = DataResponse<
   (DoctorDto & {
     profile_image: string;
@@ -127,6 +137,7 @@ export interface CustomerDto {
   is_agent: boolean;
   gender: string;
   dob: string;
+  appointmentsCount: number;
 }
 export type UpdateCustomerRequest = {
   name?: string;
@@ -167,7 +178,7 @@ export type GetClinicsResponse = DataResponse<ClinicWithAddressAndImage[]>;
 
 /** UserController */
 export interface LoginRequest {
-  email: string;
+  userName: string;
   password: string;
   userType: number;
   fcm_token: string;
@@ -320,8 +331,8 @@ export type GetCustomerAppointmentResponse = DataResponse<
 >;
 
 export interface LatestBookingStatus {
-  slot_index: number;
-  status: BookingStatus;
+  started_slot: number;
+  completed_slot: number;
 }
 
 export interface AppointmentWithLatestStatus extends Appointmentdto {
@@ -431,3 +442,27 @@ export interface VisibleDocument {
 }
 
 export type AddDocumentResponse = DataResponse<VisibleDocument>;
+
+export type GetAvailableDatesResponse = DataResponse<
+  {date: number; available: boolean}[]
+>;
+
+export enum CB_NOTIFICATION {
+  LIVE_STATUS = 'LIVE_STATUS',
+  NEW_BOOKING = 'NEW_BOOKING',
+}
+
+export interface LiveStatusNotificationData {
+  name: CB_NOTIFICATION.LIVE_STATUS;
+  started_slot: string;
+  completed_slot: string;
+}
+export interface NewBookingNotificationData {
+  name: CB_NOTIFICATION.NEW_BOOKING;
+  doctorId: string;
+  date: string;
+}
+
+export type NotificationData =
+  | LiveStatusNotificationData
+  | NewBookingNotificationData;

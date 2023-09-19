@@ -8,18 +8,32 @@ import DocterRoute from './Routes/Doctor/DocterRoute';
 import type {RootState} from './redux/Store';
 import {updateappstate} from './redux/reducer/Authreducer';
 import Splashscreen from './auth/Splashscreen';
-
-//GIT   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
+import messaging from '@react-native-firebase/messaging';
+import {useNotificationHandler} from './auth/useNotificationHandler';
+import {useQueryClient} from '@tanstack/react-query';
 
 export default function Auth() {
   const Appdata = useSelector((state: RootState) => state.Appdata);
   const dispatch = useDispatch();
   const [showsplash, setshowsplash] = useState(true);
+  const qc = useQueryClient();
 
   useEffect(() => {
     setTimeout(() => {
       getsayncdata();
     }, 1500);
+  }, []);
+
+  const handler = useNotificationHandler();
+  // console.log('qcdata', qc.getQueriesData(['APPOINTMENTS']));
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      handler(remoteMessage.data as any);
+    });
+
+    return unsubscribe;
   }, []);
 
   useEffect(() => {}, []);
