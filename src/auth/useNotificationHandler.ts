@@ -7,7 +7,11 @@ export const useNotificationHandler = () => {
     console.log('data', data);
     switch (data?.name) {
       case CB_NOTIFICATION.NEW_BOOKING:
-        qc.removeQueries(['APPOINTMENTS', data.doctorId, Number(data.date)]);
+        qc.invalidateQueries([
+          'APPOINTMENTS',
+          data.doctorId,
+          Number(data.date),
+        ]);
         return;
     }
   };
