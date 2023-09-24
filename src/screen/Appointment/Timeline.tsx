@@ -62,13 +62,15 @@ const AppointmentTimeline = ({
         return {
           id: appointment.id,
           type: 'SLOT',
-          title: appointment.name,
+          name: appointment.name,
           description: `Slot Number: ${appointment.slot_index}`,
           icon: isCurrentCompleted ? require('./tick.png') : undefined,
           circleColor: isCurrentCompleted ? 'white' : undefined,
           lineColor: isNextCompleted ? Color.success : undefined,
           status: appointment.status,
           clinic: appointment.clinic_name,
+          gender: appointment.gender?.slice(0, 1),
+          age: appointment.dob,
         };
       });
 
@@ -78,7 +80,7 @@ const AppointmentTimeline = ({
       {
         id: uuid.v4().toString(),
         type: 'HEAD',
-        title: getTimeStringFromDBTime(appointments[0].from_working_time),
+        name: getTimeStringFromDBTime(appointments[0].from_working_time),
         description: '',
         icon: require('./time.png'),
         circleColor: '',
@@ -120,7 +122,11 @@ const AppointmentTimeline = ({
             }}>
             <View>
               <Text style={[commonStyles.font16, commonStyles.weight400]}>
-                {rowData.title}
+                {rowData.name}{' '}
+                {!!rowData.age &&
+                  `(${rowData.age} y${
+                    !!rowData.gender ? `, ${rowData.gender} ` : ' '
+                  })`}
               </Text>
               <Text style={commonStyles.caption}>{rowData.description}</Text>
               {!isForClinic && (
@@ -146,7 +152,7 @@ const AppointmentTimeline = ({
           </View>
         ) : (
           <View>
-            <Text style={commonStyles.font20}>{rowData.title}</Text>
+            <Text style={commonStyles.font20}>{rowData.name}</Text>
           </View>
         );
       }}
