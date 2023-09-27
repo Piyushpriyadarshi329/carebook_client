@@ -1,7 +1,7 @@
 import messaging from '@react-native-firebase/messaging';
 import React, {useEffect, useState} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
-import {Image, View} from 'react-native';
+import {Image, ScrollView, View} from 'react-native';
 import {Button, Text, Icon} from '@rneui/themed';
 import {useDispatch} from 'react-redux';
 import Color from '../asset/Color';
@@ -87,56 +87,60 @@ export default function Login() {
       </View>
       <FormProvider {...formMethods}>
         <View style={AuthStyles.loginContainer}>
-          <View style={commonStyles.flexRowAlignCenter}>
-            <Icon name="account" size={20} color="black" />
-            <RHFTextInput
-              name="username"
-              placeholder="Email/Phone"
-              keyboardType="default"
-              required
-              rules={{validate: validateEmailOrPhone}}
-            />
-          </View>
+          <ScrollView>
+            <View style={commonStyles.flexRowAlignCenter}>
+              <Icon name="account" size={20} color="black" />
+              <RHFTextInput
+                name="username"
+                placeholder="Email/Phone"
+                keyboardType="default"
+                required
+                rules={{validate: validateEmailOrPhone}}
+              />
+            </View>
 
-          <View style={commonStyles.flexRowAlignCenter}>
-            <Icon name="key-variant" size={20} color="black" />
-            <RHFTextInput
-              name="password"
-              secureTextEntry={!showPW}
-              placeholder="Password"
-              required
-              rightIcon={
-                <Icon
-                  name={showPW ? 'eye' : 'eye-off'}
-                  color={'#95e8ff'}
-                  style={{fontSize: 20, padding: 5}}
-                  onPressIn={() => {
-                    setShowPW(true);
-                  }}
-                  onPressOut={() => {
-                    setShowPW(false);
-                  }}
-                />
-              }
-            />
-          </View>
+            <View style={commonStyles.flexRowAlignCenter}>
+              <Icon name="key-variant" size={20} color="black" />
+              <RHFTextInput
+                name="password"
+                secureTextEntry={!showPW}
+                placeholder="Password"
+                required
+                rightIcon={
+                  <Icon
+                    name={showPW ? 'eye' : 'eye-off'}
+                    color={'#95e8ff'}
+                    style={{fontSize: 20, padding: 5}}
+                    onPressIn={() => {
+                      setShowPW(true);
+                    }}
+                    onPressOut={() => {
+                      setShowPW(false);
+                    }}
+                  />
+                }
+              />
+            </View>
 
-          <View
-            style={{
-              alignItems: 'center',
-              marginTop: 30,
-            }}>
-            <Button
-              title={'Login'}
-              onPress={
-                !isLoading ? formMethods.handleSubmit(submithandler) : () => {}
-              }
-              loading={isLoading}
-              containerStyle={{
-                width: '50%',
-              }}
-            />
-          </View>
+            <View
+              style={{
+                alignItems: 'center',
+                marginTop: 30,
+              }}>
+              <Button
+                title={'Login'}
+                onPress={
+                  !isLoading
+                    ? formMethods.handleSubmit(submithandler)
+                    : () => {}
+                }
+                loading={isLoading}
+                containerStyle={{
+                  width: '50%',
+                }}
+              />
+            </View>
+          </ScrollView>
         </View>
       </FormProvider>
     </View>
