@@ -1,6 +1,6 @@
-const BASE_URL = 'http://43.204.45.2:5002/api/v1'; //dev
+// const BASE_URL = 'http://43.204.45.2:5002/api/v1'; //dev
 //
-// var BASE_URL = 'http://43.204.45.2:5000/api/v1'; //QA
+var BASE_URL = 'http://43.204.45.2:5000/api/v1'; //QA
 // var BASE_URL = 'http://43.204.45.2:5001/api/v1'; //PROD
 
 export const LOGIN_URL = BASE_URL + '/login';
@@ -27,3 +27,7 @@ export const DOCUMENT = BASE_URL + '/document';
 export const GET_SPECIALTY_URL = BASE_URL + '/getSpeciality';
 export const REMOVE_DOCTOR_MAPPING_URL = BASE_URL + '/removeDoctorMapping';
 export const GETLOCATION_URL = BASE_URL + '/getLocation';
+
+export const sendOTP_Url = BASE_URL + '/sendOTP/';
+export const reSendOTP_Url = BASE_URL + '/resendOTP/';
+export const verifyOTP_Url = BASE_URL + '/verifyOTP/';
