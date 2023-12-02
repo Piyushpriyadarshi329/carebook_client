@@ -60,7 +60,6 @@ export const AddressModal = ({
     })
       .then(location => {
         setGeolocation(location);
-        console.log(location);
       })
       .catch(error => {
         const {code, message} = error;

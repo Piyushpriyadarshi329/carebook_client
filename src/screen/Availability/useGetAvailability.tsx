@@ -92,7 +92,6 @@ export function useAddAvailability(props?: {onSuccess?: any}) {
       axios.post<any>(ADD_AVAILABILITY_URL, payload),
     {
       onSuccess: data => {
-        console.log('data', data.data);
         qc.invalidateQueries(['AVAILABILITY']);
         successAlert('Added Availability.');
         props?.onSuccess?.();

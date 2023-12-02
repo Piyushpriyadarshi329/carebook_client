@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {Text} from '@rneui/themed';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Image,
   Pressable,
@@ -38,6 +38,7 @@ import {useGetDoctor, useMutateDoctorProfile} from '../../useDoctorQuery';
 import {useGetLeaves, useRemoveLeave} from '../Leave/useLeaveQuery';
 import LeaveCard from './LeaveCard';
 import {getToday} from '../../../utils/dateMethods';
+import {useBackHandler} from '@react-native-community/hooks';
 
 export interface ProfileForm {
   username: string;
@@ -53,6 +54,7 @@ export default function LoggedInDoctorProfile() {
   const [editMode, setEditMode] = useState(false);
 
   const userId = useSelector((state: RootState) => state.Appdata.userid);
+
   const logoutHandler = () =>
     dispatch(
       updateappstate({
@@ -84,6 +86,11 @@ export default function LoggedInDoctorProfile() {
 export const DoctorProfile = (props: any) => {
   const [editMode, setEditMode] = useState(false);
   const navigation = useNavigation<any>();
+
+  useBackHandler(() => {
+    navigation.navigate(AppPages.DoctorList);
+    return true;
+  });
   return (
     <MenuProvider>
       <View style={{flex: 1, backgroundColor: 'white'}}>

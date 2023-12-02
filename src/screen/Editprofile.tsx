@@ -33,8 +33,6 @@ export default function Editprofile() {
       };
 
       let res: any = await useAddaddressMutation(payload);
-
-      console.log('res', res.data);
     } catch (error) {
       console.log(error);
     }

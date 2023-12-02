@@ -4,7 +4,6 @@ import {CB_NOTIFICATION, NotificationData} from '../types';
 export const useNotificationHandler = () => {
   const qc = useQueryClient();
   const handler = (data?: NotificationData) => {
-    console.log('data', data);
     switch (data?.name) {
       case CB_NOTIFICATION.NEW_BOOKING:
         qc.invalidateQueries([
@@ -12,6 +11,7 @@ export const useNotificationHandler = () => {
           data.doctorId,
           Number(data.date),
         ]);
+        qc.invalidateQueries(['APPOINTMENTS', data.doctorId, undefined]);
         return;
     }
   };

@@ -5,4 +5,6 @@ export const AppPages = {
   AddDoctorProfile: 'AddDoctorProfile',
   Appointments: 'Appointments',
   Leave: 'Leave',
+  DoctorProfile: 'DoctorProfile',
+  Profile: 'Profile',
 };

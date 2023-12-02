@@ -1,8 +1,8 @@
 import LoadingDots from '@apolloeagle/loading-dots';
 import {Text} from '@rneui/themed';
 import _ from 'lodash';
-import React from 'react';
-import {View} from 'react-native';
+import React, {useState} from 'react';
+import {TouchableOpacity, View} from 'react-native';
 import Timeline from 'react-native-timeline-flatlist';
 import uuid from 'react-native-uuid';
 import Color from '../../asset/Color';
@@ -12,6 +12,8 @@ import {Appointmentdto, BookingStatus} from '../../types';
 import {getTimeStringFromDBTime} from '../../utils/dateMethods';
 import {useAlert} from '../../utils/useShowAlert';
 import Status from './Status';
+import DownArrow from 'react-native-vector-icons/MaterialIcons';
+import TimeLineEntry from './TimeLineEntry';
 
 const AppointmentTimeline = ({
   appointments,
@@ -25,6 +27,8 @@ const AppointmentTimeline = ({
   isForClinic: boolean;
 }) => {
   const {successAlert} = useAlert();
+  const [showDetails, setShowDetails] = useState<string>('');
+
   const {mutate: updateSlotStatus, isLoading} = useUpdateSlotStatus(() => {
     successAlert('Status updated Successfully');
   });
@@ -39,6 +43,9 @@ const AppointmentTimeline = ({
       appointmentDate,
     });
   }
+
+  // 'a2ae828c-6645-4882-a63b-2773f17944a6'
+
   const timelineData = groupedAppointments.reduce<
     {
       id: string;
@@ -58,7 +65,6 @@ const AppointmentTimeline = ({
           appointment.status === BookingStatus.COMPLETED;
         const isNextCompleted =
           appointments[index + 1]?.status === BookingStatus.COMPLETED;
-        console.log(appointment.clinic_name);
         return {
           id: appointment.id,
           type: 'SLOT',
@@ -71,6 +77,8 @@ const AppointmentTimeline = ({
           clinic: appointment.clinic_name,
           gender: appointment.gender?.slice(0, 1),
           age: appointment.dob,
+          phone: appointment.phone,
+          patient_address: appointment.patient_address,
         };
       });
 
@@ -113,49 +121,9 @@ const AppointmentTimeline = ({
     <Timeline
       data={timelineData}
       innerCircle={'icon'}
-      renderDetail={(rowData, rowId) => {
-        return rowData.type == 'SLOT' ? (
-          <View
-            style={{
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-            }}>
-            <View>
-              <Text style={[commonStyles.font16, commonStyles.weight400]}>
-                {rowData.name}{' '}
-                {!!rowData.age &&
-                  `(${rowData.age} y${
-                    !!rowData.gender ? `, ${rowData.gender} ` : ' '
-                  })`}
-              </Text>
-              <Text style={commonStyles.caption}>{rowData.description}</Text>
-              {!isForClinic && (
-                <Text style={commonStyles.caption}>{rowData.clinic}</Text>
-              )}
-            </View>
-            <View style={{paddingRight: 20}}>
-              {isLoading ? (
-                <LoadingDots
-                  animation="pulse"
-                  dots={3}
-                  color={Color.primary}
-                  size={5}
-                />
-              ) : (
-                <Status
-                  id={rowData.id}
-                  status={rowData.status}
-                  updateslot={updateslot}
-                />
-              )}
-            </View>
-          </View>
-        ) : (
-          <View>
-            <Text style={commonStyles.font20}>{rowData.name}</Text>
-          </View>
-        );
-      }}
+      renderDetail={(rowData, rowId) => (
+        <TimeLineEntry {...{isForClinic, rowData, updateslot}} />
+      )}
     />
   );
 };

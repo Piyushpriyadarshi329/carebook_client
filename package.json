@@ -15,6 +15,7 @@
     "@apolloeagle/loading-dots": "^3.0.0",
     "@react-native-async-storage/async-storage": "^1.19.1",
     "@react-native-community/datetimepicker": "^7.4.1",
+    "@react-native-community/hooks": "^3.0.0",
     "@react-native-firebase/app": "^18.3.0",
     "@react-native-firebase/firestore": "^18.3.0",
     "@react-native-firebase/messaging": "^18.3.0",
