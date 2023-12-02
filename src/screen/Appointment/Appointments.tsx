@@ -71,7 +71,6 @@ function Appointments({
     return localdate;
   }, [centerdate]);
 
-  console.log(selecteddate);
   const {data: appointments, isLoading} = useGetAppointments({
     doctorId: doctorId,
     appointment_date: selecteddate,

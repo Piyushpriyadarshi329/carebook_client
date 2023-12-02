@@ -41,7 +41,6 @@ const CalendarModal = ({
         }}>
         <Calendar
           onDayPress={day => {
-            console.log('india', moment.utc(day.timestamp).local());
             setDate(new Date(day.timestamp - 19800000));
             setModalVisible(!modalVisible);
           }}

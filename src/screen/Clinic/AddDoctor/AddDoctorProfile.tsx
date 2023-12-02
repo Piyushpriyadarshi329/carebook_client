@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import DoctorEditForm from '../../Doctor/Profile/Edit/Form';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, CommonActions} from '@react-navigation/native';
 import {RootState} from '../../../redux/Store';
 import {View} from 'react-native';
 import {useSelector} from 'react-redux';
@@ -12,6 +12,8 @@ import Navbar from '../../../components/Navbar';
 import Color from '../../../asset/Color';
 
 const AddDoctorProfile = (props: any) => {
+  const Appdata = useSelector((state: RootState) => state.Appdata);
+
   const navigation = useNavigation<any>();
   const userId = useSelector((state: RootState) => state.Appdata.userid);
   const doctorId = props.route?.params?.id as string;
@@ -66,7 +68,6 @@ const AddDoctorProfile = (props: any) => {
   const onSkip = () => {
     navigation.navigate(AppPages.DoctorList);
   };
-  console.log(props.route.params.id);
   return (
     <View style={{flex: 1}}>
       <Navbar title="Add Profile Details" blockBack />

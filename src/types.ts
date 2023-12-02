@@ -347,6 +347,8 @@ export interface Appointmentdto extends BookingDto {
   clinic_name?: string;
   from_working_time?: string;
   address: ShowAddress;
+  phone?: string;
+  patient_address?: string;
 }
 
 export interface ShowAddress {

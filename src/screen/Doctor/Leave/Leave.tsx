@@ -253,7 +253,6 @@ function LeaveById(props: {id: string; clinic_id?: string}) {
       <CalendarModal
         date={toDate}
         setDate={date => {
-          console.log('todate', date);
           setToDate(date);
         }}
         modalVisible={modalVisibleTo}

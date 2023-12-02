@@ -40,7 +40,6 @@ export default function Login() {
     try {
       const fcmToken = await messaging().getToken();
       if (fcmToken) {
-        console.log(fcmToken);
         setfcm_token(fcmToken);
       }
     } catch (error) {
@@ -49,8 +48,6 @@ export default function Login() {
   };
 
   async function submithandler(formValues: LoginForm) {
-    console.log('clicked');
-
     let payload = {
       userName: formValues.username,
       password: formValues.password,

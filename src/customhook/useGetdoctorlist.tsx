@@ -14,8 +14,6 @@ export async function useGetdoctorlist(payload: any) {
     try {
       var res = await axios.post(GET_DOCTOR_LIST_URL, payload);
 
-      console.log('res', res.data);
-
       myResolve(res);
     } catch (error: any) {
       myReject(error);
