@@ -20,6 +20,7 @@ import {useGetAppointments} from './useAppointmentsQuery';
 import CalendarModal from '../../components/CalendarModal';
 import {BookingStatus} from '../../types';
 import {Image} from '@rneui/themed';
+import {useGetAvailableDates} from './useGetAvailableDates';
 
 export const LoggedInUserAppointments = () => {
   const userId = useSelector((state: RootState) => state.Appdata.userid);
@@ -49,27 +50,46 @@ function Appointments({
   const [modalVisible, setModalVisible] = useState(false);
   const [selecteddate, setselecteddate] = useState(getToday().getTime());
   const {data: doctorDetails} = useGetDoctor({id: doctorId, clinic_id});
-  const upcomingDates = useMemo(() => {
-    let localdate = [];
+  const centerDay = new Date(centerdate);
+  centerDay.setHours(0);
+  centerDay.setMinutes(0);
+  centerDay.setSeconds(0);
+  centerDay.setMilliseconds(0);
+  const {data: dateList} = useGetAvailableDates({
+    date: centerDay.getTime(),
+    doctor_id: doctorId,
+    clinic_id: clinic_id || '',
+  });
+  const upcomingDates = dateList?.map(d => {
+    let date = new Date(d.date);
+    return {
+      date: date.getDate() + ' ' + monthlist[date.getMonth()],
+      day: daylist[date.getDay()],
+      value: d.date,
+    };
+  });
 
-    for (let i = -2; i < 7; i++) {
-      let date = new Date(centerdate);
-      date.setDate(date.getDate() + i);
-      date.setHours(0);
-      date.setMinutes(0);
-      date.setSeconds(0);
-      date.setMilliseconds(0);
-      let month = date.getMonth();
-      let d1 = date.getDate();
-      let Appointment_date = date.getTime();
-      localdate.push({
-        date: d1 + ' ' + monthlist[month],
-        day: daylist[date.getDay()],
-        value: Appointment_date,
-      });
-    }
-    return localdate;
-  }, [centerdate]);
+  // const upcomingDates = useMemo(() => {
+  //   let localdate = [];
+
+  //   for (let i = -2; i < 7; i++) {
+  //     let date = new Date(centerdate);
+  //     date.setDate(date.getDate() + i);
+  //     date.setHours(0);
+  //     date.setMinutes(0);
+  //     date.setSeconds(0);
+  //     date.setMilliseconds(0);
+  //     let month = date.getMonth();
+  //     let d1 = date.getDate();
+  //     let Appointment_date = date.getTime();
+  //     localdate.push({
+  //       date: d1 + ' ' + monthlist[month],
+  //       day: daylist[date.getDay()],
+  //       value: Appointment_date,
+  //     });
+  //   }
+  //   return localdate;
+  // }, [centerdate]);
 
   console.log(selecteddate);
   const {data: appointments, isLoading} = useGetAppointments({
@@ -104,7 +124,7 @@ function Appointments({
 
       <View style={styles.datesContainer}>
         <ScrollView horizontal={true}>
-          {upcomingDates.map(date => {
+          {upcomingDates?.map(date => {
             return (
               <UpcomingDateTile
                 key={`appointments_date_tile_${date.value}`}

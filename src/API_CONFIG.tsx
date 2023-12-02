@@ -31,3 +31,4 @@ export const GETLOCATION_URL = BASE_URL + '/getLocation';
 export const sendOTP_Url = BASE_URL + '/sendOTP/';
 export const reSendOTP_Url = BASE_URL + '/resendOTP/';
 export const verifyOTP_Url = BASE_URL + '/verifyOTP/';
+export const getAvailableDates_Url = BASE_URL + '/getAvailableDates';
