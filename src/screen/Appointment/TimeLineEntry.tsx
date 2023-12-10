@@ -26,11 +26,11 @@ const TimeLineEntry = ({
       <View>
         <View style={{flexDirection: 'row'}}>
           <Text style={[commonStyles.font16, commonStyles.weight400]}>
-            {rowData.name}{' '}
-            {!!rowData.age &&
-              `(${rowData.age} y${
-                !!rowData.gender ? `, ${rowData.gender} ` : ' '
-              })`}
+            {rowData.name}
+            {(rowData.age || rowData.gender) && ' ('}
+            {!!rowData.age && rowData.age + ` y${rowData.gender ? ', ' : ''}`}
+            {!!rowData.gender && rowData.gender}
+            {(rowData.age || rowData.gender) && ')'}
           </Text>
           {expand ? (
             <View>
@@ -38,7 +38,7 @@ const TimeLineEntry = ({
                 onPress={() => {
                   setExpand(false);
                 }}>
-                <DownArrow name="keyboard-arrow-up" color="black" size={30} />
+                <DownArrow name="keyboard-arrow-up" color="grey" size={30} />
               </TouchableOpacity>
             </View>
           ) : (
@@ -47,7 +47,7 @@ const TimeLineEntry = ({
                 onPress={() => {
                   setExpand(true);
                 }}>
-                <DownArrow name="keyboard-arrow-down" color="black" size={30} />
+                <DownArrow name="keyboard-arrow-down" color="grey" size={30} />
               </TouchableOpacity>
             </View>
           )}

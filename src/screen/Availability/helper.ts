@@ -31,22 +31,23 @@ export const days = [
 export const weeks = [
   {
     value: 1,
-    label: 'Week 1',
+    // label: 'Week 1',
+    label: '1st Week',
   },
   {
     value: 2,
-    label: 'Week 2',
+    label: '2nd Week',
   },
   {
     value: 3,
-    label: 'Week 3',
+    label: '3rd Week',
   },
   {
     value: 4,
-    label: 'Week 4',
+    label: '4th Week',
   },
   {
     value: 5,
-    label: 'Week 5',
+    label: 'Last Week',
   },
 ];

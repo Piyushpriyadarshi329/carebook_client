@@ -1,6 +1,9 @@
 // const BASE_URL = 'http://43.204.45.2:5002/api/v1'; //dev
 //
-var BASE_URL = 'http://43.204.45.2:5000/api/v1'; //QA
+// var BASE_URL = 'http://43.204.45.2:5000/api/v1'; //QA
+
+export const BASE_URL = 'https://api.carebook.in/carebook_qa/api/v1'; //QA
+
 // var BASE_URL = 'http://43.204.45.2:5001/api/v1'; //PROD
 
 export const LOGIN_URL = BASE_URL + '/login';
